@@ -1,0 +1,53 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.new
+
+# Claude / agent artifacts (optional — keep local only)
+.claude/plans/
+.claude/worktrees/
+.claude/scheduled_tasks.json
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Large media files (kept local only — over 30MB)
+public/sky.jpg
+public/frames/ezgif-frame-000.png
+public/frames/ezgif-frame-001.png
+public/frames/ezgif-frame-162.png
+public/frames/ezgif-frame-163.png
+public/hybrid/assets/earth-hero.png

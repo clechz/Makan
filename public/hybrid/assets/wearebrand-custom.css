@@ -1,0 +1,935 @@
+/**
+ * wearebrand-custom.css
+ * Consolidated styles moved from inline <style> blocks in page-brand.php
+ * This file contains all custom overrides and component styles.
+ */
+
+/* Reduce intro_scroll-area height to remove gap below city */
+.intro_scroll-area {
+  height: auto !important;
+}
+
+/* Reduce hero scroll area to 2.5x viewport on desktop */
+@media screen and (min-width: 992px) {
+  .hero_scroll-area {
+    height: calc(var(--_special-units---100vh) * 2.5) !important;
+  }
+}
+
+/* Hide hamburger menu on mobile but keep space for centered logo */
+.header_menu.f-mobile {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* =============================================
+   1. GLOBAL RESETS & BASE
+   ============================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, input, select, textarea, button {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Selection */
+::-moz-selection {
+  color: var(--_colors---base-0--100);
+  background: var(--_colors---base-1000--100);
+}
+::selection {
+  color: var(--_colors---base-0--100);
+  background: var(--_colors---base-1000--100);
+}
+
+/* Scrollbar hiding (intentional design choice - DO NOT MODIFY) */
+::-webkit-scrollbar {
+  width: 0em;
+  height: 0em;
+}
+::-webkit-scrollbar-button {
+  width: 0em;
+  height: 0em;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0);
+}
+::-webkit-scrollbar-thumb:active {
+  background: rgba(255, 255, 255, 1);
+}
+
+/* =============================================
+   2. SKIP TO CONTENT (Accessibility)
+   ============================================= */
+
+.wab-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 99999;
+  padding: 12px 24px;
+  background: #E8A838;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+}
+.wab-skip-link:focus {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+/* =============================================
+   3. HEADER & NAVIGATION
+   ============================================= */
+
+.header .text-dark {
+  color: #fff;
+}
+.header .nav-item_bg_hover {
+  background-color: rgba(255, 255, 255, .1);
+}
+
+/* Header logo */
+.header_logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header_logo .link-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header_logo .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0.3em;
+}
+.wab-header-logo {
+  height: 3.2em;
+  width: auto;
+  display: block;
+  transition: filter .4s ease;
+  filter: brightness(0) invert(1);
+}
+.wab-header-logo.is-dark {
+  filter: brightness(0);
+}
+
+@media screen and (max-width: 991px) {
+  .wab-header-logo {
+    height: 4em;
+  }
+}
+@media screen and (max-width: 767px) {
+  .wab-header-logo {
+    height: 6em;
+  }
+}
+@media screen and (max-width: 479px) {
+  .wab-header-logo {
+    height: 7em;
+  }
+}
+
+/* =============================================
+   4. FACTOID CARD (dark background overrides)
+   ============================================= */
+
+.globe-factoid-s_card .card_bg {
+  background-color: #3a3a3a;
+}
+.globe-factoid-s_card .h2 {
+  color: #fff;
+}
+.globe-factoid-s_card .l1 {
+  color: #fff;
+}
+.globe-factoid-s_card .p7 {
+  color: rgba(255, 255, 255, .6);
+}
+.globe-factoid-s_card .diagram-logo span {
+  color: #fff;
+}
+
+/* =============================================
+   5. AUTOFILL RESET (for dark backgrounds)
+   ============================================= */
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(15, 15, 25, .75) inset;
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* =============================================
+   6. PRELOADER & FLICKER PREVENTION
+   ============================================= */
+
+[data-wab-flicker='true'] {
+  visibility: hidden;
+}
+[data-wab-preloader] {
+  display: block;
+}
+/* Preloader offset now handled by JS (same dynamic calc as hero logo) */
+
+/* Override preloader brown to anthracite */
+.preloader.bg-grad {
+  background-image: linear-gradient(135deg, #2B2B2B, #2B2B2B) !important;
+}
+.preloader_bg_grad {
+  background-image: linear-gradient(135deg, #2B2B2B, #2B2B2B) !important;
+}
+
+/* Hide removed airplane assets (space theme migration) */
+.hero-w_bg_front-over,
+.hero-w_bg_window {
+  display: none;
+}
+
+@media screen and (orientation: landscape) and (max-width: 991px) {
+  .landscape-cover {
+    display: block;
+  }
+}
+
+.unset-all {
+  all: unset;
+}
+.class-name::-webkit-scrollbar {
+  display: none;
+}
+
+/* =============================================
+   7. SVG ANIMATION BASE
+   ============================================= */
+
+[data-wab-svg="animated"] path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  visibility: hidden;
+}
+
+/* =============================================
+   8. SCROLL INDICATOR
+   ============================================= */
+
+.wab-scroll-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+.wab-scroll-icon svg {
+  color: rgba(255, 255, 255, .85);
+}
+.wab-scroll-dot {
+  animation: wabScrollBounce 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes wabScrollBounce {
+  0%, 100% {
+    cy: 12;
+    opacity: 1;
+  }
+  50% {
+    cy: 28;
+    opacity: 0.3;
+  }
+}
+.wab-scroll-icon svg rect {
+  animation: wabScrollGlow 3s ease-in-out infinite;
+}
+@keyframes wabScrollGlow {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+
+/* =============================================
+   9. HERO SECTION
+   ============================================= */
+
+.hero-w_bg_window_bg {
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.00) 0%, rgba(0, 0, 0, 0.20) 80%, rgba(0, 0, 0, 0.35) 100%);
+}
+
+/* Star particles canvas */
+.wab-particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* =============================================
+   10. CONTACT FORM STYLES
+   ============================================= */
+
+.wab-contact-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 0 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.wab-contact-info {
+  position: sticky;
+  top: 120px;
+  color: #f0f0f0;
+}
+.wab-contact-info .l1-accent {
+  color: #E8A838;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 1.2em;
+}
+.wab-contact-info h2 {
+  font-family: var(--_typography---font-1, "League Spartan", sans-serif);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0;
+  color: #fff;
+}
+.wab-contact-info .wab-contact-desc {
+  font-size: 16px;
+  color: rgba(255, 255, 255, .55);
+  margin-top: 1.2em;
+  max-width: 440px;
+  line-height: 1.6;
+}
+.wab-contact-details {
+  margin-top: 3em;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.wab-contact-detail {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.wab-contact-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.wab-contact-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: rgba(255, 255, 255, .6);
+  fill: none;
+  stroke-width: 1.5;
+}
+.wab-contact-detail .detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: rgba(255, 255, 255, .85);
+  margin-bottom: 2px;
+}
+.wab-contact-detail .detail-value {
+  font-size: 14px;
+  color: rgba(255, 255, 255, .5);
+}
+.wab-contact-detail .detail-value a {
+  color: rgba(255, 255, 255, .5);
+  text-decoration: none;
+  transition: color .3s;
+}
+.wab-contact-detail .detail-value a:hover {
+  color: #fff;
+}
+.wab-connected-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+.wab-connected-dot2 {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .25);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wab-connected-dot2::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .3);
+  animation: contactGreenPulse 2s ease-in-out infinite;
+}
+@keyframes contactGreenPulse {
+  0%, 100% {
+    background: rgba(255, 255, 255, .3);
+    box-shadow: none;
+  }
+  50% {
+    background: #E8A838;
+    box-shadow: 0 0 6px #E8A838, 0 0 14px rgba(232, 168, 56, .5);
+  }
+}
+.wab-connected-pill span {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .5);
+}
+.wab-form-card2 {
+  position: relative;
+  background: rgba(15, 15, 25, .75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 24px;
+  padding: 40px 36px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .4), 0 0 80px rgba(232, 168, 56, .06);
+  overflow: hidden;
+}
+.wab-form-card2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 168, 56, .5), transparent);
+}
+.wab-form-card2 .form-title {
+  font-family: var(--_typography---font-1, "League Spartan", sans-serif);
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.wab-form-card2 .form-sub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, .5);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.wab-wa-cta2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(37, 211, 102, .12), rgba(37, 211, 102, .04));
+  border: 1px solid rgba(37, 211, 102, .25);
+  border-radius: 14px;
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: all .3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+.wab-wa-cta2:hover {
+  background: linear-gradient(135deg, rgba(37, 211, 102, .22), rgba(37, 211, 102, .08));
+  border-color: rgba(37, 211, 102, .5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(37, 211, 102, .15);
+}
+.wab-wa-icon2 {
+  width: 38px;
+  height: 38px;
+  background: #25D366;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.wab-wa-icon2 svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+.wab-wa-label2 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #25D366;
+  margin-bottom: 1px;
+}
+.wab-wa-desc2 {
+  font-size: 12px;
+  color: rgba(255, 255, 255, .4);
+}
+.wab-wa-arrow2 {
+  margin-left: auto;
+  color: rgba(255, 255, 255, .15);
+  font-size: 18px;
+  transition: all .3s;
+}
+.wab-wa-cta2:hover .wab-wa-arrow2 {
+  transform: translateX(3px);
+  color: #25D366;
+}
+.wab-form-divider2 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.wab-form-divider2::before,
+.wab-form-divider2::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, .08);
+}
+.wab-form-divider2 span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, .3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 500;
+}
+.wab-form2 {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.wab-form-grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.wab-field2 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.wab-label2 {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .85);
+}
+.wab-label2 .req {
+  color: #ff6b6b;
+}
+.wab-input2,
+.wab-select2,
+.wab-textarea2 {
+  padding: 13px 16px;
+  background: rgba(255, 255, 255, .05);
+  border: 1.5px solid rgba(255, 255, 255, .1);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all .3s ease;
+  outline: none;
+  width: 100%;
+}
+.wab-input2::placeholder,
+.wab-textarea2::placeholder {
+  color: rgba(255, 255, 255, .25);
+}
+.wab-input2:focus,
+.wab-select2:focus,
+.wab-textarea2:focus {
+  border-color: rgba(232, 168, 56, .5);
+  background: rgba(255, 255, 255, .08);
+  box-shadow: 0 0 0 3px rgba(232, 168, 56, .1);
+}
+.wab-input2.error,
+.wab-select2.error {
+  border-color: #ff6b6b;
+}
+.wab-select2 {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.wab-select2 option {
+  background: #1a1a2e;
+  color: #fff;
+}
+.wab-textarea2 {
+  resize: vertical;
+  min-height: 90px;
+}
+.wab-chips2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.wab-chip2 {
+  padding: 8px 16px;
+  border: 1.5px solid rgba(255, 255, 255, .12);
+  border-radius: 100px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, .6);
+  cursor: pointer;
+  transition: all .25s;
+  user-select: none;
+}
+.wab-chip2:hover {
+  border-color: rgba(255, 255, 255, .3);
+  color: rgba(255, 255, 255, .9);
+}
+.wab-chip2.active {
+  background: rgba(232, 168, 56, .15);
+  border-color: rgba(232, 168, 56, .5);
+  color: #E8A838;
+}
+.wab-field-error2 {
+  font-size: 12px;
+  color: #ff6b6b;
+  display: none;
+}
+.wab-field-error2.show {
+  display: block;
+}
+.wab-error-banner2 {
+  display: none;
+  background: rgba(255, 107, 107, .1);
+  border: 1px solid rgba(255, 107, 107, .3);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: #ff6b6b;
+  font-size: 13px;
+  font-weight: 500;
+}
+.wab-error-banner2.show {
+  display: block;
+}
+.wab-submit-btn2 {
+  width: 100%;
+  padding: 15px 24px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #E8A838 0%, #D4922A 100%);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .3s ease;
+  margin-top: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.wab-submit-btn2:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(232, 168, 56, .3);
+}
+.wab-submit-btn2:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+.wab-success2 {
+  display: none;
+  text-align: center;
+  padding: 40px 36px;
+  min-height: 420px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.wab-success2.show {
+  display: flex;
+}
+.wab-success-icon2 {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #E8A838, #D4922A);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 0 40px rgba(232, 168, 56, .4);
+}
+.wab-success-icon2 svg {
+  width: 40px;
+  height: 40px;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.wab-success-title2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.wab-success-msg2 {
+  font-size: 15px;
+  color: rgba(255, 255, 255, .6);
+  line-height: 1.6;
+}
+
+@media (max-width: 991px) {
+  .wab-contact-wrap {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 80px 0 60px;
+  }
+  .wab-contact-info {
+    position: static;
+  }
+}
+@media (max-width: 768px) {
+  .wab-form-card2 {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+  .wab-success2 {
+    padding: 28px 20px;
+    min-height: 360px;
+  }
+  .wab-form-grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================
+   11. CTA BUTTON SHADOW
+   ============================================= */
+
+.btn-cta_btn,
+.btn-cta_btn-icon {
+  box-shadow:
+    0 198px 55px 0 rgba(0, 0, 0, 0.00),
+    0 127px 51px 0 rgba(0, 0, 0, 0.01),
+    0 71px 43px 0 rgba(0, 0, 0, 0.04),
+    0 32px 32px 0 rgba(0, 0, 0, 0.07),
+    0 8px 17px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* =============================================
+   12. BACKGROUND GRADIENTS
+   ============================================= */
+
+/* Removed: legacy .dark-bg (brown ramp) and .light-bg (taupe→gray)
+   gradients. Unused in current page; retired to prevent accidental
+   future usage. */
+@media screen and (max-width: 991px) {
+  .sky-bg_about {
+    height: calc(var(--_special-units---100vh) * 4) !important;
+  }
+  .sky-bg_hero_grad-over {
+    bottom: -1px;
+  }
+  .about-s > .unit-96:first-child {
+    height: 0 !important;
+  }
+}
+/* Sky-about gradient overlay handles the FULL day→night→black
+   journey in a single container (4200px tall):
+   - Top 0-45% = transparent (bright sky, clouds clearly visible)
+   - 45-70% = smooth deepening into rich deep blue
+   - 70-90% = deep night tint
+   - 90-100% = fades to pure black (meets the black→white
+     transition seal at the top of #use-cases)
+   Single gradient, single image, ZERO seams. */
+.sky-bg_about_grad-over {
+  /* Two stacked sky images fill the 4200px container.
+     0-40% = transparent (bright sky, clouds vivid, stats zone)
+     40-55% = gentle deepening (transition, before/after zone)
+     55-80% = deep rich blue (dark sky, logos zone)
+     80-100% = fading to pure black (meets use-cases) */
+  background: linear-gradient(180deg,
+    rgba(1, 90, 169, 0) 0%,
+    rgba(1, 90, 169, 0) 40%,
+    rgba(2, 65, 140, 0.22) 50%,
+    rgba(2, 50, 110, 0.45) 58%,
+    rgba(2, 40, 88, 0.62) 66%,
+    rgba(3, 28, 66, 0.75) 74%,
+    rgba(3, 18, 48, 0.85) 82%,
+    rgba(2, 10, 28, 0.95) 92%,
+    #000000 100%
+  );
+}
+/* Hero bottom fade — restore original smooth transition.
+   Fully opaque #015AA9 blue at the bottom creates a clean
+   solid-blue band between the Earth and the sky clouds,
+   exactly like the original wearebrand. */
+.sky-bg_hero_grad-over {
+  background: linear-gradient(180deg,
+    rgba(1, 90, 169, 0) 0%,
+    rgba(1, 90, 169, 0.5) 60%,
+    rgba(1, 90, 169, 0.85) 80%,
+    rgba(1, 90, 169, 1) 100%
+  );
+}
+
+/* =============================================
+   13. MOBILE HERO — phones only (≤ 479px)
+   All rules scoped to max-width:479px so
+   desktop / laptop / tablet stay untouched.
+   ============================================= */
+
+/* --- Mobile hero bottom block (hidden on desktop via .b-mobile) --- */
+.hero-s_bot-mobile {
+  display: none;  /* hidden by default; .b-mobile overrides at ≤991px */
+}
+
+@media screen and (max-width: 991px) {
+  /* The base .b-mobile rule in wearebrand.min.css already sets display:block.
+     We just need to style the contents for phone screens. */
+
+  .hero-s_bot-mobile {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 0 var(--_margins---m-24, 20px);
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    z-index: 5;
+  }
+
+  .hero-mobile-tagline h3 {
+    font-family: var(--_fonts---font-display, 'League Spartan', sans-serif);
+    font-size: clamp(1.1rem, 4.5vw, 1.6rem);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin: 0;
+  }
+
+  .hero-mobile-subtitle p {
+    font-size: clamp(0.8rem, 3.2vw, 1.05rem);
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    white-space: normal;
+  }
+
+  .hero-mobile-subtitle .makan-rotate-word {
+    width: auto;
+    max-width: 100%;
+    display: inline;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .hero-mobile-scroll {
+    margin-top: 4px;
+  }
+  .hero-mobile-scroll .wab-scroll-icon {
+    opacity: 0.6;
+  }
+}
+
+/* --- Phone-specific hero title sizing --- */
+@media screen and (max-width: 479px) {
+  /* "Query the World" — scale down for small phones */
+  #hero .hero-s_title-l .h2 {
+    font-size: clamp(2rem, 10vw, 3.5rem) !important;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+
+  /* Center the hero title grid on mobile */
+  #hero .grid.fill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Tighten spacing above hero content */
+  #hero .unit-156 {
+    height: 20vh !important;
+  }
+  #hero .unit-216 {
+    height: 8vh !important;
+  }
+
+  /* Ensure the mobile bottom block doesn't overflow */
+  .hero-s_bot-mobile {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 20px;
+    gap: 16px;
+  }
+
+  .hero-mobile-tagline h3 {
+    font-size: clamp(1rem, 4.2vw, 1.4rem);
+  }
+
+  .hero-mobile-subtitle p {
+    font-size: clamp(0.75rem, 3vw, 0.95rem);
+  }
+
+  /* Hero scroll area — shorter on phones so zoom doesn't drag */
+  .hero_scroll-area {
+    height: calc(var(--_special-units---100vh, 100vh) * 1.8) !important;
+  }
+
+  /* Spaceship image — contain properly on small screens */
+  .hero-w_bg_front .img-w {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-w_bg_front .img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+

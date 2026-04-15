@@ -1,0 +1,104 @@
+.intelligence-overlays {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.overlay-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* LAYER 1: Region Boundaries */
+.region-boundary {
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  animation: drawBoundary 1.5s ease-out forwards;
+}
+
+@keyframes drawBoundary {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* LAYER 2: Building Footprints */
+.building {
+  fill: rgba(34, 211, 238, 0.15);
+  stroke: rgba(34, 211, 238, 0.6);
+  strokeWidth: 0.15;
+  opacity: 0;
+  animation: fadeInBuilding 0.6s ease-out forwards;
+}
+
+@keyframes fadeInBuilding {
+  to {
+    opacity: 1;
+  }
+}
+
+/* LAYER 3: Road Network */
+.road-line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: drawRoad 1.2s ease-out forwards;
+}
+
+.main-road {
+  animation-duration: 1.5s;
+}
+
+@keyframes drawRoad {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* LAYER 4: Activity Hotspots */
+.hotspot {
+  opacity: 0;
+  animation: pulseHotspot 2s ease-in-out infinite;
+}
+
+@keyframes pulseHotspot {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hotspot-ring {
+  opacity: 0;
+  animation: expandRing 2s ease-out infinite;
+}
+
+@keyframes expandRing {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
