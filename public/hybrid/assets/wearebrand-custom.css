@@ -779,20 +779,21 @@ select:-webkit-autofill {
      transition seal at the top of #use-cases)
    Single gradient, single image, ZERO seams. */
 .sky-bg_about_grad-over {
-  /* Two stacked sky images fill the 4200px container.
-     0-40% = transparent (bright sky, clouds vivid, stats zone)
-     40-55% = gentle deepening (transition, before/after zone)
-     55-80% = deep rich blue (dark sky, logos zone)
-     80-100% = fading to pure black (meets use-cases) */
+  /* 0-35% = transparent (bright sky, clouds vivid)
+     35-50% = gentle deepening
+     50-70% = deep rich blue (dark sky zone)
+     70-85% = deep navy into near-black
+     85-100% = pure black (longer black tail) */
   background: linear-gradient(180deg,
     rgba(1, 90, 169, 0) 0%,
-    rgba(1, 90, 169, 0) 40%,
-    rgba(2, 65, 140, 0.22) 50%,
-    rgba(2, 50, 110, 0.45) 58%,
-    rgba(2, 40, 88, 0.62) 66%,
-    rgba(3, 28, 66, 0.75) 74%,
-    rgba(3, 18, 48, 0.85) 82%,
-    rgba(2, 10, 28, 0.95) 92%,
+    rgba(1, 90, 169, 0) 35%,
+    rgba(2, 65, 140, 0.22) 45%,
+    rgba(2, 50, 110, 0.45) 52%,
+    rgba(2, 40, 88, 0.65) 60%,
+    rgba(3, 28, 66, 0.80) 67%,
+    rgba(3, 18, 48, 0.92) 74%,
+    rgba(2, 10, 28, 0.98) 80%,
+    #000000 85%,
     #000000 100%
   );
 }
@@ -802,10 +803,14 @@ select:-webkit-autofill {
    exactly like the original wearebrand. */
 .sky-bg_hero_grad-over {
   background: linear-gradient(180deg,
-    rgba(1, 90, 169, 0) 0%,
-    rgba(1, 90, 169, 0.5) 60%,
-    rgba(1, 90, 169, 0.85) 80%,
-    rgba(1, 90, 169, 1) 100%
+    rgba(1, 90, 169, 0.00) 0%,
+    rgba(1, 90, 169, 0.20) 15%,
+    rgba(1, 90, 169, 0.45) 30%,
+    rgba(1, 90, 169, 0.65) 45%,
+    rgba(1, 90, 169, 0.82) 60%,
+    rgba(1, 90, 169, 0.92) 75%,
+    rgba(1, 90, 169, 0.98) 90%,
+    #015AA9 100%
   );
 }
 
