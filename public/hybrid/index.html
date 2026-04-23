@@ -47,7 +47,9 @@ body, body.body {
    grad-over below the hero boundary and ensure it overlaps sky-about. */
 .sky-bg_hero_grad-over {
   bottom: -10px !important;
-  height: calc(var(--_special-units---100vh, 100vh) * 0.8 + 10px) !important;
+  /* Pushed higher so the blue overlap extends further up, giving
+     a longer crossfade between the Earth image and the cloud sky. */
+  height: calc(var(--_special-units---100vh, 100vh) * 1.1 + 10px) !important;
 }
 .sky-bg_hero .img-w .img {
   display: block !important;
