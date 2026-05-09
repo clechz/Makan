@@ -1,0 +1,15 @@
+{
+  "name": "makan-landing",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Makan — query the world. Static landing page (placeholder until the editor ships).",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.7"
+  }
+}
