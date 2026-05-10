@@ -1,206 +1,85 @@
-<div align="center">
-  <br />
-    <a href="https://github.com/Itssanthoshhere/Macbook-Landing-Page" target="_blank">
-      <img src="public/readme/hero.webp" alt="Project Banner">
-    </a>
-  <br />
+# Makan — Landing Page
 
-  <div>
-    <img src="https://img.shields.io/badge/-React-58C4DC?style=for-the-badge&logo=React&logoColor=white" />
-    <img src="https://img.shields.io/badge/-Three.js-27136A?style=for-the-badge&logo=three.js&logoColor=white" />
-    <img src="https://img.shields.io/badge/-GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white" />
-    <img src="https://img.shields.io/badge/-TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-    <img src="https://img.shields.io/badge/-Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=white" />
-    <img src="https://img.shields.io/badge/-Zustand-181717?style=for-the-badge&logo=react&logoColor=white" />
-  </div>
+The marketing site for **Makan** (مكان) — a B2B geospatial AI platform that indexes the physical world using satellite imagery and vector embeddings.
 
-  <div align="center">
-    <h3> MacBook Landing Page – Apple-Style 3D Product Showcase</h3>
-    A <b>modern, immersive 3D website</b> built using <b>React, Three.js, GSAP, and TailwindCSS</b>.  
-    Showcases Apple products with <b>realistic lighting, scroll-based animations, and masking effects</b> for an elegant, Apple-inspired experience.
-  </div>
-  <br />
-
-  <a href="https://macbook-landing-page-ten.vercel.app/" target="_blank">
-    <img src="https://img.shields.io/badge/🚀%20Live%20Demo-brightgreen?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
-  </a>
-</div>
+**Tagline:** Query the World.
+**Live:** [makan.llc](https://makan.llc)
 
 ---
 
-## 📋 Table of Contents
+## What this repo is
 
-1. ✨ [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-5. 🧱 [Project Structure](#project-structure)
-6. 🧠 [Architecture & Animations](#architecture--animations)
-7. 🤝 [Contribution](#contribution)
-8. 🔗 [Contacts](#contacts)
-9. 📄 [License](#license)
-10. 🙏 [Acknowledgements](#acknowledgements)
+A **static landing page** served from `public/hybrid/`. The root `index.html` is a one-line redirect to `/hybrid/`, which is the actual cinematic single-page site (sky → operations dark → use cases → closing earth).
+
+The site is hand-written HTML + CSS + a small amount of vanilla JS, with GSAP, ScrollTrigger, Lenis, Lottie, and Barba pulled in as `<script>` tags. There is **no React, no build step for the site itself** — Vite is here purely as a dev server / static-asset bundler so we can preview locally on `:5173`.
+
+That's deliberate. The page is heavy on scroll animations, custom transitions, and a fake macOS dashboard mock — keeping it as static HTML lets us tune motion without rebuild loops.
+
+> If you're an agent: **read [`docs/MAKAN.md`](docs/MAKAN.md) before touching anything.** That file is the canonical brand + product + design reference. The legacy docs in `docs/_archive/` (older breakdowns, agent prompts, master doc) are kept for history but are superseded by `MAKAN.md`.
 
 ---
 
-## ✨ Introduction
+## Repo layout
 
-**Macbook Landing Page** is a high-end, **Apple-style 3D product website** built with cutting-edge web technologies like **React**, **GSAP**, **Three.js**, and **TailwindCSS**.
-
-It features:
-
-- **Immersive 3D visuals** powered by Three.js
-- **Scroll-triggered GSAP animations**
-- **Responsive, modern layout**
-- **Cinematic transitions and masking effects**
-
-The project is ideal for designers and developers aiming to build **interactive product showcases**, **tech landing pages**, or **portfolio experiences** with smooth animations and premium UI feel.
-
----
-
-## ⚙️ Tech Stack
-
-| Technology               | Purpose                                     |
-| ------------------------ | ------------------------------------------- |
-| **React.js**             | Component-based architecture for dynamic UI |
-| **GSAP + ScrollTrigger** | Smooth, scroll-driven animations            |
-| **Three.js**             | Realistic 3D rendering and lighting         |
-| **TailwindCSS**          | Utility-first responsive styling            |
-| **Zustand**              | Lightweight global state management         |
-| **Vite**                 | Fast build tool and dev server              |
-| **Hostinger**            | Hosting and deployment                      |
-| **CodeRabbit**           | AI-powered code review integration          |
-
----
-
-## 🔋 Features
-
-- 💎 **Apple-Style Product Animation** — Showcase products with cinematic motion and scroll-sync effects
-- ⚙️ **ScrollTrigger Timeline** — Multi-section animation synchronization powered by GSAP
-- 🧩 **3D Model Integration** — Interactive Three.js scenes with realistic lighting and depth
-- 🪄 **Image Masking & Reveal Effects** — Scroll-pinned masks for dynamic transitions
-- 🖥️ **Responsive Layout** — Fully optimized for desktop, tablet, and mobile screens
-- 🎨 **Customizable & Scalable** — Modular structure to add more sections or models easily
-- ⚡ **Optimized Performance** — Smooth frame rates even with heavy animations
-
----
-
-## 🤸 Quick Start
-
-### Prerequisites
-
-Ensure the following are installed:
-
-- [Node.js](https://nodejs.org/)
-- [Git](https://git-scm.com/)
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/Itssanthoshhere/Macbook-Landing-Page.git
-cd Macbook-Landing-Page
+```
+makan/
+├── README.md                          ← you are here
+├── CLAUDE.md                          ← short pointer for AI agents
+├── docs/
+│   ├── MAKAN.md                       ← THE canonical reference
+│   └── _archive/                      ← outdated, do not quote
+├── public/
+│   └── hybrid/
+│       ├── index.html                 ← THE landing page (hand-written)
+│       ├── dashboard-screenshot.html  ← static dashboard mock embedded in the hero
+│       └── assets/                    ← satellite imagery, brand logos, JS/CSS deps
+├── index.html                         ← root redirect → /hybrid/
+├── package.json                       ← Vite as dev server only
+└── vite.config.js
 ```
 
-````
+---
 
-### Install Dependencies
+## Run locally
 
 ```bash
 npm install
-```
-
-### Run the Development Server
-
-```bash
 npm run dev
 ```
-````
 
-Visit **[http://localhost:5173](http://localhost:5173)** to view the project locally.
+Vite serves on `http://localhost:5173/` and redirects to `/hybrid/`.
 
----
+For a production build (Vercel runs this):
 
-## 🧱 Project Structure
-
-| Folder/File        | Description                                        |
-| ------------------ | -------------------------------------------------- |
-| **src/components** | React components like Showcase, Navbar, Hero, etc. |
-| **src/constants**  | Data files for sections and assets                 |
-| **src/store**      | Zustand state management                           |
-| **public/**        | Static assets – videos, images, and 3D models      |
-| **vite.config.js** | Vite configuration for fast bundling               |
-| **index.css**      | Global styles with TailwindCSS directives          |
+```bash
+npm run build
+npm run preview
+```
 
 ---
 
-## 🧠 Architecture & Animations
+## Deploy
 
-The **animation architecture** is powered by **GSAP** timelines with `ScrollTrigger` integration.
-Key highlights:
-
-- **Section-based triggers** for pinned scenes
-- **Video + mask reveals** synchronized with scroll
-- **Responsive animation breakpoints** via `useMediaQuery`
-- **Optimized timeline flow** for performance
-
-Each visual section (like “Showcase”, “Hero”, or “Performance”) has its own **animation sequence** and is controlled declaratively via React hooks.
+Vercel, auto-deployed from `main`. The Vercel project name is `makan`, the production domain is `makan.llc`. Every push to `main` ships.
 
 ---
 
-## 🤝 Contribution
+## Brand discipline (the short version)
 
-Contributions are always welcome!
-To contribute:
+The full rules live in [`docs/MAKAN.md`](docs/MAKAN.md). The non-negotiables:
 
-1. Fork the repo
-2. Create a new branch
+- **Brand name:** *Makan* in prose. All-caps `MAKAN` only inside the logo wordmark.
+- **Tagline:** **Query the World.** With the period. With the capital W.
+- **Voice:** authoritative, precise, operational. Banned words: *leverage, unlock, cutting-edge, seamlessly, world-class, innovative, AI-powered insights, our platform empowers.*
+- **Color:** cyan retired, purple banned. Amber `#E8A838` (dark) / `#B87A10` (light) is **alerts only, never decorative.**
+- **Type:** IBM Plex Sans (English), IBM Plex Sans Arabic, IBM Plex Mono (data). Nothing else.
+- **Bilingual:** Arabic and English are co-equal. The site is RTL-ready.
+- **Compliance layer:** has an internal codename. **Never** use that codename in any public surface. Use *"the compliance layer"* / *"audit-ready output"* instead. Full rule in `docs/MAKAN.md` §7.
 
-   ```bash
-   git checkout -b feature/my-feature
-   ```
-
-3. Make changes and commit
-
-   ```bash
-   git commit -m "feat: add my feature"
-   ```
-
-4. Push your branch
-
-   ```bash
-   git push origin feature/my-feature
-   ```
-
-5. Create a Pull Request 🎉
+When a request conflicts with the brand, flag it — don't silently comply, don't silently refuse.
 
 ---
 
-## 🔗 Contacts
+## License
 
-- **GitHub:** [Itssanthoshhere](https://github.com/Itssanthoshhere)
-- **LinkedIn:** [Santhosh VS](https://www.linkedin.com/in/thesanthoshvs/)
-
----
-
-## 📄 License
-
-This project is for **educational and portfolio purposes only**.
-All rights to assets, logos, and trademarks belong to their respective owners.
-
----
-
-## 🙏 Acknowledgements
-
-- [JavaScript Mastery](https://www.youtube.com/@javascriptmastery) – for the tutorial reference
-- [React](https://react.dev/) – for the component-based UI
-- [GSAP](https://gsap.com/) – for scroll-driven motion
-- [Three.js](https://threejs.org/) – for 3D rendering
-- [TailwindCSS](https://tailwindcss.com/) – for utility styling
-
----
-
-#### ⭐ Show Your Support
-
-If you liked this project, **give it a ⭐ on GitHub** and share it with your network!
-
----
+Proprietary. © 2026 Makan. All rights reserved.
