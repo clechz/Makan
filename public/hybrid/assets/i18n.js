@@ -691,8 +691,14 @@
   }
 
   function render() {
+    // Set lang so CSS can swap to the Arabic font, but DO NOT flip dir.
+    // The original layout was designed for LTR; flipping the page direction
+    // breaks scroll-pin transforms, letter-spacing, the brand wordmark, the
+    // phone number, and the stats numerics. Browsers handle in-line bidi
+    // (mixed-direction text within a paragraph) automatically — we only
+    // need to swap the strings and keep the layout intact.
     document.documentElement.lang = currentLang;
-    document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+    document.documentElement.dir = "ltr";
 
     // text content
     const textNodes = document.querySelectorAll("[data-i18n]");

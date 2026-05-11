@@ -957,25 +957,9 @@ body {
   width: 7px; height: 7px; border-radius: 50%;
 }
 
-/* ─── i18n RTL adjustments ─── */
+/* ─── i18n: Arabic font when AR active (layout stays LTR) ─── */
 html[lang="ar"] body { font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans', sans-serif; }
-html[dir="rtl"] .topbar-left { border-right: none; border-left: 1px solid rgba(0,0,0,0.07); padding-right: 0; padding-left: 14px; }
-html[dir="rtl"] .topbar-right { border-left: none; border-right: 1px solid rgba(0,0,0,0.07); padding-left: 0; padding-right: 14px; }
-html[dir="rtl"] .panel-left { border-right: none; border-left: 1px solid rgba(0,0,0,0.07); }
-html[dir="rtl"] .panel-right { border-left: none; border-right: 1px solid rgba(0,0,0,0.07); }
-html[dir="rtl"] .rail { border-right: none; border-left: 1px solid rgba(0,0,0,0.07); }
-html[dir="rtl"] .rail-btn.active::before { left: auto; right: -10px; }
-/* Keep numeric/mono and coordinates LTR even in Arabic */
-html[dir="rtl"] .statusbar,
-html[dir="rtl"] .map-scrubber-cur,
-html[dir="rtl"] .map-scrubber-dates,
-html[dir="rtl"] .aoi-coords,
-html[dir="rtl"] .map-pulse-stat-val,
-html[dir="rtl"] [class*="mono"],
-html[dir="rtl"] [style*="IBM Plex Mono"] {
-  direction: ltr;
-  unicode-bidi: isolate;
-}
+html[lang="ar"] * { letter-spacing: 0 !important; }
 </style>
 </head>
 <body>

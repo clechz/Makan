@@ -1481,24 +1481,36 @@ window.addEventListener('load', function() {
   mask-image: linear-gradient(180deg, white 0%, white 75%, transparent 95%);
 }
 
-/* ─── i18n: Arabic font + RTL adjustments ───────────────────────── */
+/* ─── i18n: Arabic font when AR active (layout stays LTR) ──────── */
 html[lang="ar"],
-html[lang="ar"] body {
-  font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans', sans-serif;
+html[lang="ar"] body,
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] p,
+html[lang="ar"] span,
+html[lang="ar"] div,
+html[lang="ar"] button,
+html[lang="ar"] input,
+html[lang="ar"] textarea,
+html[lang="ar"] select,
+html[lang="ar"] a,
+html[lang="ar"] li {
+  font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans', sans-serif !important;
 }
-html[dir="rtl"] body { text-align: right; }
-/* Keep numeric data, coordinates, code, mono labels left-to-right even in RTL */
-html[dir="rtl"] .mono,
-html[dir="rtl"] code,
-html[dir="rtl"] [class*="mono"],
-html[dir="rtl"] [style*="IBM Plex Mono"] {
-  direction: ltr;
-  unicode-bidi: isolate;
+/* Keep IBM Plex Mono for code/monospace data even when AR active */
+html[lang="ar"] code,
+html[lang="ar"] [style*="IBM Plex Mono"],
+html[lang="ar"] [class*="mono"] {
+  font-family: 'IBM Plex Mono', monospace !important;
 }
-/* Flip the page menu icon-mirror affordances */
-html[dir="rtl"] .hero-s_bot_scroll { margin-left: 0 !important; margin-right: auto !important; text-align: left !important; }
-html[dir="rtl"] .a-right { text-align: left !important; }
-/* Language pill */
+/* Keep Arabic logo wordmark stylable from inline */
+html[lang="ar"] [class*="logo"] { font-family: inherit !important; }
+/* Arabic letters connect — letter-spacing breaks them. Reset for AR. */
+html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !important; }
+/* Language pill (top-right, always LTR position) */
 .mk-lang-pill {
   position: fixed;
   top: 18px;
@@ -1517,7 +1529,6 @@ html[dir="rtl"] .a-right { text-align: left !important; }
   font-size: 12px;
   color: rgba(255,255,255,0.7);
 }
-html[dir="rtl"] .mk-lang-pill { right: auto; left: 18px; }
 .mk-lang-pill [data-lang-set] {
   cursor: pointer;
   padding: 2px 8px;
