@@ -1511,11 +1511,13 @@ html[lang="ar"] [class*="logo"] { font-family: inherit !important; }
 /* Arabic letters connect — letter-spacing breaks them. Reset for AR. */
 html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !important; }
 /* Language pill — lives inside #hero, positioned absolutely so it
-   scrolls away with the hero (mirrors the SCROLL DOWN affordance). */
+   scrolls away with the hero (mirrors the SCROLL DOWN affordance).
+   Placed top-LEFT so it never sits directly above the SCROLL DOWN
+   indicator's little horizontal line (which is bottom-right). */
 #hero .mk-lang-pill {
   position: absolute;
   top: 24px;
-  right: 24px;
+  left: 24px;
   z-index: 12;
   display: inline-flex;
   align-items: center;
