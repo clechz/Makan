@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Makan Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title data-i18n="dashboard.meta.title">Makan Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -956,6 +956,26 @@ body {
 .agent-used-chip .dot {
   width: 7px; height: 7px; border-radius: 50%;
 }
+
+/* ─── i18n RTL adjustments ─── */
+html[lang="ar"] body { font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans', sans-serif; }
+html[dir="rtl"] .topbar-left { border-right: none; border-left: 1px solid rgba(0,0,0,0.07); padding-right: 0; padding-left: 14px; }
+html[dir="rtl"] .topbar-right { border-left: none; border-right: 1px solid rgba(0,0,0,0.07); padding-left: 0; padding-right: 14px; }
+html[dir="rtl"] .panel-left { border-right: none; border-left: 1px solid rgba(0,0,0,0.07); }
+html[dir="rtl"] .panel-right { border-left: none; border-right: 1px solid rgba(0,0,0,0.07); }
+html[dir="rtl"] .rail { border-right: none; border-left: 1px solid rgba(0,0,0,0.07); }
+html[dir="rtl"] .rail-btn.active::before { left: auto; right: -10px; }
+/* Keep numeric/mono and coordinates LTR even in Arabic */
+html[dir="rtl"] .statusbar,
+html[dir="rtl"] .map-scrubber-cur,
+html[dir="rtl"] .map-scrubber-dates,
+html[dir="rtl"] .aoi-coords,
+html[dir="rtl"] .map-pulse-stat-val,
+html[dir="rtl"] [class*="mono"],
+html[dir="rtl"] [style*="IBM Plex Mono"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
 </style>
 </head>
 <body>
@@ -964,27 +984,27 @@ body {
 <div class="topbar">
   <div class="topbar-left">
     <div class="topbar-logo">
-      <img src="./assets/logos/8.svg" alt="Makan" style="height:26px;width:26px;">
+      <img src="./assets/logos/8.svg" alt="Makan" data-i18n-alt="dashboard.logo.alt" style="height:26px;width:26px;">
       <span class="topbar-logo-text">Makan</span>
     </div>
     <div class="topbar-breadcrumb">
-      <span class="crumb-root">Places</span>
+      <span class="crumb-root" data-i18n="dashboard.breadcrumb.root">Places</span>
       <span class="crumb-sep">/</span>
-      <span class="crumb-cur">Riyadh · North Corridor</span>
+      <span class="crumb-cur" data-i18n="dashboard.breadcrumb.current">Riyadh · North Corridor</span>
     </div>
   </div>
 
   <div class="topbar-center"></div>
 
   <div class="topbar-right">
-    <button class="cmdk-btn" title="Command palette">
+    <button class="cmdk-btn" title="Command palette" data-i18n-title="dashboard.cmdk.title">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span class="cmdk-kbd">⌘K</span>
     </button>
     <div class="lang-pill">
-      <span class="lang-opt active">EN</span>
+      <span class="lang-opt active" data-lang-set="en">EN</span>
       <span class="lang-div">/</span>
-      <span class="lang-opt" style="font-family:'IBM Plex Sans Arabic',sans-serif;">ع</span>
+      <span class="lang-opt" data-lang-set="ar" style="font-family:'IBM Plex Sans Arabic',sans-serif;">ع</span>
     </div>
     <button class="topbar-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -1003,33 +1023,33 @@ body {
   <div class="rail">
     <div class="rail-group">
       <!-- Agent (chat) -->
-      <button class="rail-btn" title="Agent">
+      <button class="rail-btn" title="Agent" data-i18n-title="dashboard.rail.agent">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
       </button>
       <!-- Places -->
-      <button class="rail-btn" title="Places">
+      <button class="rail-btn" title="Places" data-i18n-title="dashboard.rail.places">
         <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
       </button>
       <!-- Layers (active) -->
-      <button class="rail-btn active" title="Layers">
+      <button class="rail-btn active" title="Layers" data-i18n-title="dashboard.rail.layers">
         <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
       </button>
       <!-- Discoveries -->
-      <button class="rail-btn" title="Discoveries">
+      <button class="rail-btn" title="Discoveries" data-i18n-title="dashboard.rail.discoveries">
         <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-7 7c0 3 2 5 3 7v3h8v-3c1-2 3-4 3-7a7 7 0 00-7-7z"/><line x1="9" y1="22" x2="15" y2="22"/></svg>
       </button>
       <!-- Shifts -->
-      <button class="rail-btn" title="Shifts">
+      <button class="rail-btn" title="Shifts" data-i18n-title="dashboard.rail.shifts">
         <svg viewBox="0 0 24 24"><polyline points="3 12 7 12 10 6 14 18 17 12 21 12"/></svg>
       </button>
       <!-- Alerts -->
-      <button class="rail-btn" title="Alerts">
+      <button class="rail-btn" title="Alerts" data-i18n-title="dashboard.rail.alerts">
         <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
       </button>
     </div>
     <div class="rail-group bottom">
       <!-- Settings -->
-      <button class="rail-btn" title="Settings">
+      <button class="rail-btn" title="Settings" data-i18n-title="dashboard.rail.settings">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
       </button>
     </div>
@@ -1039,70 +1059,70 @@ body {
   <div class="panel-left">
     <div class="panel-header">
       <div style="display:flex;align-items:center;">
-        <div class="panel-title">Layers</div>
+        <div class="panel-title" data-i18n="dashboard.panel.layers.title">Layers</div>
         <div class="panel-title-count">9</div>
       </div>
-      <div class="panel-action">+ Add</div>
+      <div class="panel-action" data-i18n="dashboard.panel.layers.add">+ Add</div>
     </div>
 
-    <div class="layer-group-label">Detected · Satellite</div>
+    <div class="layer-group-label" data-i18n="dashboard.panel.layers.group.satellite">Detected · Satellite</div>
 
     <div class="layer-item">
       <div class="toggle on"></div>
       <div class="layer-swatch" style="background:#E86A3C;"></div>
-      <div class="layer-name">Urban Density</div>
+      <div class="layer-name" data-i18n="dashboard.layer.urbanDensity">Urban Density</div>
     </div>
     <div class="layer-item">
       <div class="toggle on"></div>
       <div class="layer-swatch" style="background:#E8A838;"></div>
-      <div class="layer-name">Construction</div>
+      <div class="layer-name" data-i18n="dashboard.layer.construction">Construction</div>
     </div>
     <div class="layer-item">
       <div class="toggle"></div>
       <div class="layer-swatch" style="background:rgba(0,0,0,0.12);"></div>
-      <div class="layer-name off">Building Footprints</div>
+      <div class="layer-name off" data-i18n="dashboard.layer.buildingFootprints">Building Footprints</div>
     </div>
 
-    <div class="layer-group-label">Modeled · AI</div>
+    <div class="layer-group-label" data-i18n="dashboard.panel.layers.group.ai">Modeled · AI</div>
 
     <div class="layer-item">
       <div class="toggle on"></div>
       <div class="layer-swatch" style="background:#D94A4A;"></div>
-      <div class="layer-name">Disaster Risk</div>
+      <div class="layer-name" data-i18n="dashboard.layer.disasterRisk">Disaster Risk</div>
     </div>
     <div class="layer-item">
       <div class="toggle"></div>
       <div class="layer-swatch" style="background:rgba(0,0,0,0.12);"></div>
-      <div class="layer-name off">Wealth Distribution</div>
+      <div class="layer-name off" data-i18n="dashboard.layer.wealthDistribution">Wealth Distribution</div>
     </div>
 
-    <div class="layer-group-label">API · Third-party</div>
+    <div class="layer-group-label" data-i18n="dashboard.panel.layers.group.api">API · Third-party</div>
 
     <div class="layer-item">
       <div class="toggle on"></div>
       <div class="layer-swatch" style="background:#4A90D9;"></div>
-      <div class="layer-name">Traffic Density</div>
+      <div class="layer-name" data-i18n="dashboard.layer.trafficDensity">Traffic Density</div>
     </div>
     <div class="layer-item">
       <div class="toggle"></div>
       <div class="layer-swatch" style="background:rgba(0,0,0,0.12);"></div>
-      <div class="layer-name off">Transit Lines</div>
+      <div class="layer-name off" data-i18n="dashboard.layer.transitLines">Transit Lines</div>
     </div>
 
-    <div class="layer-group-label">Custom</div>
+    <div class="layer-group-label" data-i18n="dashboard.panel.layers.group.custom">Custom</div>
 
     <div class="layer-item">
       <div class="toggle"></div>
       <div class="layer-swatch" style="background:rgba(0,0,0,0.12);"></div>
-      <div class="layer-name off">Client Zones</div>
+      <div class="layer-name off" data-i18n="dashboard.layer.clientZones">Client Zones</div>
     </div>
 
     <!-- Active place at bottom -->
     <div class="aoi-section">
-      <div class="aoi-label">Active Place</div>
+      <div class="aoi-label" data-i18n="dashboard.aoi.label">Active Place</div>
       <div class="aoi-item">
         <div class="aoi-dot"></div>
-        <div class="aoi-name">North Corridor</div>
+        <div class="aoi-name" data-i18n="dashboard.aoi.name">North Corridor</div>
         <div class="aoi-coords">12.4 km²</div>
       </div>
     </div>
@@ -1110,7 +1130,7 @@ body {
 
   <!-- ── Center: Map ── -->
   <div class="map-area">
-    <img class="satellite" src="./assets/satellite-city.png" alt="Satellite imagery">
+    <img class="satellite" src="./assets/satellite-city.png" alt="Satellite imagery" data-i18n-alt="dashboard.map.satellite.alt">
 
     <!-- Heatmap -->
     <div class="heatmap-overlay"></div>
@@ -1148,13 +1168,13 @@ body {
 
     <!-- Detection markers -->
     <div class="map-marker" style="top:18%;left:55%;width:32px;height:28px;">
-      <div class="map-marker-label">NEW</div>
+      <div class="map-marker-label" data-i18n="dashboard.map.marker.new">NEW</div>
     </div>
     <div class="map-marker" style="top:25%;left:62%;width:26px;height:24px;"></div>
     <div class="map-marker" style="top:32%;left:54%;width:22px;height:20px;"></div>
     <div class="map-marker" style="top:15%;left:48%;width:24px;height:22px;"></div>
     <div class="map-marker" style="top:28%;left:58%;width:30px;height:26px;">
-      <div class="map-marker-label">~400 m²</div>
+      <div class="map-marker-label" data-i18n="dashboard.map.marker.size">~400 m²</div>
     </div>
 
     <!-- Zoom controls -->
@@ -1167,7 +1187,7 @@ body {
     <div class="map-pulse-card">
       <div class="map-pulse-header">
         <div class="map-pulse-icon"></div>
-        <div class="map-pulse-label">Shift · Live signal</div>
+        <div class="map-pulse-label" data-i18n="dashboard.map.pulseCard.label">Shift · Live signal</div>
       </div>
       <div class="map-pulse-body">
         <strong>3 new structures</strong> detected in North Corridor over the last 14 days. Combined footprint ~1,820 m². Matches commercial construction pattern.
@@ -1175,18 +1195,18 @@ body {
       <div class="map-pulse-stats">
         <div class="map-pulse-stat">
           <div class="map-pulse-stat-val">18</div>
-          <div class="map-pulse-stat-lbl">Signals · 7d</div>
+          <div class="map-pulse-stat-lbl" data-i18n="dashboard.map.pulseCard.stat.signals.lbl">Signals · 7d</div>
         </div>
         <div class="map-pulse-stat">
           <div class="map-pulse-stat-val">96%</div>
-          <div class="map-pulse-stat-lbl">Avg conf.</div>
+          <div class="map-pulse-stat-lbl" data-i18n="dashboard.map.pulseCard.stat.confidence.lbl">Avg conf.</div>
         </div>
         <div class="map-pulse-stat">
           <div class="map-pulse-stat-val">&lt;24h</div>
-          <div class="map-pulse-stat-lbl">Latency</div>
+          <div class="map-pulse-stat-lbl" data-i18n="dashboard.map.pulseCard.stat.latency.lbl">Latency</div>
         </div>
       </div>
-      <a class="map-pulse-action" href="#">View in Discoveries →</a>
+      <a class="map-pulse-action" href="#" data-i18n="dashboard.map.pulseCard.action">View in Discoveries →</a>
     </div>
 
     <!-- Timeline scrubber (bottom-center) -->
@@ -1195,7 +1215,7 @@ body {
         <button class="map-scrubber-play">
           <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </button>
-        <div class="map-scrubber-cur">Aug 2025</div>
+        <div class="map-scrubber-cur" data-i18n="dashboard.map.scrubber.current">Aug 2025</div>
         <div class="map-scrubber-track-wrap">
           <div class="map-scrubber-track">
             <div class="map-scrubber-fill"></div>
@@ -1206,15 +1226,15 @@ body {
           </div>
         </div>
       </div>
-      <div class="map-scrubber-dates"><span>Mar 2024</span><span>Sep 2025</span></div>
+      <div class="map-scrubber-dates"><span data-i18n="dashboard.map.scrubber.startDate">Mar 2024</span><span data-i18n="dashboard.map.scrubber.endDate">Sep 2025</span></div>
     </div>
   </div>
 
   <!-- ── Right: AI Agent ── -->
   <div class="panel-right">
     <div class="agent-header">
-      <div class="agent-title">AI Agent</div>
-      <div class="agent-status"><div class="agent-status-dot"></div> Active</div>
+      <div class="agent-title" data-i18n="dashboard.agent.title">AI Agent</div>
+      <div class="agent-status"><div class="agent-status-dot"></div> <span data-i18n="dashboard.agent.status">Active</span></div>
     </div>
 
     <div class="agent-thread">
@@ -1241,33 +1261,33 @@ body {
 
           <div class="agent-result-card">
             <div class="agent-result-header">
-              <div class="agent-result-title">Discoveries · Summary</div>
-              <div class="agent-result-count">18 found</div>
+              <div class="agent-result-title" data-i18n="dashboard.agent.result.title">Discoveries · Summary</div>
+              <div class="agent-result-count" data-i18n="dashboard.agent.result.count">18 found</div>
             </div>
             <div class="agent-result-row">
-              <span class="agent-result-key">Commercial</span>
+              <span class="agent-result-key" data-i18n="dashboard.agent.result.row.commercial">Commercial</span>
               <span class="agent-result-val">12</span>
             </div>
             <div class="agent-result-row">
-              <span class="agent-result-key">Residential</span>
+              <span class="agent-result-key" data-i18n="dashboard.agent.result.row.residential">Residential</span>
               <span class="agent-result-val">4</span>
             </div>
             <div class="agent-result-row">
-              <span class="agent-result-key">Mixed-use</span>
+              <span class="agent-result-key" data-i18n="dashboard.agent.result.row.mixedUse">Mixed-use</span>
               <span class="agent-result-val">2</span>
             </div>
             <div class="agent-result-row">
-              <span class="agent-result-key">Avg. confidence</span>
+              <span class="agent-result-key" data-i18n="dashboard.agent.result.row.avgConfidence">Avg. confidence</span>
               <span class="agent-result-val green">96.2%</span>
             </div>
             <div class="agent-result-row">
-              <span class="agent-result-key">Est. investment</span>
+              <span class="agent-result-key" data-i18n="dashboard.agent.result.row.estInvestment">Est. investment</span>
               <span class="agent-result-val amber">$2.4B</span>
             </div>
           </div>
 
           <div class="agent-used-layers">
-            <div class="agent-used-label">Layers used</div>
+            <div class="agent-used-label" data-i18n="dashboard.agent.layers.label">Layers used</div>
             <div class="agent-used-chip"><span class="dot" style="background:#E8A838;"></span>Construction</div>
             <div class="agent-used-chip"><span class="dot" style="background:#4A90D9;"></span>Traffic Density</div>
             <div class="agent-used-chip"><span class="dot" style="background:#E86A3C;"></span>Urban Density</div>
@@ -1284,17 +1304,17 @@ body {
 
     <!-- Collapsible sections -->
     <div class="agent-section">
-      <div class="agent-section-title">Discoveries</div>
+      <div class="agent-section-title" data-i18n="dashboard.agent.section.discoveries">Discoveries</div>
       <div class="agent-section-badge">18 new</div>
       <svg class="agent-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="agent-section">
-      <div class="agent-section-title">Shifts · last 7 days</div>
+      <div class="agent-section-title" data-i18n="dashboard.agent.section.shifts">Shifts · last 7 days</div>
       <div class="agent-section-badge">+42%</div>
       <svg class="agent-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="agent-section">
-      <div class="agent-section-title">Opportunity Score</div>
+      <div class="agent-section-title" data-i18n="dashboard.agent.section.opportunity">Opportunity Score</div>
       <div class="agent-section-badge">87/100</div>
       <svg class="agent-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
@@ -1302,7 +1322,7 @@ body {
     <!-- Input -->
     <div class="agent-input-wrap">
       <div class="agent-input">
-        <span>Ask the agent...</span>
+        <span data-i18n="dashboard.agent.input.placeholder">Ask the agent...</span>
         <button class="agent-input-send">
           <svg viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>
         </button>
@@ -1314,21 +1334,22 @@ body {
 
 <!-- ── Status bar ── -->
 <div class="statusbar">
-  <span><span class="statusbar-dot"></span>Connected</span>
+  <span><span class="statusbar-dot"></span><span data-i18n="dashboard.statusbar.connected">Connected</span></span>
   <span class="sep">·</span>
-  <span>Shifts active · 18 signals today</span>
+  <span data-i18n="dashboard.statusbar.shifts">Shifts active · 18 signals today</span>
   <span class="sep">·</span>
   <span>24.7136°N 46.6753°E</span>
   <span class="sep">·</span>
-  <span>zoom 14.2 · WGS84</span>
+  <span data-i18n="dashboard.statusbar.zoom">zoom 14.2 · WGS84</span>
   <span class="sep">·</span>
-  <span>4 layers on</span>
-  <span style="margin-left:auto;">API ok</span>
+  <span data-i18n="dashboard.statusbar.layersOn">4 layers on</span>
+  <span style="margin-left:auto;" data-i18n="dashboard.statusbar.apiOk">API ok</span>
   <span class="sep">·</span>
   <span>142ms</span>
   <span class="sep">·</span>
   <span>v0.8.2</span>
 </div>
 
+<script src="./assets/i18n.js"></script>
 </body>
 </html>
