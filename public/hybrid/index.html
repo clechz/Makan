@@ -1513,12 +1513,14 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 /* Language pill — lives inside #hero, positioned absolutely so it
    scrolls away with the hero (mirrors the SCROLL DOWN affordance).
    Placed top-LEFT so it never sits directly above the SCROLL DOWN
-   indicator's little horizontal line (which is bottom-right). */
+   indicator's little horizontal line (which is bottom-right).
+   z-index must beat the fixed page header (.header, z:99) so clicks
+   on the pill aren't intercepted. */
 #hero .mk-lang-pill {
   position: absolute;
   top: 24px;
   left: 24px;
-  z-index: 12;
+  z-index: 100;
   display: inline-flex;
   align-items: center;
   gap: 4px;
