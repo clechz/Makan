@@ -4523,16 +4523,19 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
   }
 
   /* ---- Mac dashboard window (with iframe) ----
-     The 6 fan-out cards (.mk-card) are already display:none on mobile.
-     Make sure the dashboard window itself fills the screen cleanly
-     and the parent wrapper doesn't have huge desktop padding. */
+     Hide the entire Mac-window dashboard hero on phones — the dashboard
+     mock doesn't scale gracefully below ~480px and reads as visual
+     clutter sandwiched between the hero and the feature grid. Phones
+     get the feature 5-card grid as the next beat after the hero
+     instead. The 6 fan-out cards (.mk-card) are already display:none
+     on mobile, so this just removes the iframe + Mac chrome. */
   #mk-dashboard-window {
-    /* Reduce the padding the parent imposes on mobile. */
-    margin: 0 !important;
+    display: none !important;
   }
-  /* The wrapper at "padding:20rem 0 10rem" on desktop is too tall on mobile. */
+  /* The wrapper at "padding:20rem 0 10rem" on desktop is too tall on mobile.
+     With the dashboard hidden it can collapse almost entirely. */
   div[style*="padding:20rem"] {
-    padding: 4rem 0 3rem !important;
+    padding: 0 !important;
   }
   /* Also the before/after wrapper at "padding:10rem 0". */
   div[style*="min-height:100vh;padding:10rem 0"] {
