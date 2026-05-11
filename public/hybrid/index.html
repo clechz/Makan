@@ -1961,22 +1961,22 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 
 <div style="text-align:center;">
 <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;letter-spacing:-0.02em;">300M</div>
-<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;">km²/day</div>
+<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;" data-i18n="stats.area.label">km²/day</div>
 </div>
 
 <div style="text-align:center;">
 <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;letter-spacing:-0.02em;">70M+</div>
-<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;">training chips</div>
+<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;" data-i18n="stats.training.label">training chips</div>
 </div>
 
 <div style="text-align:center;">
 <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;letter-spacing:-0.02em;">30+</div>
-<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;">fused layers</div>
+<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;" data-i18n="stats.layers.label">fused layers</div>
 </div>
 
 <div style="text-align:center;">
 <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;letter-spacing:-0.02em;">10cm/px</div>
-<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;">on demand</div>
+<div style="font-size:0.7rem;opacity:0.65;margin-top:0.5rem;color:#fff;letter-spacing:0.15em;text-transform:uppercase;" data-i18n="stats.resolution.label">on demand</div>
 </div>
 
 </div>
@@ -2554,7 +2554,7 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 
 <!-- Section title sits between the two sliders, collapsing the gap. -->
 <div class="cs-mid-title" aria-hidden="true">
-  <span>What we detect.</span>
+  <span data-i18n="applications.midTitle">What we detect.</span>
 </div>
 
 <div id="card-slider-bottom">
@@ -2571,7 +2571,9 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
     var root = document.getElementById('card-slider-top');
     if (!root || typeof gsap === 'undefined') return;
 
-    var SLIDES = [
+    /* i18n: pull copy from the i18n dictionary at build time, with fallback. */
+    var _t = function(k, fb){ return (window.__t && window.__t(k)) || fb; };
+    var _slideFallbacks = [
       { num: '01', label: 'Infrastructure', desc: 'Track construction progress week-over-week against the approved baseline.' },
       { num: '02', label: 'Encroachment', desc: 'Monitor corridors for unauthorized construction and land-use violations.' },
       { num: '03', label: 'Urban Intelligence', desc: 'Map transit-driven development density across station catchment areas.' },
@@ -2582,6 +2584,13 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
       { num: '08', label: 'Agriculture', desc: 'Crop health, irrigation activity, and groundwater extraction tracked per pass.' },
       { num: '09', label: 'Retail & Sites', desc: 'Parking turnover, foot traffic, and peak-hour patterns from satellite frames.' }
     ];
+    var SLIDES = _slideFallbacks.map(function(s){
+      return {
+        num: s.num,
+        label: _t('applications.' + s.num + '.label', s.label),
+        desc: _t('applications.' + s.num + '.desc', s.desc)
+      };
+    });
 
     var SLIDE_W = 200, SLIDE_H = 275;
     var SPACING = SLIDE_W + 30;
@@ -2601,12 +2610,15 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
       el.className = 'cs-slide';
       el.innerHTML = '<div class="cs-slide-inner">' +
         '<span class="cs-slide-num">' + s.num + '</span>' +
-        '<h3 class="cs-slide-label">' + s.label + '</h3>' +
-        '<p class="cs-slide-desc">' + s.desc + '</p>' +
+        '<h3 class="cs-slide-label" data-i18n="applications.' + s.num + '.label">' + s.label + '</h3>' +
+        '<p class="cs-slide-desc" data-i18n="applications.' + s.num + '.desc">' + s.desc + '</p>' +
         '</div>';
       root.appendChild(el);
       slideEls.push(el);
     });
+    /* After creating slides, kick the i18n swapper so any pre-existing AR lang
+       gets applied immediately (the slides were added after first render). */
+    if (window.MakanI18n) window.MakanI18n.setLang(window.MakanI18n.getLang());
 
     root.addEventListener('wheel', function(e){
       e.preventDefault();
@@ -2694,7 +2706,9 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
        top slider in the same order, so when the sliders sync the active
        text card on top matches the active image card on bottom. */
     var IMG_PARAMS = '?w=520&q=80&auto=format&fit=crop';
-    var SLIDES = [
+    /* i18n: pull labels + alts from dictionary; src + numbers untouched. */
+    var _t2 = function(k, fb){ return (window.__t && window.__t(k)) || fb; };
+    var _imgFallbacks = [
       { num: '01', label: 'Infrastructure',     alt: 'Construction site from above',
         src: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5' + IMG_PARAMS },
       { num: '02', label: 'Encroachment',       alt: 'Satellite-style view of pipeline corridor with new structures',
@@ -2714,6 +2728,14 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
       { num: '09', label: 'Retail & Sites',     alt: 'Parking lot from above',
         src: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492' + IMG_PARAMS }
     ];
+    var SLIDES = _imgFallbacks.map(function(s){
+      return {
+        num: s.num,
+        src: s.src,
+        label: _t2('applications.' + s.num + '.label', s.label),
+        alt: _t2('applications.images.' + s.num + '.alt', s.alt)
+      };
+    });
 
     var SLIDE_W = 200, SLIDE_H = 275;
     var SPACING = SLIDE_W + 30;
@@ -2732,14 +2754,15 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
       var el = document.createElement('div');
       el.className = 'cs-slide cs-slide-img';
       el.innerHTML =
-        '<img class="cs-slide-bg" src="' + s.src + '" alt="' + s.alt + '" loading="lazy" />' +
+        '<img class="cs-slide-bg" src="' + s.src + '" alt="' + s.alt + '" data-i18n-alt="applications.images.' + s.num + '.alt" loading="lazy" />' +
         '<div class="cs-slide-caption">' +
           '<div class="cs-slide-eyebrow">' + (s.num || '') + '</div>' +
-          '<div class="cs-slide-title">' + (s.label || '') + '</div>' +
+          '<div class="cs-slide-title" data-i18n="applications.' + s.num + '.label">' + (s.label || '') + '</div>' +
         '</div>';
       root.appendChild(el);
       slideEls.push(el);
     });
+    if (window.MakanI18n) window.MakanI18n.setLang(window.MakanI18n.getLang());
 
     root.addEventListener('wheel', function(e){
       e.preventDefault();
@@ -3054,9 +3077,9 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 
 <section id="mk-tiers" aria-label="Ways to use Makan">
   <div class="mk-tiers-inner">
-    <div class="mk-tiers-eyebrow">Ways to use Makan</div>
-    <h2 class="mk-tiers-title">Three ways in. Same index.</h2>
-    <p class="mk-tiers-sub">Run it through the dashboard. Plug it into your stack. Or deploy it inside your sovereign environment with a build tailored to your operation.</p>
+    <div class="mk-tiers-eyebrow" data-i18n="usecases.eyebrow">Ways to use Makan</div>
+    <h2 class="mk-tiers-title" data-i18n="usecases.title">Three ways in. Same index.</h2>
+    <p class="mk-tiers-sub" data-i18n="usecases.sub">Run it through the dashboard. Plug it into your stack. Or deploy it inside your sovereign environment with a build tailored to your operation.</p>
 
     <div class="mk-tiers-grid">
 
@@ -3067,21 +3090,21 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
           <div class="mk-tier-head-row">
             <span class="mk-tier-name">
               <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
-              Studio
+              <span data-i18n="usecases.studio.name">Studio</span>
             </span>
           </div>
-          <h3 class="mk-tier-headline">The dashboard your ops team lives in.</h3>
-          <a href="#book-demo" class="mk-tier-cta is-ghost">Open Studio</a>
+          <h3 class="mk-tier-headline" data-i18n="usecases.studio.headline">The dashboard your ops team lives in.</h3>
+          <a href="#book-demo" class="mk-tier-cta is-ghost" data-i18n="usecases.studio.cta">Open Studio</a>
         </div>
         <div class="mk-tier-body">
-          <p class="mk-tier-desc">For monitoring teams running daily intelligence on their AOI. Map, alerts, agent, exports — one screen.</p>
+          <p class="mk-tier-desc" data-i18n="usecases.studio.desc">For monitoring teams running daily intelligence on their AOI. Map, alerts, agent, exports — one screen.</p>
           <ul class="mk-tier-list">
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Live operations map with overlay layers</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plain-language agent built into the workspace</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Alerts feed with confidence + source citations</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Discoveries, shifts, change-detection over time</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Audit-ready exports — PDF, GeoJSON, CSV</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Role-based access for your team</li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.studio.feature.01">Live operations map with overlay layers</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.studio.feature.02">Plain-language agent built into the workspace</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.studio.feature.03">Alerts feed with confidence + source citations</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.studio.feature.04">Discoveries, shifts, change-detection over time</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.studio.feature.05">Audit-ready exports — PDF, GeoJSON, CSV</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.studio.feature.06">Role-based access for your team</span></li>
           </ul>
         </div>
       </div>
@@ -3093,22 +3116,22 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
           <div class="mk-tier-head-row">
             <span class="mk-tier-name">
               <svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 11l6-4M9 13l6 4"/></svg>
-              Connect
+              <span data-i18n="usecases.connect.name">Connect</span>
             </span>
-            <span class="mk-tier-badge">Agent-ready</span>
+            <span class="mk-tier-badge" data-i18n="usecases.connect.badge">Agent-ready</span>
           </div>
-          <h3 class="mk-tier-headline">Plug Makan into your agents and your stack.</h3>
-          <a href="#book-demo" class="mk-tier-cta is-ghost">Get a key</a>
+          <h3 class="mk-tier-headline" data-i18n="usecases.connect.headline">Plug Makan into your agents and your stack.</h3>
+          <a href="#book-demo" class="mk-tier-cta is-ghost" data-i18n="usecases.connect.cta">Get a key</a>
         </div>
         <div class="mk-tier-body">
-          <p class="mk-tier-desc">For developers, agentic systems, and applications that need to query the world programmatically. Tool-callable from any LLM.</p>
+          <p class="mk-tier-desc" data-i18n="usecases.connect.desc">For developers, agentic systems, and applications that need to query the world programmatically. Tool-callable from any LLM.</p>
           <ul class="mk-tier-list">
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tool-callable schemas — drop into any agent</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plain-language and structured queries</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Cited returns — events, sensors, hashes</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Webhooks → Slack, PagerDuty, your endpoint</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Scoped tokens with per-AOI access control</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Native bindings for OpenAI, Anthropic, MCP</li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.connect.feature.01">Tool-callable schemas — drop into any agent</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.connect.feature.02">Plain-language and structured queries</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.connect.feature.03">Cited returns — events, sensors, hashes</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.connect.feature.04">Webhooks → Slack, PagerDuty, your endpoint</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.connect.feature.05">Scoped tokens with per-AOI access control</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.connect.feature.06">Native bindings for OpenAI, Anthropic, MCP</span></li>
           </ul>
         </div>
       </div>
@@ -3120,21 +3143,21 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
           <div class="mk-tier-head-row">
             <span class="mk-tier-name">
               <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Custom
+              <span data-i18n="usecases.custom.name">Custom</span>
             </span>
           </div>
-          <h3 class="mk-tier-headline">A build inside your sovereign environment.</h3>
-          <a href="#book-demo" class="mk-tier-cta is-ghost">Talk to us</a>
+          <h3 class="mk-tier-headline" data-i18n="usecases.custom.headline">A build inside your sovereign environment.</h3>
+          <a href="#book-demo" class="mk-tier-cta is-ghost" data-i18n="usecases.custom.cta">Talk to us</a>
         </div>
         <div class="mk-tier-body">
-          <p class="mk-tier-desc">For governments, ministries, and strategic operators with sovereign data, custom pipelines, or bespoke integration requirements.</p>
+          <p class="mk-tier-desc" data-i18n="usecases.custom.desc">For governments, ministries, and strategic operators with sovereign data, custom pipelines, or bespoke integration requirements.</p>
           <ul class="mk-tier-list">
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Deploy in your cloud, on-prem, or air-gapped</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom imagery sources + ingestion pipelines</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Integration into your existing operations stack</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated success engineering + onboarding</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Regional data residency + compliance posture</li>
-            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Co-developed vertical models for your domain</li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.custom.feature.01">Deploy in your cloud, on-prem, or air-gapped</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.custom.feature.02">Custom imagery sources + ingestion pipelines</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.custom.feature.03">Integration into your existing operations stack</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.custom.feature.04">Dedicated success engineering + onboarding</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.custom.feature.05">Regional data residency + compliance posture</span></li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="usecases.custom.feature.06">Co-developed vertical models for your domain</span></li>
           </ul>
         </div>
       </div>
@@ -3246,7 +3269,7 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 
 <div id="makan-logo-scroll-section" style="padding:4rem 0;position:relative;z-index:3;">
 <div style="text-align:center;margin-bottom:2.5rem;">
-<div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);"font-size:1.8rem;font-weight:700;letter-spacing:0.12em;">makan integrations.</div>
+<div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);"font-size:1.8rem;font-weight:700;letter-spacing:0.12em;" data-i18n="integrations.title">makan integrations.</div>
 </div>
 <div style="overflow:hidden;width:100%;padding:1rem 0;position:relative;z-index:1;">
 <div style="display:flex;align-items:center;gap:2.5rem;width:max-content;animation:makan-logo-scroll 45s linear infinite !important;visibility:visible !important;opacity:1 !important;">
@@ -3669,51 +3692,51 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
       <img src="./assets/uc-mesh.png" alt="">
     </div>
     <div class="uc-spotlight-content">
-      <h2>Detect what others miss. Decide before it costs.</h2>
+      <h2 data-i18n="closing.spotlight.title">Detect what others miss. Decide before it costs.</h2>
     </div>
 
     <div class="uc-header">
       <div class="uc-header-content">
-        <div class="mk-eyebrow">Request access</div>
-        <h2>Book a demo</h2>
-        <p>Tell us about your operation. We'll get back within two business days with a tailored walkthrough.</p>
+        <div class="mk-eyebrow" data-i18n="waitlist.eyebrow">Request access</div>
+        <h2 data-i18n="waitlist.title">Book a demo</h2>
+        <p data-i18n="waitlist.intro">Tell us about your operation. We'll get back within two business days with a tailored walkthrough.</p>
         <form class="mk-waitlist" id="mk-waitlist-form" novalidate>
           <div class="mk-row">
             <label class="mk-field">
-              <span>Work email</span>
+              <span data-i18n="waitlist.field.email.label">Work email</span>
               <input type="email" name="email" autocomplete="email" required placeholder="name@company.com" />
             </label>
             <label class="mk-field">
-              <span>Full name</span>
+              <span data-i18n="waitlist.field.name.label">Full name</span>
               <input type="text" name="name" autocomplete="name" required placeholder="" />
             </label>
           </div>
           <div class="mk-row">
             <label class="mk-field">
-              <span>Company</span>
+              <span data-i18n="waitlist.field.company.label">Company</span>
               <input type="text" name="company" autocomplete="organization" required placeholder="" />
             </label>
             <label class="mk-field">
-              <span>Industry</span>
+              <span data-i18n="waitlist.field.industry.label">Industry</span>
               <select name="industry" required>
-                <option value="" disabled selected>Select…</option>
+                <option value="" disabled selected data-i18n="waitlist.field.industry.placeholder">Select…</option>
                 <option value="infrastructure">Infrastructure &amp; construction</option>
                 <option value="energy">Energy &amp; pipelines</option>
-                <option value="government">Government</option>
+                <option value="government" data-i18n="waitlist.field.industry.option.government">Government</option>
                 <option value="real-estate">Real estate &amp; urban development</option>
                 <option value="defense">Defense &amp; intelligence</option>
                 <option value="environmental">Environmental &amp; disaster</option>
-                <option value="other">Other</option>
+                <option value="other" data-i18n="waitlist.field.industry.option.other">Other</option>
               </select>
             </label>
           </div>
           <label class="mk-field mk-field-wide">
-            <span>What problem are you solving?</span>
-            <textarea name="problem" rows="3" placeholder="e.g. monitor 14,000 km of pipeline corridors for unauthorized construction"></textarea>
+            <span data-i18n="waitlist.field.problem.label">What problem are you solving?</span>
+            <textarea name="problem" rows="3" placeholder="e.g. monitor 14,000 km of pipeline corridors for unauthorized construction" data-i18n-placeholder="waitlist.field.problem.placeholder"></textarea>
           </label>
           <div class="mk-actions">
-            <button type="submit" class="mk-submit">Request a demo →</button>
-            <p class="mk-fineprint">No spam. We use your details only to schedule the demo.</p>
+            <button type="submit" class="mk-submit" data-i18n="waitlist.button.submit">Request a demo →</button>
+            <p class="mk-fineprint"><span data-i18n="waitlist.fineprint">No spam. We use your details only to schedule the demo.</span></p>
           </div>
           <div class="mk-success" role="status" aria-live="polite" hidden>
             <p><strong>Got it.</strong> We'll be in touch shortly at the email you provided.</p>
@@ -3723,12 +3746,12 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
     </div>
 
     <div class="uc-features">
-      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p>Infrastructure</p></div></div>
-      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p>Encroachment</p></div></div>
-      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p>Urban</p></div></div>
-      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p>Environmental</p></div></div>
-      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p>Pipeline</p></div></div>
-      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p>Flood &amp; Disaster</p></div></div>
+      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p data-i18n="closing.feature.infrastructure">Infrastructure</p></div></div>
+      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p data-i18n="closing.feature.encroachment">Encroachment</p></div></div>
+      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p data-i18n="closing.feature.urban">Urban</p></div></div>
+      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p data-i18n="closing.feature.environmental">Environmental</p></div></div>
+      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p data-i18n="closing.feature.pipeline">Pipeline</p></div></div>
+      <div class="uc-feature"><div class="uc-feature-bg"></div><div class="uc-feature-content"><p data-i18n="closing.feature.flooddisaster">Flood &amp; Disaster</p></div></div>
     </div>
 
     <div class="uc-search-bar" id="uc-pill-submit" role="button" tabindex="0" aria-label="Submit demo request">

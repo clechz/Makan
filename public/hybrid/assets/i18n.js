@@ -700,13 +700,26 @@
     document.documentElement.lang = currentLang;
     document.documentElement.dir = "ltr";
 
-    // text content
+    // text content — set dir on each element based on whether the text
+    // contains Arabic. Keeps periods, brand wordmarks (`makan.`), and Latin
+    // strings positioned correctly under our LTR-only page layout.
+    const ARABIC_RE = /[؀-ۿݐ-ݿ]/;
     const textNodes = document.querySelectorAll("[data-i18n]");
     for (let i = 0; i < textNodes.length; i++) {
       const el = textNodes[i];
       const key = el.getAttribute("data-i18n");
       const v = t(key);
-      if (v) el.textContent = v;
+      if (v) {
+        el.textContent = v;
+        // If the swapped value contains Arabic, force this element to RTL
+        // so punctuation (the period in "اسأل العالم.") stays at the right
+        // edge of the visible glyph run.
+        if (ARABIC_RE.test(v)) {
+          el.setAttribute("dir", "rtl");
+        } else {
+          el.removeAttribute("dir");
+        }
+      }
     }
 
     // innerHTML (rich text) — only on elements explicitly opted in
