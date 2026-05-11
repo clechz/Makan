@@ -2482,17 +2482,7 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
   color: #FFFFFF;
   line-height: 1.1;
 }
-.cs-mid-title span::before {
-  /* Small monospace eyebrow above the heading — Makan voice. */
-  content: 'SECTION 03';
-  display: block;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.32em;
-  color: rgba(255, 255, 255, 0.45);
-  margin-bottom: 0.7rem;
-}
+/* "SECTION 03" eyebrow was removed — added no value. */
 
 /* ========== Image-only slides on the bottom slider ========== */
 #card-slider-bottom .cs-slide.cs-slide-img {
@@ -3383,6 +3373,13 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
   height: 100vh;
   overflow: hidden;
   background-color: #000000;
+  /* Bottom breathing room so the floating .cta "Book a Demo" pill (which is
+     position:fixed at bottom:0, ~80px tall) doesn't sit on top of the form's
+     submit button. Extra room on mobile where the pill consumes more height. */
+  padding-bottom: 120px;
+}
+@media (max-width: 720px) {
+  #use-cases-dark .uc-spotlight { padding-bottom: 160px; }
 }
 #use-cases-dark .uc-spotlight-content {
   position: absolute;
