@@ -48,6 +48,7 @@
       "nav.platform": "Platform",
       "nav.process": "Process",
       "nav.contact": "Contact",
+      "header.logo.wordmark": "makan.",
 
       // ─ hero ─
       "hero.title": "Query the World.",
@@ -361,6 +362,7 @@
       "nav.platform": "المنصة",
       "nav.process": "كيف نعمل",
       "nav.contact": "تواصل معنا",
+      "header.logo.wordmark": "مكان.",
 
       // ─ hero ─
       "hero.title": "اسأل العالم.",
