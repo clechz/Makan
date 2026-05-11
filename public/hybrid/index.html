@@ -1510,12 +1510,13 @@ html[lang="ar"] [class*="mono"] {
 html[lang="ar"] [class*="logo"] { font-family: inherit !important; }
 /* Arabic letters connect — letter-spacing breaks them. Reset for AR. */
 html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !important; }
-/* Language pill (top-right, always LTR position) */
-.mk-lang-pill {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 200;
+/* Language pill — lives inside #hero, positioned absolutely so it
+   scrolls away with the hero (mirrors the SCROLL DOWN affordance). */
+#hero .mk-lang-pill {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 12;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -1548,12 +1549,9 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 </style>
 
 </head><body class="body" style="" cz-shortcut-listen="true" data-new-gr-c-s-check-loaded="14.1281.0" data-gr-ext-installed="">
-<!-- ───── Language switcher (i18n) ───── -->
-<div class="mk-lang-pill" role="group" aria-label="Language">
-  <span data-lang-set="en" class="active">EN</span>
-  <span class="mk-lang-sep">/</span>
-  <span data-lang-set="ar" class="ar-glyph">ع</span>
-</div>
+<!-- Language switcher (i18n) is now placed inside the hero, mirroring the
+     SCROLL DOWN element so it scrolls away with the page rather than
+     sticking to the viewport. See injection below the hero h1 markup. -->
 <!-- ===== Page-load splash: black overlay (z:98 below header z:99). Logo briefly hidden on first paint, then fades in once GSAP has placed it (so it's visible during the splash). ~3.5s hold. ===== -->
 <style>
   body.mk-splash-pre-show .link-logo { opacity: 0 !important; }
@@ -1620,7 +1618,7 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 <path d="M2 7.33496H14V8.66829H2V7.33496Z" fill="currentColor"></path>
 </svg></div><div data-wab-menu-ico-3="mobile" class="ico-20 is-2 embed"><svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M2 12.001H14V13.3343H2V12.001Z" fill="currentColor"></path>
-</svg></div></div><div class="btn-menu_bg"></div></a></div></div></div><div class="unit-24"></div></div></div></div><div data-wab-bg="color" class="intro_scroll-area"><section id="hero" class="section clip"><div id="main-content"></div><div class="container"><div class="hero_scroll-area"><div class="hero-w"><div class="hero-s" style="translate: none; rotate: none; scale: none; transform: scale(1, 1);"><div class="unit-156"></div><div class="grid fill"><div data-wab-hero-left="" id="w-node-_56a9c997-003c-f73c-85f6-4b080b85aa36-9b251e8a" class="hero-s_title-l"><h1 class="h2 text-light" style="opacity:1" data-i18n="hero.title">Query the World.</h1></div><div data-wab-hero-right="" id="w-node-b5bc0e69-6d9b-6b76-42c5-655f89025957-9b251e8a" class="hero-s_title-r"><h2 class="h2 a-right text-light" style="opacity:0 !important;display:none"></h2></div></div><div class="unit-216"></div><div class="hero-s_bot b-desktop"><div class="grid"><div data-wab-hero-left="" id="w-node-fca5a1c1-2abc-b0f2-d9a4-068c5d568a3f-9b251e8a" class="hero-s_bot_desc f-desktop"><h3 id="wab-hero-tagline" class="h3 text-light" style="margin-bottom: 1rem; visibility: visible;" data-i18n="hero.tagline">We observe the surface and tell you what to do about it.</h3><div class="grid _6-columns"><div id="w-node-_48cf72cc-74cf-d039-2207-aa612fc8b12d-9b251e8a" class="hero-s_bot_desc_title" style="display:none"></div></div><div data-wab-flicker="true" data-div-reveal="true" class="line-divider-w" style="visibility: visible;"><div class="unit-24"></div><div class="line-divider on-color" style="display:none !important;"></div><div class="unit-24"></div></div><div class="grid _6-columns"><div id="w-node-_5c05abfb-41cf-d7d3-44c6-33625de3235a-9b251e8a" class="hero-s_bot_desc_w"><p data-wab-flicker="true" data-line-reveal="true" class="p7 text-light" style="font-style: normal; opacity: 1; visibility: visible; font-size: 1.2rem; line-height: 1.6; white-space: nowrap;"><span data-i18n="hero.subtitle.prefix">Intelligence built to understand</span> &nbsp;&nbsp;<span id="makan-rotate" class="makan-rotate-word" data-i18n="hero.rotate.02">the natural world.</span></p></div></div></div><div data-wab-hero-right="" data-div-reveal="true" data-wab-flicker="true" id="w-node-_59b46cf7-c31e-7125-08a4-0e9e21a4ddb4-9b251e8a" class="hero-s_bot_scroll" style="text-align: right; margin-left: auto; visibility: visible;"><div class="line-h on-color"></div><div class="unit-24"></div><div class="hero-s_bot_scroll_cont"><div class="hero-s_bot_scroll_cont_item"><div class="ico_scroll_c"><div class="wab-scroll-icon">
+</svg></div></div><div class="btn-menu_bg"></div></a></div></div></div><div class="unit-24"></div></div></div></div><div data-wab-bg="color" class="intro_scroll-area"><section id="hero" class="section clip"><div id="main-content"></div><!-- Language switcher: lives inside the hero so it scrolls away with the hero (mirrors SCROLL DOWN behavior). Top-right corner, scoped inside #hero. --><div class="mk-lang-pill" role="group" aria-label="Language"><span data-lang-set="en" class="active">EN</span><span class="mk-lang-sep">/</span><span data-lang-set="ar" class="ar-glyph">ع</span></div><div class="container"><div class="hero_scroll-area"><div class="hero-w"><div class="hero-s" style="translate: none; rotate: none; scale: none; transform: scale(1, 1);"><div class="unit-156"></div><div class="grid fill"><div data-wab-hero-left="" id="w-node-_56a9c997-003c-f73c-85f6-4b080b85aa36-9b251e8a" class="hero-s_title-l"><h1 class="h2 text-light" style="opacity:1" data-i18n="hero.title">Query the World.</h1></div><div data-wab-hero-right="" id="w-node-b5bc0e69-6d9b-6b76-42c5-655f89025957-9b251e8a" class="hero-s_title-r"><h2 class="h2 a-right text-light" style="opacity:0 !important;display:none"></h2></div></div><div class="unit-216"></div><div class="hero-s_bot b-desktop"><div class="grid"><div data-wab-hero-left="" id="w-node-fca5a1c1-2abc-b0f2-d9a4-068c5d568a3f-9b251e8a" class="hero-s_bot_desc f-desktop"><h3 id="wab-hero-tagline" class="h3 text-light" style="margin-bottom: 1rem; visibility: visible;" data-i18n="hero.tagline">We observe the surface and tell you what to do about it.</h3><div class="grid _6-columns"><div id="w-node-_48cf72cc-74cf-d039-2207-aa612fc8b12d-9b251e8a" class="hero-s_bot_desc_title" style="display:none"></div></div><div data-wab-flicker="true" data-div-reveal="true" class="line-divider-w" style="visibility: visible;"><div class="unit-24"></div><div class="line-divider on-color" style="display:none !important;"></div><div class="unit-24"></div></div><div class="grid _6-columns"><div id="w-node-_5c05abfb-41cf-d7d3-44c6-33625de3235a-9b251e8a" class="hero-s_bot_desc_w"><p data-wab-flicker="true" data-line-reveal="true" class="p7 text-light" style="font-style: normal; opacity: 1; visibility: visible; font-size: 1.2rem; line-height: 1.6; white-space: nowrap;"><span data-i18n="hero.subtitle.prefix">Intelligence built to understand</span> &nbsp;&nbsp;<span id="makan-rotate" class="makan-rotate-word" data-i18n="hero.rotate.02">the natural world.</span></p></div></div></div><div data-wab-hero-right="" data-div-reveal="true" data-wab-flicker="true" id="w-node-_59b46cf7-c31e-7125-08a4-0e9e21a4ddb4-9b251e8a" class="hero-s_bot_scroll" style="text-align: right; margin-left: auto; visibility: visible;"><div class="line-h on-color"></div><div class="unit-24"></div><div class="hero-s_bot_scroll_cont"><div class="hero-s_bot_scroll_cont_item"><div class="ico_scroll_c"><div class="wab-scroll-icon">
 <svg width="28" height="44" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="1" y="1" width="26" height="42" rx="13" stroke="currentColor" stroke-width="1.5" opacity="0.5"></rect>
 <circle class="wab-scroll-dot" cx="14" cy="12" r="3" fill="currentColor"></circle>
