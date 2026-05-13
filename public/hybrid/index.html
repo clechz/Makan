@@ -82,17 +82,14 @@ section.section:not(#hero) {
 .sky-bg_about,
 body .sky-bg_about,
 .sky-bg > .sky-bg_about {
-  /* Extended height to cover stats + before/after + logos + dark
-     sky transition, all in one container. No margin-top pull —
-     the container starts right after the hero, and the ORIGINAL
-     <img> is shown (not hidden) so the cloud texture renders at
-     its natural position and aspect, exactly as the wearebrand
-     template intended. We just override the height. */
-  /* 5600px = original 4200 + 2 × ~700px for the two 100vh spacers
-     added before Before/After and after logos. Two stacked sky
-     images at flex:1 each get ~2800px — close to original 3×100vh. */
-  height: 5600px !important;
-  min-height: 5600px !important;
+  /* Extended height: was 5600px (3 stacked sky images) which left bald
+     spots at wider viewports — body's solid sky-blue showed through
+     between the bottom of the sky image stack and the next dark
+     section. Bumped to 8400px with 5 stacked sky images so the dark-
+     sky portion now extends comfortably past every content section
+     even at large viewports. */
+  height: 8400px !important;
+  min-height: 8400px !important;
   margin-top: -10px !important;
 }
 /* ORIGINAL WEAREBRAND BEHAVIOR: let the <img> elements render
@@ -1510,6 +1507,31 @@ html[lang="ar"] [class*="mono"] {
 html[lang="ar"] [class*="logo"] { font-family: inherit !important; }
 /* Arabic letters connect — letter-spacing breaks them. Reset for AR. */
 html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !important; }
+
+/* Hero in AR: make the headline + tagline area span the full row width
+   and center its contents. By default they sit in the LEFT grid column
+   only (designed for English where the title hugs the left); in Arabic
+   we want the headline visually centered on the page. */
+html[lang="ar"] #hero .hero-s_title-l {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+html[lang="ar"] #hero .hero-s_title-l h1 {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+html[lang="ar"] #hero .hero-s_bot_desc {
+  grid-column: 1 / -1 !important;
+  text-align: center !important;
+}
+html[lang="ar"] #hero .hero-s_bot_desc h3,
+html[lang="ar"] #hero .hero-s_bot_desc p {
+  text-align: center !important;
+}
+/* Keep SCROLL DOWN right-aligned (it's a discrete affordance) */
+html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 /* Language pill — lives inside #hero, positioned absolutely so it
    scrolls away with the hero (mirrors the SCROLL DOWN affordance).
    Placed top-LEFT so it never sits directly above the SCROLL DOWN
@@ -3719,12 +3741,12 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
               <span data-i18n="waitlist.field.industry.label">Industry</span>
               <select name="industry" required>
                 <option value="" disabled selected data-i18n="waitlist.field.industry.placeholder">Select…</option>
-                <option value="infrastructure">Infrastructure &amp; construction</option>
-                <option value="energy">Energy &amp; pipelines</option>
+                <option value="infrastructure" data-i18n="waitlist.field.industry.option.infrastructure">Infrastructure &amp; construction</option>
+                <option value="energy" data-i18n="waitlist.field.industry.option.energy">Energy &amp; pipelines</option>
                 <option value="government" data-i18n="waitlist.field.industry.option.government">Government</option>
-                <option value="real-estate">Real estate &amp; urban development</option>
-                <option value="defense">Defense &amp; intelligence</option>
-                <option value="environmental">Environmental &amp; disaster</option>
+                <option value="real-estate" data-i18n="waitlist.field.industry.option.realEstate">Real estate &amp; urban development</option>
+                <option value="defense" data-i18n="waitlist.field.industry.option.defense">Defense &amp; intelligence</option>
+                <option value="environmental" data-i18n="waitlist.field.industry.option.environmental">Environmental &amp; disaster</option>
                 <option value="other" data-i18n="waitlist.field.industry.option.other">Other</option>
               </select>
             </label>
@@ -3883,25 +3905,30 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
        drift when the card scrolls internally or the viewport changes. */
     function computePillFinalTy(){
       var vh = window.innerHeight;
-      var GAP = 18;  // px between card bottom and pill top
       var spotRect = spotlightEl ? spotlightEl.getBoundingClientRect() : null;
       var cardRect = headerContentEl ? headerContentEl.getBoundingClientRect() : null;
 
       // Spotlight center Y in viewport coords (where translate Y=0 lands the pill center).
       var spotCenterY = spotRect ? (spotRect.top + spotRect.height / 2) : (vh / 2);
 
-      var pillCenterY;
-      if (cardRect && cardRect.height > 0) {
-        // Pill center sits GAP + pillHeightPx/2 below the card's actual bottom.
-        pillCenterY = cardRect.bottom + GAP + pillHeightPx / 2;
-      } else {
-        // Fallback: anchor to viewport bottom with a small margin.
-        pillCenterY = vh - 24 - pillHeightPx / 2;
+      /* Place the pill at a CONSISTENT vertical position across all
+         viewport sizes: aim for 88% of viewport height (so it sits in
+         the lower-quarter band, well below the form card on tall screens
+         and well above the bottom edge on short screens). This replaces
+         the old "card-bottom + 18px" logic which drifted because the
+         card's bottom changes with scroll-pin behavior. */
+      var TARGET_FRACTION = 0.88;
+      var pillCenterY = vh * TARGET_FRACTION;
+
+      // If the form card actually extends past the target, push the pill
+      // down so it never sits ON TOP of the card content. 24px breathing.
+      if (cardRect && cardRect.bottom > pillCenterY - pillHeightPx / 2 - 24) {
+        pillCenterY = cardRect.bottom + 24 + pillHeightPx / 2;
       }
 
       // Clamp to viewport so we never push the pill off-screen.
       var minCenter = pillHeightPx / 2 + 8;
-      var maxCenter = vh - pillHeightPx / 2 - 8;
+      var maxCenter = vh - pillHeightPx / 2 - 12;
       pillCenterY = Math.max(minCenter, Math.min(maxCenter, pillCenterY));
 
       // Convert viewport Y -> translate Y (relative to spotlight center, % of pill height).
@@ -4128,6 +4155,8 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
       <img alt="" role="presentation" loading="eager" src="./assets/sky-about.avif" class="img fill _75-percent">
       <img alt="" role="presentation" loading="eager" src="./assets/sky-about.avif" class="img fill _75-percent">
       <img alt="" role="presentation" loading="eager" src="./assets/sky-about.avif" class="img fill _75-percent">
+      <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
+      <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
     </div>
     <div class="sky-bg_about_grad-over"></div>
   </div>
@@ -4405,24 +4434,43 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
 })();
 </script>
 
-<!-- Agent card typing animation -->
+<!-- Agent card typing animation — prompts come from the i18n dictionary
+     so the typewriter cycles through AR phrases when AR is active. -->
 <script>
 (function(){
-  var prompts = [
+  var keys = [
+    'agentDemo.prompt.01','agentDemo.prompt.02','agentDemo.prompt.03',
+    'agentDemo.prompt.04','agentDemo.prompt.05'
+  ];
+  var fallbacks = [
     'Flag new construction within 2km of pipeline...',
     'Compare vegetation loss Q1 vs Q2 in AOI-4...',
     'Show all unauthorized structures near coast...',
     'Monitor traffic density change in Zone B...',
     'Detect solar farm expansion in Tabuk region...'
   ];
+  function getPrompt(i){
+    if (window.__t) { var v = window.__t(keys[i]); if (v) return v; }
+    return fallbacks[i];
+  }
   var el = document.getElementById('mk-typing-text');
   if(!el) return;
+  /* Apply dir per text so Arabic strings render right-to-left as a
+     run within the LTR card. */
+  function applyDir(text){
+    if (/[؀-ۿ]/.test(text)) el.setAttribute('dir','rtl');
+    else el.removeAttribute('dir');
+  }
   var pi = 0, ci = 0, deleting = false;
+  /* On lang change, reset the typewriter to start of the current prompt. */
+  document.addEventListener('makan:lang-changed', function(){ ci = 0; deleting = false; });
   function tick(){
-    var prompt = prompts[pi];
+    var prompt = getPrompt(pi);
     if(!deleting){
       ci++;
-      el.textContent = prompt.substring(0, ci);
+      var sub = prompt.substring(0, ci);
+      el.textContent = sub;
+      applyDir(sub);
       if(ci >= prompt.length){
         setTimeout(function(){ deleting = true; tick(); }, 2000);
         return;
@@ -4430,10 +4478,12 @@ html[lang="ar"] * { letter-spacing: 0 !important; word-spacing: normal !importan
       setTimeout(tick, 40 + Math.random() * 40);
     } else {
       ci--;
-      el.textContent = prompt.substring(0, ci);
+      var sub2 = prompt.substring(0, ci);
+      el.textContent = sub2;
+      applyDir(sub2);
       if(ci <= 0){
         deleting = false;
-        pi = (pi + 1) % prompts.length;
+        pi = (pi + 1) % keys.length;
         setTimeout(tick, 400);
         return;
       }

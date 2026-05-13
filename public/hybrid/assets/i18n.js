@@ -823,4 +823,87 @@
   } else {
     render();
   }
+
+  /* The wearebrand animation framework runs wabSplit() AFTER our first
+     render — it wraps each character of every tagged text element in
+     <span class="char">. For Arabic this destroys the joining forms
+     (each letter rendered as an isolated glyph: ك ت ا ب instead of كتاب).
+
+     Solution: a MutationObserver that watches every [data-i18n] element
+     for the moment .char spans get inserted, and immediately re-renders
+     (which does `el.textContent = v`, blowing away the spans). The
+     animation visual is sacrificed for AR — the words just appear,
+     which is honestly fine — but the script is preserved. */
+  function unwrapCharSpansIfArabic(el) {
+    if (currentLang !== "ar") return;
+    if (!el.querySelector || !el.querySelector(".char")) return;
+    const key = el.getAttribute("data-i18n");
+    if (!key) return;
+    const v = t(key);
+    if (v) el.textContent = v;
+  }
+
+  function installObservers() {
+    if (typeof MutationObserver === "undefined") return;
+    const targets = document.querySelectorAll("[data-i18n]");
+    const obs = new MutationObserver(function (mutations) {
+      if (currentLang !== "ar") return;
+      for (let i = 0; i < mutations.length; i++) {
+        const m = mutations[i];
+        if (m.type !== "childList") continue;
+        for (let j = 0; j < m.addedNodes.length; j++) {
+          const n = m.addedNodes[j];
+          if (n && n.classList && (n.classList.contains("char") || n.classList.contains("word"))) {
+            unwrapCharSpansIfArabic(m.target);
+            break;
+          }
+        }
+      }
+    });
+    targets.forEach(function (t) {
+      obs.observe(t, { childList: true, subtree: true });
+    });
+  }
+
+  /* Sweep: walk every tagged element, if it has .char spans inside,
+     wipe and reset textContent. Cheap, idempotent. */
+  function rerenderIfArabic() {
+    if (currentLang !== "ar") return;
+    document.querySelectorAll("[data-i18n]").forEach(unwrapCharSpansIfArabic);
+  }
+
+  /* Run sweep on a tight interval for the first 30 seconds. wabSplit
+     can fire on font-load, preloader-end, ScrollTrigger.refresh, and
+     scroll-pin re-init — we don't know when. Periodic sweep is the
+     simplest robust answer. After 30s the page is settled. */
+  let sweepCount = 0;
+  const SWEEP_MAX = 150; // 150 × 200ms = 30s
+  function sweepLoop() {
+    rerenderIfArabic();
+    sweepCount++;
+    if (sweepCount < SWEEP_MAX) setTimeout(sweepLoop, 200);
+  }
+  sweepLoop();
+
+  window.addEventListener("load", function () {
+    rerenderIfArabic();
+    installObservers();
+  });
+  /* If load already fired, install observers now. */
+  if (document.readyState === "complete") installObservers();
+  function hookST() {
+    if (typeof window.ScrollTrigger !== "undefined" && window.ScrollTrigger.addEventListener) {
+      window.ScrollTrigger.addEventListener("refresh", rerenderIfArabic);
+    } else {
+      setTimeout(hookST, 200);
+    }
+  }
+  hookST();
+
+  /* Also restart the sweep on language change (so toggling to AR after
+     load gets the same protection). */
+  document.addEventListener("makan:lang-changed", function () {
+    sweepCount = 0;
+    sweepLoop();
+  });
 })();
