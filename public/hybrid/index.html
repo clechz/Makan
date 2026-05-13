@@ -54,6 +54,25 @@ body, body.body {
 }
 .sky-bg_hero .img-w .img {
   display: block !important;
+  /* Soft bottom-fade on the earth-hero image so it dissolves into the
+     sky-about stack below instead of cutting off hard. Bottom ~25%
+     fades from full opacity to transparent. */
+  -webkit-mask-image: linear-gradient(180deg,
+    #000 0%,
+    #000 65%,
+    rgba(0,0,0,0.85) 75%,
+    rgba(0,0,0,0.5) 85%,
+    rgba(0,0,0,0.15) 95%,
+    transparent 100%
+  ) !important;
+  mask-image: linear-gradient(180deg,
+    #000 0%,
+    #000 65%,
+    rgba(0,0,0,0.85) 75%,
+    rgba(0,0,0,0.5) 85%,
+    rgba(0,0,0,0.15) 95%,
+    transparent 100%
+  ) !important;
 }
 
 /* Pull the about text up so it sits higher (closer to the
