@@ -145,27 +145,30 @@ body .sky-bg_about,
   -webkit-mask-image: none !important;
   mask-image: none !important;
 }
-/* First image: switch to object-fit: cover + position bottom
-   so the cloud-rich portion of the image (bottom half) appears
-   at the top of the slot. The original image has ~30% clear
-   blue at the top before clouds — this crops that out so clouds
-   are visible right away at the hero→sky transition. */
-.sky-bg_about > .img-w > .img:first-child {
-  object-fit: cover !important;
-  object-position: center 85% !important;
-}
-/* Pull images 2 and 3 up so they overlap the clear-blue
-   bottom zone of the previous image. This closes the
-   "bald spot" between copies where there are no clouds. */
-/* Overlap every stacked image (2 through 5) by 1200px so the pale-blue
-   top portion of each image hides behind the cloud-rich bottom of the
-   previous image. Without this overlap, a band of cloudless sky shows
-   at every seam between stacked images. */
+/* Crop EVERY stacked image to its cloud-rich zone (bottom 70% of the
+   natural image) using object-fit:cover + object-position:center 85%.
+   This eliminates the pale-blue cloudless band at the top of each
+   image so any visible seam between stacked images still shows clouds,
+   not bald sky. Previously only the first image had this — slots 2+
+   were object-fit:fill which stretched the whole image including its
+   pale top, producing the visible bald gaps. */
+.sky-bg_about > .img-w > .img,
+.sky-bg_about > .img-w > .img:first-child,
 .sky-bg_about > .img-w > .img:nth-child(2),
 .sky-bg_about > .img-w > .img:nth-child(3),
 .sky-bg_about > .img-w > .img:nth-child(4),
 .sky-bg_about > .img-w > .img:nth-child(5) {
-  margin-top: -1200px !important;
+  object-fit: cover !important;
+  object-position: center 85% !important;
+}
+/* Overlap every stacked image (2 through 5) by 1500px so the slight
+   transition zone at the top of each cropped image hides behind the
+   previous image's cloud-dense bottom. */
+.sky-bg_about > .img-w > .img:nth-child(2),
+.sky-bg_about > .img-w > .img:nth-child(3),
+.sky-bg_about > .img-w > .img:nth-child(4),
+.sky-bg_about > .img-w > .img:nth-child(5) {
+  margin-top: -1500px !important;
 }
 /* Gradient overlay: restore original wearebrand inset (top: 100vh)
    so the first viewport of clouds has NO overlay (vivid, dense).
