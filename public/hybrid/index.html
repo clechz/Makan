@@ -157,8 +157,14 @@ body .sky-bg_about,
 /* Pull images 2 and 3 up so they overlap the clear-blue
    bottom zone of the previous image. This closes the
    "bald spot" between copies where there are no clouds. */
+/* Overlap every stacked image (2 through 5) by 1200px so the pale-blue
+   top portion of each image hides behind the cloud-rich bottom of the
+   previous image. Without this overlap, a band of cloudless sky shows
+   at every seam between stacked images. */
 .sky-bg_about > .img-w > .img:nth-child(2),
-.sky-bg_about > .img-w > .img:nth-child(3) {
+.sky-bg_about > .img-w > .img:nth-child(3),
+.sky-bg_about > .img-w > .img:nth-child(4),
+.sky-bg_about > .img-w > .img:nth-child(5) {
   margin-top: -1200px !important;
 }
 /* Gradient overlay: restore original wearebrand inset (top: 100vh)
