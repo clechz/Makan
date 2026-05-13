@@ -169,6 +169,22 @@ body .sky-bg_about,
 .sky-bg_about > .img-w > .img:nth-child(4),
 .sky-bg_about > .img-w > .img:nth-child(5) {
   margin-top: -1500px !important;
+  /* Soft fade-in on the top edge of each stacked image so the seam
+     between it and the image above blends gradually instead of
+     reading as a hard cut. Transparent for the first 60px, then
+     ramps up to fully opaque by 360px. */
+  -webkit-mask-image: linear-gradient(180deg,
+    transparent 0px,
+    rgba(0,0,0,0.4) 120px,
+    rgba(0,0,0,0.85) 240px,
+    #000 360px
+  ) !important;
+  mask-image: linear-gradient(180deg,
+    transparent 0px,
+    rgba(0,0,0,0.4) 120px,
+    rgba(0,0,0,0.85) 240px,
+    #000 360px
+  ) !important;
 }
 /* Gradient overlay: restore original wearebrand inset (top: 100vh)
    so the first viewport of clouds has NO overlay (vivid, dense).
