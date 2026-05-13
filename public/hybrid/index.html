@@ -169,12 +169,7 @@ body .sky-bg_about,
 .sky-bg_about > .img-w > .img:nth-child(4),
 .sky-bg_about > .img-w > .img:nth-child(5) {
   margin-top: -1500px !important;
-  /* Very long fade-in on the top edge of each stacked image so the
-     seam between it and the image above blends gradually over the
-     entire overlap zone (1500px). The next image only reaches full
-     opacity ~1100px down — by then we're well past the cloud-dense
-     band of the previous image and the eye reads it as continuous
-     atmosphere, not a stacked seam. */
+  /* Long soft fade-in on the top edge so seams disappear. */
   -webkit-mask-image: linear-gradient(180deg,
     transparent 0px,
     rgba(0,0,0,0.05) 200px,
@@ -190,6 +185,74 @@ body .sky-bg_about,
     rgba(0,0,0,0.55) 750px,
     rgba(0,0,0,0.85) 950px,
     #000 1100px
+  ) !important;
+}
+/* Fade the BOTTOM edge of every stacked image (1 through 4 — not
+   the last one) so the cloud-dense bottom of each image dissolves
+   gradually into the soft-fade-in top of the next. Two-way crossfade
+   means the seam is genuinely imperceptible: image-N is fading out
+   while image-N+1 is fading in, both at ~50% in the middle. */
+.sky-bg_about > .img-w > .img:nth-child(1),
+.sky-bg_about > .img-w > .img:nth-child(2),
+.sky-bg_about > .img-w > .img:nth-child(3),
+.sky-bg_about > .img-w > .img:nth-child(4) {
+  -webkit-mask-composite: source-in;
+}
+/* Apply a bottom-fade mask on slots 1-4 by combining masks. Since
+   slots 2-4 already have a top-fade mask, we extend that mask to
+   include a bottom-fade segment. Slot 1 has no top fade — give it
+   only the bottom fade. */
+.sky-bg_about > .img-w > .img:nth-child(1) {
+  -webkit-mask-image: linear-gradient(180deg,
+    #000 0px,
+    #000 calc(100% - 1100px),
+    rgba(0,0,0,0.85) calc(100% - 950px),
+    rgba(0,0,0,0.55) calc(100% - 750px),
+    rgba(0,0,0,0.2) calc(100% - 450px),
+    rgba(0,0,0,0.05) calc(100% - 200px),
+    transparent 100%
+  ) !important;
+  mask-image: linear-gradient(180deg,
+    #000 0px,
+    #000 calc(100% - 1100px),
+    rgba(0,0,0,0.85) calc(100% - 950px),
+    rgba(0,0,0,0.55) calc(100% - 750px),
+    rgba(0,0,0,0.2) calc(100% - 450px),
+    rgba(0,0,0,0.05) calc(100% - 200px),
+    transparent 100%
+  ) !important;
+}
+/* Slots 2-4: combine top-fade + bottom-fade in a single gradient. */
+.sky-bg_about > .img-w > .img:nth-child(2),
+.sky-bg_about > .img-w > .img:nth-child(3),
+.sky-bg_about > .img-w > .img:nth-child(4) {
+  -webkit-mask-image: linear-gradient(180deg,
+    transparent 0px,
+    rgba(0,0,0,0.05) 200px,
+    rgba(0,0,0,0.2) 450px,
+    rgba(0,0,0,0.55) 750px,
+    rgba(0,0,0,0.85) 950px,
+    #000 1100px,
+    #000 calc(100% - 1100px),
+    rgba(0,0,0,0.85) calc(100% - 950px),
+    rgba(0,0,0,0.55) calc(100% - 750px),
+    rgba(0,0,0,0.2) calc(100% - 450px),
+    rgba(0,0,0,0.05) calc(100% - 200px),
+    transparent 100%
+  ) !important;
+  mask-image: linear-gradient(180deg,
+    transparent 0px,
+    rgba(0,0,0,0.05) 200px,
+    rgba(0,0,0,0.2) 450px,
+    rgba(0,0,0,0.55) 750px,
+    rgba(0,0,0,0.85) 950px,
+    #000 1100px,
+    #000 calc(100% - 1100px),
+    rgba(0,0,0,0.85) calc(100% - 950px),
+    rgba(0,0,0,0.55) calc(100% - 750px),
+    rgba(0,0,0,0.2) calc(100% - 450px),
+    rgba(0,0,0,0.05) calc(100% - 200px),
+    transparent 100%
   ) !important;
 }
 /* Gradient overlay: restore original wearebrand inset (top: 100vh)
