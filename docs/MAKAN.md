@@ -209,9 +209,9 @@ Always reference these via CSS custom properties. Never hardcode hex in componen
 Resolve the historical contradiction explicitly:
 
 - **Landing page → cinematic two-act journey.** Act I daylight (sky blue), Act II operations dark, with a light breather and pure-black closer. Already implemented in `public/hybrid/index.html`.
-- **Dashboard / app surface → dark first.** Operators work at night, in field conditions, with dense data. Dark mode is primary; light mode is secondary.
+- **Dashboard / app surface → light-first, with full dark-mode parity from day one.** Light is the default and matches the dashboard mock in `public/hybrid/dashboard-screenshot.html`. Dark mode is built in parallel for every component from first commit — never bolted on later. Operators working at night, in field conditions, or with dense data switch to dark; the default follows system preference, persisted per user thereafter. RTL works in both themes.
 
-When this doc says "Makan is dark-first," it means the **product**. When it says "the landing page goes daylight → ops dark," that is the **marketing surface**. Both are correct; they are different surfaces.
+When this doc references theme: the **landing page** is the cinematic daylight → ops dark journey (marketing surface). The **dashboard / app** is light-first with full dark-mode parity (product surface). Both themes ship together; users can switch at will. See `clechz/Makan-app` ADR-0002 for the app-side decision and the dashboard-mock rationale.
 
 ## 15. Typography
 
