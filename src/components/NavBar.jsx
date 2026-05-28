@@ -27,12 +27,12 @@ const NavBar = () => {
         </ul>
 
         <div className="gap-3 flex-center">
-          <button>
-            <img src="/search.svg" alt="Search" />
-          </button>
-          <button>
-            <img src="/cart.svg" alt="Cart" />
-          </button>
+          <a
+            href="#request-demo"
+            className="rounded-full bg-white text-black px-4 py-1.5 text-sm font-semibold hover:opacity-90"
+          >
+            Request demo
+          </a>
         </div>
       </nav>
     </header>
