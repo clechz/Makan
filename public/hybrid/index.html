@@ -3931,22 +3931,67 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
       });
       if (firstInvalid) { firstInvalid.focus(); return; }
 
-      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Submitting…'; }
+      var isAr = (document.documentElement.lang || 'en').indexOf('ar') === 0;
+      var btnLabelBefore = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = isAr ? 'جارٍ الإرسال…' : 'Submitting…'; }
       if (pillSubmit) {
         var pillP = pillSubmit.querySelector('p');
-        if (pillP) pillP.textContent = 'Submitting…';
+        if (pillP) pillP.textContent = isAr ? 'جارٍ الإرسال…' : 'Submitting…';
         pillSubmit.style.pointerEvents = 'none';
       }
-      console.log('[makan/waitlist] submission', data);
-      // Simulate a short network delay so the user sees the state transition
-      setTimeout(function(){
+
+      // Real submission — persisted by the Makan backend (POST /api/v1/demo-requests).
+      var API_URL = 'https://app.makan.llc/api/v1/demo-requests';
+      var payload = {
+        email: data.email,
+        name: data.name,
+        company: data.company,
+        industry: data.industry,
+        problem: (data.problem || '').slice(0, 2000) || null,
+        locale: isAr ? 'ar' : 'en'
+      };
+
+      function showSuccess(){
         form.querySelectorAll('.mk-row, .mk-field-wide, .mk-actions').forEach(function(el){ el.style.display = 'none'; });
+        var err = form.querySelector('.mk-error'); if (err) err.remove();
         if (success) success.hidden = false;
         if (pillSubmit) {
           var pillP2 = pillSubmit.querySelector('p');
-          if (pillP2) pillP2.textContent = 'Got it. We\'ll be in touch.';
+          if (pillP2) pillP2.textContent = isAr ? 'تم الاستلام. سنتواصل معك.' : 'Got it. We\'ll be in touch.';
         }
-      }, 350);
+      }
+
+      function showError(){
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = btnLabelBefore; }
+        if (pillSubmit) {
+          var pillP3 = pillSubmit.querySelector('p');
+          if (pillP3) pillP3.textContent = isAr ? 'إعادة المحاولة ←' : 'Try again →';
+          pillSubmit.style.pointerEvents = '';
+        }
+        var err = form.querySelector('.mk-error');
+        if (!err) {
+          err = document.createElement('p');
+          err.className = 'mk-error';
+          err.setAttribute('role', 'alert');
+          err.style.cssText = 'color:#E8A838;font-size:13px;margin-top:10px;';
+          form.querySelector('.mk-actions').appendChild(err);
+        }
+        err.textContent = isAr
+          ? 'تعذّر الإرسال — تحقّق من الاتصال وحاول مرة أخرى.'
+          : 'Submission failed — check your connection and try again.';
+      }
+
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(res){
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        showSuccess();
+      }).catch(function(e){
+        console.warn('[makan/waitlist] submission failed', e);
+        showError();
+      });
     });
   }
   if (document.readyState === 'loading') {
