@@ -90,6 +90,7 @@
       "hero.image.alt": "View through a spacecraft porthole",
       "hero.earth.alt": "Earth from orbit",
       "hero.cta.bookDemo": "Book a Demo",
+      "phone.cta.demo": "Demo",
 
       // rotating words (with trailing period; period is part of the rotation)
       "hero.rotate.01": "the built world.",
@@ -437,6 +438,7 @@
       "hero.image.alt": "إطلالة من كوّة مركبة فضائية",
       "hero.earth.alt": "الأرض من المدار",
       "hero.cta.bookDemo": "احجز عرضاً",
+      "phone.cta.demo": "عرض",
 
       // rotating words
       "hero.rotate.01": "العالم المبنيّ.",

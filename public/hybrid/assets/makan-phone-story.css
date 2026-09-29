@@ -370,3 +370,13 @@
   body::before { transform: translateZ(0); }
   .cta *, #use-cases-dark .uc-header-content, .mp-scene-signal { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 }
+
+.mk-demo-phone { display: none; }
+@media (max-width: 767px) {
+  .cta .mk-demo-desktop { display: none; }
+  .cta .mk-demo-phone { display: block; }
+  .cta .btn-cta { gap: 5px; min-height: 44px; }
+  .cta .btn-cta_btn { height: 36px !important; min-height: 36px; padding-inline: 16px !important; }
+  .cta .btn-cta_btn-icon { height: 36px !important; width: 36px !important; min-height: 36px; }
+  .cta .btn-cta_btn .t7 { font-size: 14px !important; }
+}
