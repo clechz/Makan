@@ -2459,7 +2459,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
     if(slots.length < 2) return;
     var w = slots[0].offsetWidth;
     var h = slots[0].offsetHeight;
-    if(h <= 0){ requestAnimationFrame(syncSliderImg); return; }
+    if(h <= 0) return; // Hidden mobile comparison: ResizeObserver resumes when visible.
     slots[1].style.height = h + 'px';
     slots[1].style.width = w + 'px';
   }
@@ -2802,7 +2802,9 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
       return ((val - min) % range + range) % range + min;
     }
 
+    var tickRunning = true;
     function tick(){
+      if(window.matchMedia('(max-width: 767px)').matches){tickRunning=false;return;}
       /* Top slider owns the lerp — bottom reads sync.current directly. */
       sync.current += (sync.target - sync.current) * SCROLL_LERP;
       var totalW = SLIDES.length * SPACING;
@@ -2825,7 +2827,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
       requestAnimationFrame(tick);
     }
 
-    function onResize(){ vh = root.offsetHeight; vw = root.offsetWidth; centerX = vw / 2; centerY = vh / 2; }
+    function onResize(){ if(!tickRunning && !window.matchMedia('(max-width: 767px)').matches){tickRunning=true;requestAnimationFrame(tick);} vh = root.offsetHeight; vw = root.offsetWidth; centerX = vw / 2; centerY = vh / 2; }
     window.addEventListener('resize', onResize);
     requestAnimationFrame(tick);
   }
@@ -2946,7 +2948,9 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
       return ((val - min) % range + range) % range + min;
     }
 
+    var tickRunning = true;
     function tick(){
+      if(window.matchMedia('(max-width: 767px)').matches){tickRunning=false;return;}
       /* Bottom slider just reads sync.current — top slider's tick lerps it. */
       var totalW = SLIDES.length * SPACING;
       var closest = -1, closestDist = Infinity;
@@ -2976,7 +2980,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
       requestAnimationFrame(tick);
     }
 
-    function onResize(){ vh = root.offsetHeight; vw = root.offsetWidth; centerX = vw / 2; centerY = vh / 2; }
+    function onResize(){ if(!tickRunning && !window.matchMedia('(max-width: 767px)').matches){tickRunning=true;requestAnimationFrame(tick);} vh = root.offsetHeight; vw = root.offsetWidth; centerX = vw / 2; centerY = vh / 2; }
     window.addEventListener('resize', onResize);
     requestAnimationFrame(tick);
   }

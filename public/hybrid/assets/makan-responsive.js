@@ -7,7 +7,7 @@ function syncFeatureDetails() {
 syncFeatureDetails();
 phoneLayout.addEventListener('change', syncFeatureDetails);
 featureDetails.forEach(details => details.addEventListener('toggle', () => {
-  if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+  if (!phoneLayout.matches && window.ScrollTrigger) window.ScrollTrigger.refresh();
 }));
 
 const phoneMap = document.querySelector('#mp-map-image');
@@ -53,7 +53,7 @@ document.querySelectorAll('[data-scene-select]').forEach(button => {
     document.querySelector('.mp-spatial').dataset.scene = button.dataset.sceneSelect;
     document.querySelectorAll('[data-scene-select]').forEach(control => control.setAttribute('aria-pressed', String(control === button)));
     document.querySelectorAll('[data-scene-panel]').forEach(panel => { panel.hidden = panel.dataset.scenePanel !== button.dataset.sceneSelect; });
-    if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+    if (!phoneLayout.matches && window.ScrollTrigger) window.ScrollTrigger.refresh();
   });
 });
 
