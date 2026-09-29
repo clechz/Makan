@@ -35,6 +35,38 @@
   // Saudi B2B SaaS convention.
   const DICT = {
     en: {
+      "phone.short.lead": "Satellite imagery. Clear answers.",
+      "phone.short.workflow": "Your world. In one place.",
+      "phone.short.proof": "Built to be trusted.",
+      "phone.short.places": "Draw. Name. Monitor.",
+      "phone.short.agent": "Ask the map.",
+      "phone.short.layers": "See the whole picture.",
+      "phone.short.discoveries": "Know what changed.",
+      "phone.short.shifts": "Track every shift.",
+      "phone.short.question": "New construction nearby?",
+      "phone.short.result": "2,480 discoveries. 360 places.",
+      "phone.shift.previous": "Previous pass",
+      "phone.shift.latest": "Latest pass",
+      "phone.shift.example": "Illustrative construction change",
+      "phone.short.details": "Details",
+
+      "phone.eyebrow": "Earth intelligence",
+      "phone.title": "From a place to an answer.",
+      "phone.preview": "Explore the intelligence layer",
+      "phone.raw": "What you see",
+      "phone.overlay": "What Makan sees",
+      "phone.example": "Illustrative analysis",
+      "phone.workflow": "One workspace. The whole picture.",
+      "phone.capabilities": "Built for decisions you can defend.",
+      "phone.vectors": "The physical world, encoded into a searchable index.",
+      "phone.multisource": "Sentinel-2, Maxar, Planet and SAR — reconciled into one answer.",
+      "phone.proof": "Trace each detection to its sensor, satellite pass and source hash.",
+      "phone.nolockin": "Your imagery, your index, your outputs. Export when you need to.",
+      "phone.sovereign": "Your cloud, on-prem or air-gapped. The same product, inside your environment.",
+      "phone.vertical": "A new structure near a pipeline becomes an encroachment signal, with context.",
+      "phone.sources": "Sources behind the answer",
+      "phone.allintegrations": "Explore all integrations",
+
       // ─ meta ─
       "meta.title": "Makan — Query the World.",
       "meta.description": "Makan indexes the physical world from orbit. Satellite imagery, vector embeddings, and operational alerts for enterprise teams.",
@@ -194,6 +226,7 @@
 
       // ─ usecases / tiers ─
       "usecases.section.ariaLabel": "Ways to use Makan",
+      "usecases.details": "Included features",
       "usecases.eyebrow": "Ways to use Makan",
       "usecases.title": "Three ways in. Same index.",
       "usecases.sub": "Run it through the dashboard. Plug it into your stack. Or deploy it inside your sovereign environment with a build tailored to your operation.",
@@ -349,6 +382,38 @@
     //  terms kept in Latin script per Saudi convention.
     // ─────────────────────────────────────────────────────────────
     ar: {
+      "phone.short.lead": "صور أقمار صناعية. إجابات واضحة.",
+      "phone.short.workflow": "عالمك. في مكان واحد.",
+      "phone.short.proof": "مصمم للثقة.",
+      "phone.short.places": "حدّد. سمّ. راقب.",
+      "phone.short.agent": "اسأل الخريطة.",
+      "phone.short.layers": "شاهد الصورة كاملة.",
+      "phone.short.discoveries": "اعرف ما تغيّر.",
+      "phone.short.shifts": "تتبّع كل تغيّر.",
+      "phone.short.question": "هل توجد إنشاءات جديدة بالقرب؟",
+      "phone.short.result": "2,480 اكتشافاً. 360 منطقة.",
+      "phone.shift.previous": "المرور السابق",
+      "phone.shift.latest": "أحدث مرور",
+      "phone.shift.example": "مثال توضيحي لتغيّر البناء",
+      "phone.short.details": "التفاصيل",
+
+      "phone.eyebrow": "ذكاء الأرض",
+      "phone.title": "من المكان إلى الإجابة.",
+      "phone.preview": "استكشف طبقة الذكاء",
+      "phone.raw": "ما تراه",
+      "phone.overlay": "ما يراه مكان",
+      "phone.example": "مثال توضيحي للتحليل",
+      "phone.workflow": "مساحة عمل واحدة. الصورة كاملة.",
+      "phone.capabilities": "مصمم لقرارات تستند إلى أدلة.",
+      "phone.vectors": "العالم المادي، مشفّر في فهرس قابل للبحث.",
+      "phone.multisource": "Sentinel-2 وMaxar وPlanet وSAR — في إجابة موحدة.",
+      "phone.proof": "تتبّع كل اكتشاف إلى المستشعر ومرور القمر الصناعي وبصمة المصدر.",
+      "phone.nolockin": "صورك وفهرسك ومخرجاتك. صدّرها متى احتجت.",
+      "phone.sovereign": "في سحابتك أو محلياً أو في بيئة معزولة. المنتج نفسه داخل بيئتك.",
+      "phone.vertical": "يتحول مبنى جديد قرب خط أنابيب إلى إشارة تعدٍّ مع سياقها.",
+      "phone.sources": "المصادر وراء الإجابة",
+      "phone.allintegrations": "استكشف جميع التكاملات",
+
       // ─ meta ─
       "meta.title": "مكان — اسأل العالم.",
       "meta.description": "تفهرس مكان العالم الفيزيائي من المدار. صور أقمار، وتمثيلات متجهة، وتنبيهات تشغيلية لفرق المؤسسات.",
@@ -508,6 +573,7 @@
 
       // ─ usecases / tiers ─
       "usecases.section.ariaLabel": "طرق استخدام مكان",
+      "usecases.details": "المزايا المتاحة",
       "usecases.eyebrow": "طرق استخدام مكان",
       "usecases.title": "ثلاث مداخل. فهرس واحد.",
       "usecases.sub": "شغّلها عبر اللوحة. أو اربطها بمنظومتك. أو انشرها داخل بيئتك السيادية ببنية مفصَّلة لعملياتك.",
@@ -772,6 +838,7 @@
     document.querySelectorAll("[data-lang-set]").forEach(function (el) {
       const target = el.getAttribute("data-lang-set");
       el.classList.toggle("active", target === currentLang);
+      el.setAttribute("aria-pressed", String(target === currentLang));
     });
 
     // Notify listeners (rotating hero word, agent demo prompt animations)

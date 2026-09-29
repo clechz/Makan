@@ -1,0 +1,125 @@
+/* Layout overrides follow the legacy template and section-specific styles. */
+:root {
+  --mk-gutter: clamp(20px, 4vw, 64px);
+  --mk-content-width: 1280px;
+}
+/* Clip decorative parallax and offscreen carousel tracks, without a scroll container. */
+html { overflow-x: clip; }
+.transition-wrapper { overflow-x: clip; }
+
+#hero .hero-s_title-l h1.h2 {
+  font-size: clamp(36px, 7.5vw, 112px) !important;
+  line-height: 1.06 !important;
+  text-wrap: balance;
+}
+.mk-fgrid, #mk-tiers .mk-tiers-inner {
+  max-width: var(--mk-content-width);
+  padding-inline: var(--mk-gutter);
+}
+.mk-fgrid-inner > *, .mk-tiers-grid > * { min-width: 0; }
+.mk-fcard-desc { font-size: clamp(15px, 1.1vw, 17px); }
+.mk-fcard-title { font-size: clamp(20px, 1.6vw, 25px); }
+.mk-fcard-label { font-size: 11px; }
+#mk-tiers .mk-tier-list li { font-size: 15px !important; line-height: 1.55; }
+.mk-stats > div { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.mk-stats > div > div > div:first-child { font-size: clamp(28px, 4vw, 48px) !important; }
+.mk-stats > div > div > div:last-child { font-size: 12px !important; }
+#hero .mk-lang-pill { padding: 3px; gap: 2px; border-radius: 8px; background: rgba(0,0,0,.2); }
+.mk-lang-pill [data-lang-set] { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 26px; padding: 0 6px; border: 0; border-radius: 5px; background: transparent; font: inherit; }
+.mk-lang-pill .mk-lang-sep { display: none; }
+.mk-lang-pill [data-lang-set]::before { content: ''; position: absolute; inset: -9px 0; }
+.mk-tier-details summary { display: none; }
+.btn-cta { display: flex; align-items: center; gap: 8px; }
+.btn-cta_btn { height: 48px !important; min-height: 48px; padding: 0 20px !important; }
+.btn-cta_btn-icon { width: 48px !important; height: 48px !important; min-height: 48px; }
+.btn-cta_btn .t7, .btn-cta_btn .l1 { font-size: 16px !important; }
+.cta { padding-bottom: max(12px, env(safe-area-inset-bottom)) !important; }
+#use-cases-dark :is(input, select, textarea) { font-size: 16px !important; min-height: 48px; }
+#use-cases-dark textarea { min-height: 112px; }
+:is(a, button, input, select, textarea, [tabindex]):focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+@media (max-width: 1199px) {
+  /* Floating cards require space on both sides of the central previews. */
+  .mk-card { display: none !important; }
+  #mk-beforeafter-window { transform: none !important; max-width: 100%; }
+}
+
+@media (max-width: 991px) {
+  /* The planet must fill the same viewport as the transparent spacecraft. */
+  .sky-bg_hero { height: max(620px, 100svh) !important; min-height: max(620px, 100svh) !important; }
+  .sky-bg_hero > .img-w { height: 100% !important; }
+  .sky-bg_hero .img-w .img { transform: none !important; object-fit: cover; object-position: 50% 50%; }
+  .sky-bg_hero_grad-over { height: 22% !important; }
+  #hero .container { padding-inline: var(--mk-gutter); }
+  #hero .hero_scroll-area { height: 100svh !important; min-height: 620px; }
+  #hero .hero-w, #hero .hero-s { height: 100svh !important; min-height: 620px; }
+  #hero .hero-s { transform: none !important; }
+  #hero .unit-156 { height: clamp(112px, 18svh, 180px) !important; }
+  #hero .hero-s_title-l { text-align: center; }
+  #hero .hero-s_bot-mobile {
+    display: flex !important;
+    bottom: 150px;
+    padding: 0;
+    gap: 16px;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+  .hero-mobile-tagline h3 { font-family: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif; font-size: clamp(20px, 3vw, 28px) !important; }
+  .hero-mobile-subtitle { display: none; }
+  .hero-mobile-scroll { display: none; }
+  .about-w { transform: none !important; padding-block: clamp(48px, 8vw, 80px); }
+  .about-s { margin-top: 0 !important; }
+  .about-w > h2.p2 { font-size: clamp(26px, 4.3vw, 42px) !important; line-height: 1.2 !important; max-width: 760px; text-wrap: balance; }
+  .about-s_lead-text { padding: 0 !important; }
+  .mk-dashboard-section { padding: 0 !important; }
+  .mk-fgrid { padding-block: 48px; }
+  .mk-fgrid .mk-fgrid-inner { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .mk-fcard { grid-column: auto !important; grid-row: auto !important; padding: clamp(20px, 3vw, 28px) !important; }
+  .mk-fcard--agent { grid-column: 1 / -1 !important; }
+  #mk-tiers .mk-tiers-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #mk-tiers .mk-tier-card:last-child { grid-column: 1 / -1; }
+  #use-cases-dark .uc-header-content { margin-inline: auto !important; width: calc(100% - 2 * var(--mk-gutter)) !important; }
+  #use-cases-dark .uc-spotlight { padding-bottom: 120px !important; }
+  #use-cases-dark .mk-waitlist .mk-actions .mk-submit { min-height: 48px; font-size: 16px !important; }
+  .mk-stats { padding-inline: var(--mk-gutter) !important; }
+}
+
+@media (max-width: 599px) {
+  .mk-fgrid .mk-fgrid-inner, #mk-tiers .mk-tiers-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .mk-fcard--agent, #mk-tiers .mk-tier-card:last-child { grid-column: auto !important; }
+  .mk-stats > div { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #hero .hero-s_title-l h1.h2 { font-size: clamp(36px, 10vw, 56px) !important; }
+  #hero .mk-lang-pill { top: 20px; left: 20px; }
+  .hero-mobile-subtitle { display: none; }
+  #hero .hero-s_bot-mobile { bottom: 112px; }
+  .hero-mobile-tagline h3 { max-width: 320px; margin-inline: auto; font-size: 20px !important; text-wrap: balance; }
+  /* Compact summaries on phones; the detailed lists remain one tap away. */
+  #mk-tiers .mk-tier-card { padding: 24px; gap: 16px; }
+  #mk-tiers .mk-tier-header { display: flex; flex-direction: column; gap: 12px; }
+  #mk-tiers .mk-tier-headline { margin: 0; }
+  #mk-tiers .mk-tier-desc { font-size: 15px; line-height: 1.6; }
+  #mk-tiers .mk-tier-cta { align-self: flex-start; min-height: 44px; }
+  .mk-tier-details summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; font-size: 14px; cursor: pointer; list-style: none; }
+  .mk-tier-details summary::-webkit-details-marker { display: none; }
+  .mk-tier-details summary::after { content: '+'; font-size: 20px; }
+  .mk-tier-details[open] summary::after { content: '−'; }
+  .mk-fcard:not(.mk-fcard--agent) { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; row-gap: 8px; }
+  .mk-fcard:not(.mk-fcard--agent) .mk-fcard-icon { grid-column: 1; grid-row: 1 / 3; }
+  .mk-fcard:not(.mk-fcard--agent) :is(.mk-fcard-label,.mk-fcard-title,.mk-fcard-desc,.mk-fcard-visual) { grid-column: 2; }
+  .mk-fcard:not(.mk-fcard--agent) .mk-fcard-visual { display: none; }
+}
+
+@media (max-width: 991px) and (max-height: 500px) {
+  /* Landscape phones keep content readable instead of squeezing into 100vh. */
+  #hero .unit-156 { height: 100px !important; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  #mk-tiers .mk-tier-card { transform: none !important; }
+  #mk-tiers .mk-tier-spot { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  #makan-logo-scroll-section [style*="animation"] { animation-play-state: paused !important; }
+}
