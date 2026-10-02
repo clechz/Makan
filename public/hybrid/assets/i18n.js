@@ -814,23 +814,10 @@
 
   // ─── Runtime ──────────────────────────────────────────────────
   const STORAGE_KEY = "makan.lang";
-  const SUPPORTED = ["en", "ar"];
+  const SUPPORTED = ["en"]; // Temporary English-only release; keep Arabic copy for later.
 
   function detectLang() {
-    try {
-      const u = new URL(window.location.href);
-      const q = u.searchParams.get("lang");
-      if (q && SUPPORTED.indexOf(q) !== -1) return q;
-    } catch (_) {}
-    try {
-      const ls = window.localStorage.getItem(STORAGE_KEY);
-      if (ls && SUPPORTED.indexOf(ls) !== -1) return ls;
-    } catch (_) {}
-    const htmlLang = (document.documentElement.lang || "").toLowerCase();
-    if (htmlLang.indexOf("ar") === 0) return "ar";
-    const nav = (navigator.language || "en").toLowerCase();
-    if (nav.indexOf("ar") === 0) return "ar";
-    return "en";
+    return "en"; // Ignore saved preferences, browser language and URL overrides for now.
   }
 
   let currentLang = detectLang();
