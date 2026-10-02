@@ -792,3 +792,64 @@
 @media(max-width:767px){
  #mk-tiers .mk-tier-header{padding-bottom:0;border-bottom:0;}
 }
+
+/* Product context complements the interactive demo rather than repeating its tabs. */
+@media(max-width:767px){
+ :root{--mp-chapter-gap:96px;}
+ #mk-phone-story .mp-workflow{padding-top:var(--mp-chapter-gap);padding-bottom:0;min-height:0;}
+ #mk-phone-story .mp-product-overview{margin-bottom:24px;}
+ .mp-page-cards{display:grid;gap:14px;margin:0;}
+ .mp-page-card{min-width:0;padding:24px;border:1px solid #e2e8ec;border-radius:24px;background:#fff;color:#14171b;box-shadow:0 10px 24px #173c5110;}
+ .mp-page-heading{display:flex;align-items:baseline;gap:14px;}
+ .mp-page-number{font-size:11px;line-height:1.5;color:#969c98;font-variant-numeric:tabular-nums;}
+ #mk-phone-story .mp-page-card h3{font-size:18px;line-height:1.35;font-weight:500;letter-spacing:-.025em;}
+ #mk-phone-story .mp-page-card p{margin-top:10px;color:#6a706c;font-size:13px;line-height:1.6;}
+ .mp-page-detail{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px;}
+ .mp-page-detail span{padding:5px 9px;border:1px solid #e8ebe7;border-radius:7px;background:#f7f8f6;color:#697269;font-size:10px;line-height:1.4;}
+ .mp-page-evidence{display:flex;align-items:center;gap:10px;margin-top:20px;color:#788477;font-size:10px;line-height:1.4;}
+ .mp-page-evidence i{height:1px;flex:1;background:#dfe5db;}
+ #mk-phone-story .mp-workflow .mp-spatial{margin-top:var(--mp-chapter-gap);padding-block:0;}
+ #mk-tiers{padding-block:var(--mp-chapter-gap) 0 !important;}
+ #use-cases-dark .uc-spotlight-content{padding-block:var(--mp-chapter-gap) 40px !important;}
+}
+
+/* Brief explanations make the mobile product choices self-contained. */
+.mk-tier-phone-summary{display:none;}
+@media(max-width:767px){
+ #mk-tiers .mk-tier-phone-summary{display:block;order:2;margin:0;color:#62676d;font-size:14px;line-height:1.6;}
+}
+
+/* Screen-sized mobile chapters, with natural growth on short screens. */
+.mk-demo-phone-intro{display:none;}
+@media(max-width:767px){
+ #mk-phone-story .mp-workflow{padding-block:0;}
+ .mp-product-chapter{display:flex;flex-direction:column;padding-block:96px 88px;}
+ #mk-phone-story .mp-workflow .mp-spatial{min-height:0;margin:0;padding-block:88px;justify-content:center;}
+ #mk-tiers{min-height:0;box-sizing:border-box;display:flex;flex-direction:column;padding-block:88px !important;}
+ #use-cases-dark .uc-spotlight{min-height:0 !important;height:auto !important;box-sizing:border-box;display:flex !important;flex-direction:column;padding-block:88px !important;}
+ #use-cases-dark .uc-spotlight-content{display:none !important;}
+ #use-cases-dark .uc-header{width:100%;padding:0 !important;}
+ #use-cases-dark .uc-header .uc-header-content{padding:24px !important;}
+ #use-cases-dark .uc-header-content>.mk-eyebrow,#use-cases-dark .uc-header-content>p[data-i18n="waitlist.intro"]{display:none !important;}
+ #use-cases-dark .uc-header .uc-header-content h2{font-size:26px !important;margin:0 0 8px !important;}
+ #use-cases-dark .uc-header .uc-header-content>.mk-demo-phone-intro{display:block;font-size:14px !important;line-height:1.5 !important;margin:0 0 20px;}
+ #use-cases-dark #mk-waitlist-form{gap:14px !important;margin-top:0;}
+ #use-cases-dark #mk-waitlist-form .mk-row{gap:14px !important;}
+ #use-cases-dark #mk-waitlist-form .mk-row:first-child{grid-template-columns:1fr;}
+ #use-cases-dark #mk-waitlist-form .mk-row:nth-child(2){display:grid !important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;}
+ #use-cases-dark #mk-waitlist-form .mk-field{min-width:0;gap:5px;}
+ #use-cases-dark #mk-waitlist-form label{margin:0;}
+ #use-cases-dark #mk-waitlist-form :is(input,select,textarea){padding:10px 12px !important;min-height:44px !important;}
+ #use-cases-dark #mk-waitlist-form textarea{height:76px;min-height:76px !important;}
+ #use-cases-dark #mk-waitlist-form .mk-actions{gap:10px;margin-top:4px;}
+ #use-cases-dark #mk-waitlist-form .mk-fineprint{margin:0;}
+}
+
+/* Keep a complete card inside the viewport at every phone width. */
+@media(max-width:767px){
+ #mk-tiers .mk-tiers-inner{width:100%;max-width:100%;min-width:0;box-sizing:border-box;}
+ #mk-tiers .mk-tiers-grid{width:100%;max-width:100%;min-width:0;box-sizing:border-box;gap:24px;}
+ #mk-tiers .mk-tier-card{box-sizing:border-box;flex:0 0 100%;width:100%;min-width:0;max-width:100%;scroll-snap-align:center;}
+ #mk-tiers .mk-tier-head-row{flex-wrap:wrap;gap:8px;max-width:100%;}
+ #mk-tiers .mk-tier-header>*{max-width:100%;overflow-wrap:break-word;}
+}

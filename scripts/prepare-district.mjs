@@ -93,19 +93,39 @@ export async function prepareDistrict(surface,image){
  async function traceArea(group,pixelPlan){
    const plan=pixelPlan.map(([x,z])=>[(x-960)/85,(z-467.5)/85]),coords=[];
    for(let i=0;i<indices.count;i+=3){if(i%6144===0)await yieldToPage();const ids=[indices.getX(i),indices.getX(i+1),indices.getX(i+2)],x=ids.reduce((v,k)=>v+positions.getX(k),0)/3,z=ids.reduce((v,k)=>v+positions.getZ(k),0)/3;if(inside(x,z,plan))ids.forEach(k=>coords.push(positions.getX(k),positions.getY(k)+.025,positions.getZ(k)));}
-   const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(coords,3));group.add(new T.Mesh(geo,new T.MeshBasicMaterial({color:0x75f6f0,transparent:true,opacity:.35,side:T.DoubleSide,depthWrite:false})));
+   const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(coords,3));group.add(new T.Mesh(geo,new T.MeshBasicMaterial({color:0x75f6f0,transparent:true,opacity:.58,side:T.DoubleSide,depthWrite:false})));
    const points=[];plan.forEach(([x,z],i)=>{const end=plan[(i+1)%plan.length];for(let j=0;j<12;j++){const px=x+(end[0]-x)*j/12,pz=z+(end[1]-z)*j/12;points.push(new T.Vector3(px,height(px,pz)+.05,pz));}});points.push(points[0].clone());
-   const route=new T.CatmullRomCurve3(points,false,'centripetal');group.add(new T.Mesh(new T.TubeGeometry(route,points.length*2,.025,5,false),new T.MeshBasicMaterial({color:0xc6ffff,transparent:true,opacity:1})));
+   // A translucent raised boundary stays anchored to the actual footprint.
+   const lift=.26,wall=[];
+   for(let i=0;i<points.length-1;i++){const a=points[i],b=points[i+1];wall.push(a.x,a.y,a.z,b.x,b.y,b.z,b.x,b.y+lift,b.z,a.x,a.y,a.z,b.x,b.y+lift,b.z,a.x,a.y+lift,a.z);}
+   const wallGeo=new T.BufferGeometry();wallGeo.setAttribute('position',new T.Float32BufferAttribute(wall,3));
+   group.add(new T.Mesh(wallGeo,new T.MeshBasicMaterial({color:0x45ddd5,transparent:true,opacity:.42,side:T.DoubleSide,depthWrite:false})));
+   for(const elevation of [0,lift]){
+     const route=new T.CatmullRomCurve3(points.map(p=>p.clone().add(new T.Vector3(0,elevation,0))),false,'centripetal');
+     group.add(new T.Mesh(new T.TubeGeometry(route,points.length*2,.035,5,false),new T.MeshBasicMaterial({color:0xd9ffff,transparent:true,opacity:1,depthWrite:false})));
+   }
  }
  async function roofTarget(group,index){
    const pixelPlan=plans[index].map(([x,z])=>[x*85+960,z*85+467.5]);await traceArea(group,pixelPlan);
  }
  await roofTarget(agentTargets.retail,0);
  await roofTarget(agentTargets.investment,2);
- // Focus on actual road footprints, not floating pins or invented vehicle boxes.
- await traceArea(agentTargets.access,[[697,503],[711,503],[711,531],[697,531]]);
- await traceArea(agentTargets.access,[[1141,410],[1157,410],[1157,443],[1141,443]]);
- for(const plan of [[[697,370],[711,370],[711,500],[697,500]],[[1141,470],[1157,470],[1157,603],[1141,603]],[[762,334],[974,334],[974,347],[762,347]],[[752,783],[1048,786],[1048,800],[752,797]]])await traceArea(agentTargets.cars,plan);
+ // Individually traced visible vehicles in the orthographic scan (x offset 480).
+ // Access-review example: visible parked cars beside the turning area.
+ // These are clearance checks, not confirmed road closures.
+ for(const [x,z,w,h] of [[254,578,6,10],[270,597,6,11],[284,610,7,11]]){
+   const cx=x+480;
+   await traceArea(agentTargets.access,[[cx-w/2,z-h/2],[cx+w/2,z-h/2],[cx+w/2,z+h/2],[cx-w/2,z+h/2]]);
+ }
+ const visibleCars=[
+   [240,579,9,5],[254,578,6,10],[259,586,6,10],[270,597,6,11],[284,610,7,11],
+   [239,631,10,6],[300,675,5,11],[310,674,5,11],[319,674,5,11],[328,675,5,11],[336,677,5,11],[345,677,5,11],
+   [589,319,5,10],[604,318,5,10],[613,318,5,10],[621,318,5,10],[629,319,5,10],
+   [676,220,5,10],[677,250,5,10],[677,328,5,10],[684,664,5,10],[684,769,5,10],[675,791,5,10],
+   [449,818,5,11],[459,818,5,11],[481,821,6,10],[459,834,5,10],[470,835,5,10],[483,837,5,10],
+   [83,727,5,11],[99,728,6,15]
+ ];
+ for(const [x,z,w,h] of visibleCars){const cx=x+480;await traceArea(agentTargets.cars,[[cx-w/2,z-h/2],[cx+w/2,z-h/2],[cx+w/2,z+h/2],[cx-w/2,z+h/2]]);}
 
  const corners=[];
  for(let n=0;n<40;n++){await yieldToPage();const angle=n*Math.PI/20,dx=Math.cos(angle),dz=Math.sin(angle);let best=-Infinity,pick=0;

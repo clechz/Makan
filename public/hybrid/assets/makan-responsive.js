@@ -77,6 +77,15 @@ if(tierDeck){
  tierDeck.after(pagination);
  const activeCard=new IntersectionObserver(entries=>{if(!phoneLayout.matches)return;entries.forEach(entry=>{if(entry.intersectionRatio>.6){const index=cards.indexOf(entry.target);buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));cards.forEach((card,i)=>card.classList.toggle('mp-tier-active',i===index));}});},{root:tierDeck,threshold:[.6]});
  cards.forEach(card=>activeCard.observe(card));cards[0]?.classList.add('mp-tier-active');
+ let deckWidth=tierDeck.clientWidth;
+ new ResizeObserver(()=>{
+   const width=tierDeck.clientWidth;if(width===deckWidth)return;deckWidth=width;
+   if(!phoneLayout.matches)return;
+   const index=Math.max(0,buttons.findIndex(button=>button.getAttribute('aria-pressed')==='true'));
+   const card=cards[index];
+   tierDeck.scrollTo({left:tierDeck.scrollLeft+card.getBoundingClientRect().left-tierDeck.getBoundingClientRect().left-(width-card.offsetWidth)/2,behavior:'instant'});
+ }).observe(tierDeck);
+
 }
 
 
@@ -105,4 +114,14 @@ const legacyHeader=document.querySelector('.header');
 if(legacyHeader){
  const syncHeroBrand=()=>{if(phoneLayout.matches){legacyHeader.setAttribute('hidden','');}else{legacyHeader.removeAttribute('hidden');}};
  syncHeroBrand();phoneLayout.addEventListener('change',syncHeroBrand);
+}
+
+// Keep the phone form prompt short enough to read without scrolling the field.
+const demoProblem = document.querySelector('#mk-waitlist-form textarea[name="problem"]');
+if (demoProblem) {
+ const desktopProblemPrompt = demoProblem.placeholder;
+ const syncProblemPrompt = () => { demoProblem.placeholder = phoneLayout.matches ? 'What would you like Makan to help with?' : desktopProblemPrompt; };
+ syncProblemPrompt();
+ phoneLayout.addEventListener('change', syncProblemPrompt);
+ document.addEventListener('makan:lang-changed', syncProblemPrompt);
 }

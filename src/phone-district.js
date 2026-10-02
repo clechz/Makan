@@ -31,6 +31,7 @@ async function createScene(){
  const agentTargets=Object.fromEntries(['retail','access','investment','cars'].map(key=>[key,new T.Group()]));Object.values(agentTargets).forEach(group=>district.add(group));
  const overlayTargets={overlays,...layerObjects,construction,poolChange,canopyLoss,roadChange,...agentTargets};
  const camera=new T.PerspectiveCamera(38,1,.1,100);
+ const focusPoint=new T.Vector3(),targetFocus=new T.Vector3();let userCamera=false;
  host.prepend(renderer.domElement);renderer.domElement.setAttribute('aria-hidden','true');
  const status=host.querySelector('.mp-district-status'),time=host.parentElement.querySelector('.mp-district-time');time.hidden=true;
  host.querySelector('.mp-district-reset')?.remove();
@@ -47,9 +48,9 @@ async function createScene(){
 
  const agentExamples=[
   {q:['Where should I open a supermarket?','وين أفتح سوبرماركت؟'],a:['Corner property · road access.','عقار الزاوية · وصول أسهل.'],focus:'retail'},
-  {q:['Any road obstructions?','فيه عوائق بالطريق؟'],a:['2 pinch points · review access.','نقطتا اختناق · راجع الطريق.'],focus:'access'},
+  {q:['What could obstruct access?','فيه عوائق بالطريق؟'],a:['Parked cars near the turn · check clearance.','نقطتا اختناق · راجع الطريق.'],focus:'access'},
   {q:['Which home is the best investment?','أي بيت أفضل للاستثمار؟'],a:['This home · access + greenery.','هذا البيت · موقع وخضرة.'],focus:'investment'},
-  {q:['How many cars in this area?','كم سيارة في الحي؟'],a:['24 cars · 4 street sections.','24 سيارة · 4 مقاطع طرق.'],focus:'cars'}
+  {q:['How many cars can you identify?','كم سيارة في الحي؟'],a:['31 visible cars marked.','24 سيارة · 4 مقاطع طرق.'],focus:'cars'}
  ];
  let agentExample=0,agentTimer=0,agentTyping=0;
  function stopAgent(){clearTimeout(agentTimer);clearTimeout(agentTyping);agentChat.classList.remove('is-typing');}
@@ -57,6 +58,15 @@ async function createScene(){
    const focus=agentExamples[agentExample].focus;
    host.dataset.agentFocus=show?focus:'pending';
    const target=agentTargets[focus];
+   if(!userCamera){
+     targetFocus.set(0,0,0);
+     if(show&&target.children.some(child=>child.children.length)){
+       // Local bounds keep framing independent of the current user rotation.
+       target.updateWorldMatrix(true,true);
+       const bounds=new T.Box3().setFromObject(target),center=bounds.getCenter(new T.Vector3());
+       district.worldToLocal(center);targetFocus.set(center.x*.45,0,center.z*.45);
+     }
+   }
    transitionStart=performance.now();
    fades.forEach(f=>{f.target=show&&f.group===target?1:0;f.delay=0;});
    requestRender();
@@ -79,18 +89,20 @@ async function createScene(){
  const fades=groups.map(group=>{const materials=[];group.traverse(o=>{if(o.material){o.material.transparent=true;materials.push({material:o.material,opacity:o.material.opacity});}});return {group,materials,value:0,target:0,delay:0};});
  layerGroup.visible=true;shiftGroup.visible=true;
  function updateText(){updateBenefit();delete status.dataset.i18n;status.textContent=descriptions[mode][document.documentElement.lang==='ar'?1:0];}
- function select(next){mode=next;agentChat.hidden=mode!==1;transitionStart=performance.now();host.dataset.mode=String(mode);host.parentElement.dataset.scene=String(mode);
+ function select(next){userCamera=false;targetFocus.set(0,0,0);mode=next;agentChat.hidden=mode!==1;transitionStart=performance.now();host.dataset.mode=String(mode);host.parentElement.dataset.scene=String(mode);
    fades.forEach(f=>{const layerIndex=Object.values(layerObjects).indexOf(f.group);f.target=mode===2&&layerIndex>=0?1:(mode===3&&f.group===overlays?1:(mode===4&&[construction,poolChange,canopyLoss].includes(f.group)?1:0));f.delay=mode===2&&layerIndex>=0?layerIndex*110:0;if(mode===2&&layerIndex>=0)f.value=0;});runAgent();updateText();resize();
  }
  // Fit the entire rotated survey tightly inside the phone, with room for captions.
  // Use the scan's own perimeter rather than empty bounding-box corners.
  const corners=layout.corners.map(p=>new T.Vector3(...p));
  function fitCamera(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();
+   const aim=focusPoint.clone().applyAxisAngle(new T.Vector3(0,1,0),rotation);aim.y=.12;
    let low=5,high=70;const rotated=corners.map(p=>p.clone().applyAxisAngle(new T.Vector3(0,1,0),rotation));
-   for(let i=0;i<13;i++){const distance=(low+high)/2;camera.position.set(0,distance*.52,distance*.854);camera.lookAt(0,.12,0);camera.updateMatrixWorld();const fits=rotated.every(p=>{const v=p.clone().project(camera);return Math.abs(v.x)<.955&&Math.abs(v.y)<.72;});if(fits)high=distance;else low=distance;}
-   camera.position.set(0,high*.52/zoom,high*.854/zoom);camera.lookAt(0,.12,0);camera.updateMatrixWorld();
+   for(let i=0;i<13;i++){const distance=(low+high)/2;camera.position.set(aim.x,distance*.52,aim.z+distance*.854);camera.lookAt(aim);camera.updateMatrixWorld();const fits=rotated.every(p=>{const v=p.clone().project(camera);return Math.abs(v.x)<.955&&Math.abs(v.y)<.72;});if(fits)high=distance;else low=distance;}
+   camera.position.set(aim.x,high*.52/zoom,aim.z+high*.854/zoom);camera.lookAt(aim);camera.updateMatrixWorld();
  }
  function draw(now){frame=0;if(!visible||document.hidden||!mobile.matches)return;const dt=Math.min((now-last)/1000||.016,.05);last=now;const ease=reduced.matches?1:1-Math.exp(-dt*9);rotation+=(targetRotation-rotation)*ease;district.rotation.y=rotation;zoom+=(targetZoom-zoom)*ease;let changing=Math.abs(targetRotation-rotation)>.001||Math.abs(targetZoom-zoom)>.001;
+   focusPoint.lerp(targetFocus,reduced.matches?1:1-Math.exp(-dt*3.5));changing ||= focusPoint.distanceToSquared(targetFocus)>.000001;
    fades.forEach(f=>{const target=!reduced.matches&&now-transitionStart<f.delay?0:f.target;f.value+=(target-f.value)*ease;f.group.visible=f.value>.003;f.materials.forEach(({material,opacity})=>material.opacity=opacity*f.value);changing ||= Math.abs(f.target-f.value)>.003;});fitCamera();renderer.render(scene,camera);if(changing)requestRender();
  }
  function requestRender(){if(!frame&&visible&&!document.hidden&&mobile.matches)frame=requestAnimationFrame(draw);}
@@ -99,7 +111,7 @@ async function createScene(){
  // Keep one-finger page scrolling; two fingers zoom the scan, not the page.
  let pointer=null,pinch=null;
  const clampZoom=value=>Math.max(1,Math.min(2.8,value));
- function setZoom(value){targetZoom=clampZoom(value);requestRender();}
+ function setZoom(value){userCamera=true;targetFocus.copy(focusPoint);targetZoom=clampZoom(value);requestRender();}
  const touchDistance=touches=>Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);
  host.addEventListener('wheel',e=>{
    // Ordinary scrolling must leave this section; zoom only with Ctrl / pinch.
@@ -122,7 +134,7 @@ async function createScene(){
  host.setAttribute('tabindex','0');
  host.setAttribute('aria-label','Interactive 3D scan. Pinch or Ctrl-scroll to zoom. Drag sideways to rotate. Keyboard: plus or minus to zoom, zero to reset, arrow keys to rotate.');
  host.addEventListener('pointerdown',e=>{if(pinch||!e.isPrimary||e.target.closest('button'))return;pointer={x:e.clientX,y:e.clientY,rotation:targetRotation};});
- host.addEventListener('pointermove',e=>{if(!pointer||pinch)return;if(Math.abs(e.clientY-pointer.y)>Math.abs(e.clientX-pointer.x)+8){pointer=null;return;}targetRotation=Math.max(-.8,Math.min(.8,pointer.rotation+(e.clientX-pointer.x)*.005));requestRender();});
+ host.addEventListener('pointermove',e=>{if(!pointer||pinch)return;if(Math.abs(e.clientY-pointer.y)>Math.abs(e.clientX-pointer.x)+8){pointer=null;return;}userCamera=true;targetFocus.copy(focusPoint);targetRotation=Math.max(-.8,Math.min(.8,pointer.rotation+(e.clientX-pointer.x)*.005));requestRender();});
  ['pointerup','pointercancel','pointerleave'].forEach(k=>host.addEventListener(k,()=>pointer=null));
  host.addEventListener('keydown',e=>{if(['+','=','-','0'].includes(e.key)){e.preventDefault();setZoom(e.key==='0'?1:targetZoom*(e.key==='-'?1/1.2:1.2));return;}if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();targetRotation=Math.max(-.8,Math.min(.8,targetRotation+(e.key==='ArrowLeft'?-.15:.15)));requestRender();}});
  new ResizeObserver(resize).observe(host);
