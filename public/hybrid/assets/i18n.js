@@ -133,7 +133,7 @@
       "hero.image.alt": "View through a spacecraft porthole",
       "hero.earth.alt": "Earth from orbit",
       "hero.cta.bookDemo": "Book a Demo",
-      "phone.cta.demo": "Demo",
+      "phone.cta.demo": "Demo!",
 
       // rotating words (with trailing period; period is part of the rotation)
       "hero.rotate.01": "the built world.",

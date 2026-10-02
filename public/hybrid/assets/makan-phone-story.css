@@ -853,3 +853,41 @@
  #mk-tiers .mk-tier-head-row{flex-wrap:wrap;gap:8px;max-width:100%;}
  #mk-tiers .mk-tier-header>*{max-width:100%;overflow-wrap:break-word;}
 }
+/* The white demo shortcut sharpens into view after leaving the hero. */
+@media(max-width:767px){
+ .cta{display:block !important;position:fixed !important;left:50% !important;right:auto !important;bottom:calc(20px + env(safe-area-inset-bottom,0px)) !important;width:auto !important;opacity:0 !important;visibility:hidden !important;transform:translateX(-50%) !important;filter:blur(8px) !important;transition:opacity .55s ease,filter .55s ease,visibility .55s ease !important;}
+ .cta a{pointer-events:none !important;}
+ .mp-past-hero .cta:not(.mp-form-visible){opacity:1 !important;filter:blur(0) !important;visibility:visible !important;}
+ .mp-past-hero .cta:not(.mp-form-visible) a{pointer-events:auto !important;}
+ .cta>.unit-36{display:none;}
+ .cta :is(.container,.grid,.cta_c,.cta_list,.btn-cta_c,.btn-cta_magnet){display:block;position:static;width:auto;min-width:0;margin:0;padding:0;transform:none !important;}
+ .cta .btn-cta{display:inline-flex;min-width:76px;min-height:44px;background:#fff !important;border:1px solid #e4e7eb;border-radius:999px !important;box-shadow:0 4px 16px #0002;}
+ .cta .btn-cta_btn{height:44px !important;min-height:44px !important;padding:0 18px !important;background:#fff !important;border-radius:999px !important;color:#14171b !important;}
+ .cta .btn-cta_btn .t7{font-size:13px !important;color:#14171b !important;}
+}
+@media(max-width:767px) and (prefers-reduced-motion:reduce){.cta{transition:none !important;filter:none !important;}}
+/* Match the original two-part floating CTA, scaled down for phones. */
+@media(max-width:767px){
+ .cta .btn-cta{gap:6px;min-width:0;background:transparent !important;border:0;box-shadow:none;border-radius:0 !important;}
+ .cta .btn-cta_btn{height:44px !important;min-height:44px !important;padding:0 18px !important;border:1px solid #e4e7eb;box-shadow:0 4px 16px #0002;}
+ .cta .btn-cta_btn-icon{display:flex !important;align-items:center;justify-content:center;width:44px !important;height:44px !important;min-height:44px !important;border-radius:50% !important;background:#fff !important;color:#14171b !important;border:1px solid #e4e7eb;box-shadow:0 4px 16px #0002;}
+ .cta .btn-cta_btn-icon_icon{display:flex;align-items:center;justify-content:center;width:16px;height:16px;transform:none !important;}
+ .cta .btn-cta_btn-icon .ico-20{width:16px;height:16px;}
+}
+/* Consistent product and form actions; clean white form controls. */
+@media(max-width:767px){
+ #mk-tiers .mk-tier-card .mk-tier-cta,
+ #use-cases-dark #mk-waitlist-form .mk-actions .mk-submit{display:inline-flex !important;align-items:center;justify-content:center;width:fit-content !important;max-width:100%;min-height:44px !important;height:auto !important;padding:11px 18px !important;border-radius:12px !important;background:#0a0e1a !important;border:1px solid #0a0e1a !important;color:#fff !important;font-size:14px !important;line-height:1.5 !important;font-weight:600 !important;letter-spacing:0 !important;box-shadow:none !important;}
+ #use-cases-dark #mk-waitlist-form .mk-actions{display:flex !important;flex-direction:column;align-items:flex-start !important;}
+ #use-cases-dark #mk-waitlist-form :is(input,select,textarea){background:#fff !important;border:1px solid #e8eaed !important;border-radius:12px !important;box-shadow:none !important;}
+ #use-cases-dark #mk-waitlist-form :is(input,textarea)::placeholder{color:#8a8f95 !important;}
+ #use-cases-dark #mk-waitlist-form :is(input,select,textarea):focus-visible{outline:2px solid #424952 !important;outline-offset:2px;border-color:#aab0b6 !important;}
+ #use-cases-dark #mk-waitlist-form .mk-fineprint{text-align:left !important;}
+}
+
+@media(max-width:767px){#use-cases-dark #mk-waitlist-form .mk-submit{margin:0 !important;}}
+
+/* Restore the desktop-style translucent surround around both CTA pieces. */
+@media(max-width:767px){
+ .cta .btn-cta_c{padding:6px;border:1px solid rgba(255,255,255,.38);border-radius:999px;background:rgba(255,255,255,.12);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+}
