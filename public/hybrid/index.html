@@ -744,8 +744,13 @@ body .sky-bg_about,
       // our style block and its !important wins the cascade)
       var imgs = skyAbout.querySelectorAll('.img-w > .img');
       for (var i = 0; i < imgs.length; i++) {
-        imgs[i].style.setProperty('-webkit-mask-image', 'none', 'important');
-        imgs[i].style.setProperty('mask-image', 'none', 'important');
+        if (window.matchMedia('(min-width: 768px)').matches) {
+          imgs[i].style.removeProperty('-webkit-mask-image');
+          imgs[i].style.removeProperty('mask-image');
+        } else {
+          imgs[i].style.setProperty('-webkit-mask-image', 'none', 'important');
+          imgs[i].style.setProperty('mask-image', 'none', 'important');
+        }
       }
     }
     if (skyNight) {
@@ -794,7 +799,7 @@ window.addEventListener('load', function() {
     /* Initial state: tilted back */
     gsap.set(el, {
       rotateX: 15,
-      scale: 1.05,
+      scale: selector === '#mk-dashboard-window' ? 1 : 1.05,
       transformOrigin: 'center top',
       willChange: 'transform'
     });
@@ -1687,7 +1692,48 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 .mk-loading-brand {display:inline-flex;align-items:center;gap:10px;color:#fff;white-space:nowrap;}
 .mk-loading-brand img {display:block;width:35px;height:35px;object-fit:contain;flex-shrink:0;}
 .mk-loading-wordmark {font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:2rem;letter-spacing:.12em;display:inline-block;line-height:1;height:auto;text-transform:none;}
-@media(max-width:767px){.mk-loading-brand img{width:28px;height:28px;}.mk-loading-wordmark{font-size:26px;}}
+@media(max-width:767px){
+ .mk-loading-brand img{width:28px;height:28px;}
+ .mk-loading-wordmark{font-size:26px;}
+ /* Room for the 36px blur kernel without a clipped rectangular edge.
+    Negative margins preserve the logo's position and original size. */
+ [data-wab-preloader] .preloader_info,
+ [data-wab-preloader] .preloader_c,
+ [data-wab-preloader] .preloader_c .container,
+ [data-wab-preloader] .preloader_c .grid {overflow:visible!important;}
+ [data-wab-preloader] .preloader_info > .l1 {
+   padding:64px 48px;margin:-64px -48px;overflow:visible!important;
+ }
+}
+</style><style id="mk-desktop-sky-blending">
+@media(min-width:768px){
+ /* Overlap fixed layers; fading the incoming layer over an opaque one
+    avoids both hard image edges and blue gaps between two fading images. */
+ html body .sky-bg_about > .img-w {display:block!important;overflow:hidden!important;opacity:.75;}
+ html body .sky-bg_about > .img-w > img.img {
+   position:absolute!important;left:0;top:0;width:100%!important;height:30%!important;
+   margin:0!important;flex:none!important;opacity:1!important;
+   object-fit:cover!important;object-position:center 85%!important;
+   -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 33.333%,#000 100%)!important;
+   mask-image:linear-gradient(to bottom,transparent 0%,#000 33.333%,#000 100%)!important;
+ }
+ html body .sky-bg_about > .img-w > img.img:first-child {-webkit-mask-image:none!important;mask-image:none!important;}
+ html body .sky-bg_about > .img-w > img.img:nth-child(2){top:20%;}
+ html body .sky-bg_about > .img-w > img.img:nth-child(3){top:40%;}
+ html body .sky-bg_about > .img-w > img.img:nth-child(4){top:60%;}
+ html body .sky-bg_about > .img-w > img.img:nth-child(5){top:80%;}
+}
+</style><style id="mk-demo-reveal-guard">
+@media(min-width:992px){
+ html body #use-cases-dark {height:400vh;position:relative;overflow:clip;}
+ html body #use-cases-dark > .uc-spotlight {position:sticky!important;top:0!important;height:100vh!important;transform:none!important;}
+ #use-cases-dark .uc-header-content {opacity:0;visibility:hidden;pointer-events:none;}
+ #use-cases-dark .uc-search-bar {visibility:hidden;pointer-events:none;}
+}
+</style><style id="mk-dashboard-viewport-fit">
+@media(min-width:768px){
+ #mk-dashboard-window {width:min(100%,calc(100vw - 64px),calc((100svh - 160px)*1.77778))!important;margin-inline:auto;}
+}
 </style></head><body class="body" style="" cz-shortcut-listen="true" data-new-gr-c-s-check-loaded="14.1281.0" data-gr-ext-installed="">
 <!-- Language switcher (i18n) is now placed inside the hero, mirroring the
      SCROLL DOWN element so it scrolls away with the page rather than
@@ -1979,64 +2025,19 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
     var wrap = document.getElementById('mk-dash-scale-wrap');
     var iframe = document.getElementById('mk-dash-iframe');
     if(!wrap || !iframe) return;
-    var r = wrap.getBoundingClientRect();
-    if(!r.width || !r.height) return;
-    /* Scale so the iframe's full content width fits with a 1.5% safety
-       margin — the dashboard's internal flex layout occasionally pushes
-       the right panel a few pixels past the declared 1600px body width,
-       and overflow:hidden on the body masks that without us being able
-       to detect it. The 1.5% cushion keeps the right panel fully on-
-       screen at every viewport size with no visible white margin. */
-    var SAFETY = 0.985;
-    var s = (r.width * SAFETY) / DASH_W;
-    iframe.style.transform = 'scale(' + s + ')';
-    /* Center the iframe horizontally so the safety margin shows on both
-       sides equally rather than as a stripe on the right. */
-    var scaledW = DASH_W * s;
-    iframe.style.left = ((r.width - scaledW) / 2) + 'px';
-    iframe.style.top  = '0px';
+    // Layout dimensions exclude the animated perspective/scale on the parent.
+    var width = wrap.clientWidth, height = wrap.clientHeight;
+    if(!width || !height) return;
+    var scale = Math.min(width / DASH_W, height / DASH_H);
+    iframe.style.transform = 'scale(' + scale + ')';
+    iframe.style.left = ((width - DASH_W * scale) / 2) + 'px';
+    iframe.style.top = ((height - DASH_H * scale) / 2) + 'px';
   }
   fit();
   window.addEventListener('resize', fit);
   // Re-fit after images/fonts/iframes load
   window.addEventListener('load', fit);
   setTimeout(fit, 100); setTimeout(fit, 500); setTimeout(fit, 1500);
-
-  /* Brute-force fit loop: the wearebrand template's GSAP/ScrollTrigger
-     layout settles asynchronously and at unpredictable times during
-     the first few seconds (font loads, image loads, ScrollTrigger
-     refreshes from sky-bg JS, lenis init, etc.). Rather than try to
-     predict when, just keep re-fitting on every animation frame for
-     the first 8 seconds. Cheap (each fit() is one bounding-rect read
-     + one transform write). After 8 seconds, fall back to the slower
-     idle hooks (resize listener, ResizeObserver, ScrollTrigger refresh
-     hook) which catch any layout changes from then on. */
-  (function bruteForceFit(){
-    if (window.matchMedia("(max-width: 767px)").matches) return;
-    var startedAt = performance.now();
-    var DURATION_MS = 8000;
-    function loop(){
-      fit();
-      if (performance.now() - startedAt < DURATION_MS) {
-        requestAnimationFrame(loop);
-      }
-    }
-    requestAnimationFrame(loop);
-  })();
-
-  /* Also fire a synthetic resize event a few times during the first
-     second — equivalent to the manual window resize that the user
-     reports makes the dashboard "snap in". Triggers all the
-     wearebrand layout hooks, GSAP refreshes, and our own resize
-     listener at once. */
-  function fireResize(){
-    if (window.matchMedia('(max-width: 767px)').matches) return;
-    try { window.dispatchEvent(new Event('resize')); } catch(e){}
-  }
-  setTimeout(fireResize, 200);
-  setTimeout(fireResize, 800);
-  setTimeout(fireResize, 1800);
-  setTimeout(fireResize, 3500);
 
   /* The Mac-window container is sized + transformed by the wearebrand
      ScrollTrigger system. Initial fit() runs before ScrollTrigger has
@@ -3219,7 +3220,6 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
         <div class="mk-tier-header">
           <div class="mk-tier-head-row">
             <span class="mk-tier-name">
-              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
               <span data-i18n="usecases.studio.name">Studio</span>
             </span>
           </div>
@@ -3245,7 +3245,6 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
         <div class="mk-tier-header">
           <div class="mk-tier-head-row">
             <span class="mk-tier-name">
-              <svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 11l6-4M9 13l6 4"/></svg>
               <span data-i18n="usecases.connect.name">Connect</span>
             </span>
             <span class="mk-tier-badge" data-i18n="usecases.connect.badge">Agent-ready</span>
@@ -3272,7 +3271,6 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
         <div class="mk-tier-header">
           <div class="mk-tier-head-row">
             <span class="mk-tier-name">
-              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               <span data-i18n="usecases.custom.name">Custom</span>
             </span>
           </div>
@@ -3971,6 +3969,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
       return setTimeout(initUseCasesDark, 100);
     }
+    ScrollTrigger.saveStyles('#use-cases-dark .uc-spotlight, #use-cases-dark .uc-spotlight-content, #use-cases-dark .uc-header-content, #use-cases-dark .uc-features, #use-cases-dark .uc-feature, #use-cases-dark .uc-feature-bg, #use-cases-dark .uc-feature-content, #use-cases-dark .uc-search-bar, #use-cases-dark .uc-search-bar p');
     gsap.matchMedia().add('(min-width: 992px)', function(){
     var features = document.querySelectorAll('#use-cases-dark .uc-feature');
     var featureBgs = document.querySelectorAll('#use-cases-dark .uc-feature-bg');
@@ -4076,15 +4075,22 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
     }
     window.addEventListener('resize', resizeSpotlight);
 
-    ScrollTrigger.create({
-      trigger: '#use-cases-dark .uc-spotlight',
+    var demoTrigger = ScrollTrigger.create({
+      id: 'makan-demo-reveal',
+      refreshPriority: -10,
+      invalidateOnRefresh: true,
+      onRefresh: function(self){ resizeSpotlight(); renderSpotlight(self); },
+      trigger: '#use-cases-dark',
       start: 'top top',
-      end: '+=' + (window.innerHeight * 3) + 'px',
-      pin: true,
-      pinSpacing: true,
+      end: 'bottom bottom',
       scrub: 1,
-      onUpdate: function(self){
-        var p = self.progress;
+      onUpdate: renderSpotlight
+    });
+    function renderSpotlight(){
+        // Read live section geometry, never cached progress from the old viewport.
+        var sectionRect = document.getElementById('use-cases-dark').getBoundingClientRect();
+        var range = Math.max(1, sectionRect.height - window.innerHeight);
+        var p = Math.max(0, Math.min(1, -sectionRect.top / range));
 
         if (p <= 0.3333) {
           gsap.set('#use-cases-dark .uc-spotlight-content', { y: (-100 * (p / 0.3333)) + '%' });
@@ -4124,10 +4130,10 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
            from p >= 0.5 onward, never fades out. */
         if (p >= 0.5) {
           gsap.set('#use-cases-dark .uc-features', { opacity: 0 });
-          gsap.set('#use-cases-dark .uc-search-bar', { opacity: 1 });
+          gsap.set('#use-cases-dark .uc-search-bar', { autoAlpha: 1, pointerEvents: 'auto' });
         } else {
           gsap.set('#use-cases-dark .uc-features', { opacity: 1 });
-          gsap.set('#use-cases-dark .uc-search-bar', { opacity: 0 });
+          gsap.set('#use-cases-dark .uc-search-bar', { autoAlpha: 0, pointerEvents: 'none' });
         }
 
         /* Pill positioning — computed LIVE each frame using
@@ -4184,13 +4190,25 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
            pill-positioning block above to keep them synchronized.) */
         if (p >= 0.6) {
           var fhp = Math.min((p - 0.6) / 0.3, 1);
-          gsap.set('#use-cases-dark .uc-header-content', { y: -50 + 50 * fhp, opacity: fhp });
+          gsap.set('#use-cases-dark .uc-header-content', { y: -50 + 50 * fhp, autoAlpha: fhp, pointerEvents: fhp > 0.1 ? 'auto' : 'none' });
         } else {
-          gsap.set('#use-cases-dark .uc-header-content', { y: -50, opacity: 0 });
+          gsap.set('#use-cases-dark .uc-header-content', { y: -50, autoAlpha: 0, pointerEvents: 'none' });
         }
-      }
-    });
-    return function(){ window.removeEventListener('resize', resizeSpotlight); };
+    }
+    var revealFrame = 0;
+    function scheduleReveal(){
+      if (!revealFrame) revealFrame = requestAnimationFrame(function(){ revealFrame = 0; renderSpotlight(); });
+    }
+    window.addEventListener('scroll', scheduleReveal, { passive: true });
+    window.addEventListener('resize', scheduleReveal);
+    renderSpotlight();
+    return function(){
+      demoTrigger.kill(true);
+      cancelAnimationFrame(revealFrame);
+      window.removeEventListener('scroll', scheduleReveal);
+      window.removeEventListener('resize', scheduleReveal);
+      window.removeEventListener('resize', resizeSpotlight);
+    };
     });
   }
   if (document.readyState === 'loading') {
