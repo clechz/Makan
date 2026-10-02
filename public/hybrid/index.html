@@ -782,6 +782,7 @@ body .sky-bg_about,
 window.addEventListener('load', function() {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
+  if (window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches) return;
   var windows = ['#mk-dashboard-window', '#mk-beforeafter-window'];
   windows.forEach(function(selector) {
     var el = document.querySelector(selector);
@@ -1680,7 +1681,9 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 .mk-lang-pill .ar-glyph { font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans', sans-serif; font-size: 14px; }
 </style>
 
-</head><body class="body" style="" cz-shortcut-listen="true" data-new-gr-c-s-check-loaded="14.1281.0" data-gr-ext-installed="">
+<style>
+#makan-intro{display:none}html.mk-boot #makan-intro{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:#080e13;color:#fff;pointer-events:auto}#makan-intro .mk-intro-brand{display:flex;align-items:center;gap:12px;opacity:0;font:700 28px/1.2 Arial,sans-serif;letter-spacing:.1em}#makan-intro img{width:30px;height:30px}html.mk-boot .header,html.mk-boot .mp-hero-brand{visibility:hidden!important}html.mk-boot{overflow:hidden}[data-wab-preloader]{display:none!important}
+</style><script>document.documentElement.classList.add('mk-boot');window.mkIntroFailsafe=setTimeout(function(){document.documentElement.classList.remove('mk-boot');document.body&&(document.body.style.overflow='');},5000);window.addEventListener('pageshow',function(e){if(e.persisted)document.documentElement.classList.remove('mk-boot');});</script></head><body class="body" style="" cz-shortcut-listen="true" data-new-gr-c-s-check-loaded="14.1281.0" data-gr-ext-installed=""><div id="makan-intro" aria-hidden="true"><div class="mk-intro-brand"><img src="./assets/makan-native-icon.png" alt=""><span>makan.</span></div></div>
 <!-- Language switcher (i18n) is now placed inside the hero, mirroring the
      SCROLL DOWN element so it scrolls away with the page rather than
      sticking to the viewport. See injection below the hero h1 markup. -->
@@ -1750,7 +1753,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 <path d="M2 7.33496H14V8.66829H2V7.33496Z" fill="currentColor"></path>
 </svg></div><div data-wab-menu-ico-3="mobile" class="ico-20 is-2 embed"><svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M2 12.001H14V13.3343H2V12.001Z" fill="currentColor"></path>
-</svg></div></div><div class="btn-menu_bg"></div></a></div></div></div><div class="unit-24"></div></div></div></div><div data-wab-bg="color" class="intro_scroll-area"><section id="hero" class="section clip"><div id="main-content"></div><!-- Language switcher: lives inside the hero so it scrolls away with the hero (mirrors SCROLL DOWN behavior). Top-right corner, scoped inside #hero. --><div class="mk-lang-pill" role="group" aria-label="Language"><button type="button" data-lang-set="en" class="active" aria-label="English" aria-pressed="true">EN</button><span class="mk-lang-sep">/</span><button type="button" data-lang-set="ar" class="ar-glyph" aria-label="العربية" aria-pressed="false">ع</button></div><div class="container"><div class="hero_scroll-area"><div class="hero-w"><div class="hero-s" style="translate: none; rotate: none; scale: none; transform: scale(1, 1);"><div class="unit-156"></div><div class="grid fill"><div data-wab-hero-left="" id="w-node-_56a9c997-003c-f73c-85f6-4b080b85aa36-9b251e8a" class="hero-s_title-l"><h1 class="h2 text-light" style="opacity:1" data-i18n="hero.title">Query the World.</h1></div><div data-wab-hero-right="" id="w-node-b5bc0e69-6d9b-6b76-42c5-655f89025957-9b251e8a" class="hero-s_title-r"><h2 class="h2 a-right text-light" style="opacity:0 !important;display:none"></h2></div></div><div class="unit-216"></div><div class="hero-s_bot-mobile b-mobile"><div class="hero-mobile-tagline"><h3 class="text-light" data-i18n="hero.tagline">We observe the surface and tell you what to do about it.</h3></div><div class="hero-mobile-subtitle"><p class="text-light"><span data-i18n="hero.subtitle.prefix">Intelligence built to understand</span>&nbsp;&nbsp;<span id="makan-rotate-mobile" class="makan-rotate-word">the natural world.</span></p></div><div class="hero-mobile-scroll"><div class="wab-scroll-icon"><svg width="28" height="44" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="42" rx="13" stroke="currentColor" stroke-width="1.5" opacity="0.5"></rect><circle class="wab-scroll-dot" cx="14" cy="12" r="3" fill="currentColor"></circle></svg></div></div></div><div class="hero-s_bot b-desktop"><div class="grid"><div data-wab-hero-left="" id="w-node-fca5a1c1-2abc-b0f2-d9a4-068c5d568a3f-9b251e8a" class="hero-s_bot_desc f-desktop"><h3 id="wab-hero-tagline" class="h3 text-light" style="margin-bottom: 1rem; visibility: visible;" data-i18n="hero.tagline">We observe the surface and tell you what to do about it.</h3><div class="grid _6-columns"><div id="w-node-_48cf72cc-74cf-d039-2207-aa612fc8b12d-9b251e8a" class="hero-s_bot_desc_title" style="display:none"></div></div><div data-wab-flicker="true" data-div-reveal="true" class="line-divider-w" style="visibility: visible;"><div class="unit-24"></div><div class="line-divider on-color" style="display:none !important;"></div><div class="unit-24"></div></div><div class="grid _6-columns"><div id="w-node-_5c05abfb-41cf-d7d3-44c6-33625de3235a-9b251e8a" class="hero-s_bot_desc_w"><p data-wab-flicker="true" data-line-reveal="true" class="p7 text-light" style="font-style: normal; opacity: 1; visibility: visible; font-size: 1.2rem; line-height: 1.6; white-space: nowrap;"><span data-i18n="hero.subtitle.prefix">Intelligence built to understand</span> &nbsp;&nbsp;<span id="makan-rotate" class="makan-rotate-word" data-i18n="hero.rotate.02">the natural world.</span></p></div></div></div><div data-wab-hero-right="" data-div-reveal="true" data-wab-flicker="true" id="w-node-_59b46cf7-c31e-7125-08a4-0e9e21a4ddb4-9b251e8a" class="hero-s_bot_scroll" style="text-align: right; margin-left: auto; visibility: visible;"><div class="line-h on-color"></div><div class="unit-24"></div><div class="hero-s_bot_scroll_cont"><div class="hero-s_bot_scroll_cont_item"><div class="ico_scroll_c"><div class="wab-scroll-icon">
+</svg></div></div><div class="btn-menu_bg"></div></a></div></div></div><div class="unit-24"></div></div></div></div><div data-wab-bg="color" class="intro_scroll-area"><section id="hero" class="section clip"><div class="mp-hero-brand" aria-label="Makan"><img src="./assets/makan-native-icon.png" alt="" width="28" height="28"><span>makan.</span></div><div id="main-content"></div><!-- Language switcher: lives inside the hero so it scrolls away with the hero (mirrors SCROLL DOWN behavior). Top-right corner, scoped inside #hero. --><div class="mk-lang-pill" role="group" aria-label="Language"><button type="button" data-lang-set="en" class="active" aria-label="English" aria-pressed="true">EN</button><span class="mk-lang-sep">/</span><button type="button" data-lang-set="ar" class="ar-glyph" aria-label="العربية" aria-pressed="false">ع</button></div><div class="container"><div class="hero_scroll-area"><div class="hero-w"><div class="hero-s" style="translate: none; rotate: none; scale: none; transform: scale(1, 1);"><div class="unit-156"></div><div class="grid fill"><div data-wab-hero-left="" id="w-node-_56a9c997-003c-f73c-85f6-4b080b85aa36-9b251e8a" class="hero-s_title-l"><h1 class="h2 text-light" style="opacity:1" data-i18n="hero.title">Query the World.</h1></div><div data-wab-hero-right="" id="w-node-b5bc0e69-6d9b-6b76-42c5-655f89025957-9b251e8a" class="hero-s_title-r"><h2 class="h2 a-right text-light" style="opacity:0 !important;display:none"></h2></div></div><div class="unit-216"></div><div class="hero-s_bot-mobile b-mobile"><div class="hero-mobile-tagline"><h3 class="text-light" data-i18n="hero.tagline">We observe the surface and tell you what to do about it.</h3></div><div class="hero-mobile-subtitle"><p class="text-light"><span data-i18n="hero.subtitle.prefix">Intelligence built to understand</span>&nbsp;&nbsp;<span id="makan-rotate-mobile" class="makan-rotate-word">the natural world.</span></p></div><div class="hero-mobile-scroll"><div class="wab-scroll-icon"><svg width="28" height="44" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="42" rx="13" stroke="currentColor" stroke-width="1.5" opacity="0.5"></rect><circle class="wab-scroll-dot" cx="14" cy="12" r="3" fill="currentColor"></circle></svg></div></div></div><div class="hero-s_bot b-desktop"><div class="grid"><div data-wab-hero-left="" id="w-node-fca5a1c1-2abc-b0f2-d9a4-068c5d568a3f-9b251e8a" class="hero-s_bot_desc f-desktop"><h3 id="wab-hero-tagline" class="h3 text-light" style="margin-bottom: 1rem; visibility: visible;" data-i18n="hero.tagline">We observe the surface and tell you what to do about it.</h3><div class="grid _6-columns"><div id="w-node-_48cf72cc-74cf-d039-2207-aa612fc8b12d-9b251e8a" class="hero-s_bot_desc_title" style="display:none"></div></div><div data-wab-flicker="true" data-div-reveal="true" class="line-divider-w" style="visibility: visible;"><div class="unit-24"></div><div class="line-divider on-color" style="display:none !important;"></div><div class="unit-24"></div></div><div class="grid _6-columns"><div id="w-node-_5c05abfb-41cf-d7d3-44c6-33625de3235a-9b251e8a" class="hero-s_bot_desc_w"><p data-wab-flicker="true" data-line-reveal="true" class="p7 text-light" style="font-style: normal; opacity: 1; visibility: visible; font-size: 1.2rem; line-height: 1.6; white-space: nowrap;"><span data-i18n="hero.subtitle.prefix">Intelligence built to understand</span> &nbsp;&nbsp;<span id="makan-rotate" class="makan-rotate-word" data-i18n="hero.rotate.02">the natural world.</span></p></div></div></div><div data-wab-hero-right="" data-div-reveal="true" data-wab-flicker="true" id="w-node-_59b46cf7-c31e-7125-08a4-0e9e21a4ddb4-9b251e8a" class="hero-s_bot_scroll" style="text-align: right; margin-left: auto; visibility: visible;"><div class="line-h on-color"></div><div class="unit-24"></div><div class="hero-s_bot_scroll_cont"><div class="hero-s_bot_scroll_cont_item"><div class="ico_scroll_c"><div class="wab-scroll-icon">
 <svg width="28" height="44" viewBox="0 0 28 44" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="1" y="1" width="26" height="42" rx="13" stroke="currentColor" stroke-width="1.5" opacity="0.5"></rect>
 <circle class="wab-scroll-dot" cx="14" cy="12" r="3" fill="currentColor"></circle>
@@ -1768,20 +1771,31 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 <div><dt><span data-i18n="stats.layers.label">fused layers</span></dt><dd dir="ltr">30+</dd></div>
 <div><dt><span data-i18n="stats.resolution.label">on demand</span></dt><dd dir="ltr">10cm/px</dd></div>
 </dl></section>
-<section class="mp-product mp-section">
-<h2 data-i18n="phone.preview">Explore the intelligence layer</h2>
-<div class="mp-image-switch" role="group" aria-label="Satellite comparison">
-<button type="button" data-phone-view="raw" aria-pressed="false"><span data-i18n="phone.raw">What you see</span></button>
-<button type="button" data-phone-view="overlay" aria-pressed="true"><span data-i18n="phone.overlay">What Makan sees</span></button></div>
-<figure class="mp-map"><img id="mp-map-image" src="./assets/after-makan-overlay.png" alt="After — Makan intelligence overlay" data-i18n-alt="beforeafter.slider.alt.after" width="1536" height="1024" loading="lazy"><figcaption><span data-i18n="phone.example">Illustrative analysis</span></figcaption></figure>
-<div class="mp-answer">
-<p class="mp-eyebrow" data-i18n="features.fgrid.agent.label">Agent</p>
-<p class="mp-question"><span data-i18n="phone.short.question">New construction nearby?</span></p>
-<p class="mp-result"><span data-i18n="phone.short.result">2,480 discoveries. 360 places.</span></p>
-<p class="mp-citations" dir="ltr">[1] Sentinel-2 · 2025-03-14<br>[2] PlanetScope · 2025-09-02</p></div></section>
 <section class="mp-workflow mp-section">
-<h2 data-i18n="phone.short.workflow">Your world. In one place.</h2>
-<div class="mp-spatial" data-scene="0" data-pass="latest"><div class="mp-scene" aria-hidden="true"><div class="mp-orbit"></div><div class="mp-terrain"><div class="mp-plane mp-plane-base"></div><div class="mp-plane mp-plane-image"></div><div class="mp-plane mp-plane-grid"></div><div class="mp-plane mp-plane-marks"><i></i><i></i><i></i></div><div class="mp-shift-buildings"><div class="mp-building"><i></i><i></i><i></i></div><div class="mp-building"><i></i><i></i><i></i></div><div class="mp-building"><i></i><i></i><i></i></div></div></div><div class="mp-scene-signal"><span></span><span></span><span></span></div><div class="mp-scene-coordinate">25.2048° N · 55.2708° E</div></div><div class="mp-shift-timeline" role="group" aria-label="Compare satellite passes"><button type="button" data-shift-pass="previous" aria-pressed="false" data-i18n="phone.shift.previous">Previous pass</button><span aria-hidden="true">→</span><button type="button" data-shift-pass="latest" aria-pressed="true" data-i18n="phone.shift.latest">Latest pass</button><small data-i18n="phone.shift.example">Illustrative construction change</small></div><div class="mp-scene-controls" role="group" aria-label="Explore Makan features"><button type="button" data-scene-select="0" aria-pressed="true"><span data-i18n="features.fgrid.places.label">Places</span></button><button type="button" data-scene-select="1" aria-pressed="false"><span data-i18n="features.fgrid.agent.label">Agent</span></button><button type="button" data-scene-select="2" aria-pressed="false"><span data-i18n="features.fgrid.layers.label">Layers</span></button><button type="button" data-scene-select="3" aria-pressed="false"><span data-i18n="features.fgrid.discoveries.label">Discoveries</span></button><button type="button" data-scene-select="4" aria-pressed="false"><span data-i18n="features.fgrid.shifts.label">Shifts</span></button></div><div class="mp-scene-copy"><div data-scene-panel="0" ><h3 data-i18n="phone.short.places">Draw. Name. Monitor.</h3><p data-i18n="features.fgrid.places.desc">Draw boundaries, name them, track them. Every place becomes a living dataset — continuously updated with every satellite pass.</p></div><div data-scene-panel="1" hidden><h3 data-i18n="phone.short.agent">Ask the map.</h3><p data-i18n="features.fgrid.agent.desc">Natural-language queries over satellite imagery. &quot;Show me all new construction within 5 km of the pipeline in the last 90 days.&quot; The agent searches, cites sources, and returns geolocated results.</p></div><div data-scene-panel="2" hidden><h3 data-i18n="phone.short.layers">See the whole picture.</h3><p data-i18n="features.fgrid.layers.desc">Construction, risk, wealth, density — satellite-detected, AI-modeled, and API-sourced.</p></div><div data-scene-panel="3" hidden><h3 data-i18n="phone.short.discoveries">Know what changed.</h3><p data-i18n="features.fgrid.discoveries.desc">New structures, terrain shifts, anomalies — timestamped, geolocated, scored with confidence.</p></div><div data-scene-panel="4" hidden><h3 data-i18n="phone.short.shifts">Track every shift.</h3><p data-i18n="features.fgrid.shifts.desc">Scrub through satellite passes, compare dates, catch anomalies the moment they deviate.</p></div></div></div></section>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><filter id="mp-survey-matte" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  8 8 8 0 0"/></filter></defs></svg>
+<div class="mp-product-overview">
+<div class="mp-overview-brand"><strong>Makan</strong><span data-i18n="phone.overview.category">Query the World</span></div>
+<h2 data-i18n="phone.overview.title">From imagery to decisions.</h2>
+</div>
+<div class="mp-spatial" data-scene="1" data-pass="latest"><div id="mp-district" class="mp-district" tabindex="0" role="group" aria-label="Real scanned district with illustrative overlays. Drag horizontally or use arrow keys to rotate.">
+<img class="mp-district-fallback" src="./assets/town/poster.webp" alt="3D survey preview" loading="lazy">
+<div class="mp-district-topline"><span data-i18n="phone.3d.demo">Real scan</span></div>
+<div class="mp-district-caption"><span class="mp-district-status" aria-live="polite">Your world, in three dimensions</span><small data-i18n="phone.3d.drag">Drag to explore</small></div>
+</div>
+<p class="mp-scan-credit">3D scan by <a href="https://www.cgtrader.com/designers/scanforge" target="_blank" rel="noopener noreferrer">ScanForge</a></p>
+<div class="mp-district-time" role="group" aria-label="Illustrative height change" hidden><button type="button" data-epoch="0" aria-pressed="false" data-i18n="phone.3d.before">Original scan</button><span aria-hidden="true">&#8594;</span><button type="button" data-epoch="1" aria-pressed="true" data-i18n="phone.3d.after">Change example</button></div>
+<p class="mp-interaction-hint" data-i18n="phone.scene.hint">Tap a feature below. Drag the scene to explore.</p><div class="mp-scene-controls" role="group" aria-label="Explore Makan features"><button type="button" data-scene-select="1" aria-pressed="true"><span data-i18n="phone.ask.label">Ask Makan</span></button><button type="button" data-scene-select="2" aria-pressed="false"><span data-i18n="features.fgrid.layers.label">Layers</span></button><button type="button" data-scene-select="3" aria-pressed="false"><span data-i18n="features.fgrid.discoveries.label">Discoveries</span></button><button type="button" data-scene-select="4" aria-pressed="false"><span data-i18n="features.fgrid.shifts.label">Shifts</span></button></div><div class="mp-scene-copy"><div data-scene-panel="0" ><h3 data-i18n="phone.short.places">Draw. Name. Monitor.</h3><p data-i18n="phone.scene.places">Draw boundaries, name them, track them. Every place becomes a living dataset — continuously updated with every satellite pass.</p></div><div data-scene-panel="1" hidden><h3 data-i18n="phone.short.agent">Ask the map.</h3><p data-i18n="phone.scene.agent">Natural-language queries over satellite imagery. &quot;Show me all new construction within 5 km of the pipeline in the last 90 days.&quot; The agent searches, cites sources, and returns geolocated results.</p></div><div data-scene-panel="2" hidden><h3 data-i18n="phone.short.layers">See the whole picture.</h3><p data-i18n="phone.scene.layers">Construction, risk, wealth, density — satellite-detected, AI-modeled, and API-sourced.</p></div><div data-scene-panel="3" hidden><h3 data-i18n="phone.short.discoveries">Know what changed.</h3><p data-i18n="phone.scene.discoveries">New structures, terrain shifts, anomalies — timestamped, geolocated, scored with confidence.</p></div><div data-scene-panel="4" hidden><h3 data-i18n="phone.short.shifts">Track every shift.</h3><p data-i18n="phone.scene.shifts">Scrub through satellite passes, compare dates, catch anomalies the moment they deviate.</p></div></div></div></section>
+<section class="mp-product mp-section">
+<h2 data-i18n="phone.preview">What you see. What Makan sees.</h2>
+<div class="mp-compare-labels"><span data-i18n="phone.compare.raw">What you see</span><span data-i18n="phone.compare.analysis">What Makan sees</span></div>
+<figure class="mp-map mp-compare mp-original-compare" style="--reveal:50%">
+<img src="./assets/before-satellite-phone.webp" alt="Satellite view before analysis" loading="lazy" decoding="async">
+<div class="mp-compare-after"><img src="./assets/after-makan-overlay-phone.webp" alt="The same view with illustrative Makan analysis" loading="lazy" decoding="async"></div>
+<div class="mp-compare-line" aria-hidden="true"><span>&harr;</span></div>
+<input class="mp-compare-range" type="range" min="0" max="100" value="50" aria-label="Drag to compare satellite imagery and Makan analysis">
+<figcaption data-i18n="phone.compare.hint">Drag to compare · illustrative analysis</figcaption>
+</figure></section>
+
 
 </div>
 <section class="section" style="height:auto;min-height:auto"><div class="container"><div class="about-w"><div id="learn-more" class="about-s"><div class="unit-96"></div><div data-div-reveal="true" id="w-node-c6cefa80-f7b3-f3f7-eec7-08a3529fc895-9b251e8a" class="about-s_lead-text"><div class="about-s_lead-text_c">
@@ -1959,7 +1973,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 </div>
 
 <div id="mk-dash-scale-wrap" style="position:relative;width:100%;aspect-ratio:1600/820;overflow:hidden;background:#fff;">
-<iframe id="mk-dash-iframe" src="./dashboard-screenshot.html" style="position:absolute;top:0;left:0;width:1600px;height:820px;border:none;transform-origin:top left;" frameborder="0" scrolling="no"></iframe>
+<iframe id="mk-dash-iframe" loading="lazy" src="./dashboard-screenshot.html" style="position:absolute;top:0;left:0;width:1600px;height:820px;border:none;transform-origin:top left;" frameborder="0" scrolling="no"></iframe>
 </div>
 <script>
 (function(){
@@ -2035,6 +2049,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
      idle hooks (resize listener, ResizeObserver, ScrollTrigger refresh
      hook) which catch any layout changes from then on. */
   (function bruteForceFit(){
+    if (window.matchMedia("(max-width: 767px)").matches) return;
     var startedAt = performance.now();
     var DURATION_MS = 8000;
     function loop(){
@@ -2052,6 +2067,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
      wearebrand layout hooks, GSAP refreshes, and our own resize
      listener at once. */
   function fireResize(){
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     try { window.dispatchEvent(new Event('resize')); } catch(e){}
   }
   setTimeout(fireResize, 200);
@@ -2443,8 +2459,8 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 <link rel="stylesheet" href="https://unpkg.com/img-comparison-slider@8/dist/styles.css" />
 <script type="module" src="https://unpkg.com/img-comparison-slider@8/dist/index.js"></script>
 <img-comparison-slider id="mk-ba-slider" style="width:100%;height:100%;display:block;--divider-color:rgba(0,0,0,0.3);--divider-width:2px;--handle-size:36px;outline:none;">
-  <div slot="first" class="mk-slot-wrap"><img src="./assets/before-satellite.png" alt="Before — raw satellite imagery" data-i18n-alt="beforeafter.slider.alt.before" /></div>
-  <div slot="second" class="mk-slot-wrap"><img src="./assets/after-makan-overlay.png" alt="After — Makan intelligence overlay" data-i18n-alt="beforeafter.slider.alt.after" /></div>
+  <div slot="first" class="mk-slot-wrap"><img loading="lazy" decoding="async" src="./assets/before-satellite.png" alt="Before — raw satellite imagery" data-i18n-alt="beforeafter.slider.alt.before" /></div>
+  <div slot="second" class="mk-slot-wrap"><img loading="lazy" decoding="async" src="./assets/after-makan-overlay.png" alt="After — Makan intelligence overlay" data-i18n-alt="beforeafter.slider.alt.after" /></div>
 </img-comparison-slider>
 <style>
   #mk-ba-slider .mk-slot-wrap { display:block; width:100%; height:100%; overflow:hidden; position:relative; background:#f0f0f0; }
@@ -4225,6 +4241,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 <script>
 (function(){
   function initCityLoop(){
+    if (window.matchMedia("(max-width: 767px)").matches) return;
     var list = document.querySelector('.wc-list');
     if (!list || typeof gsap === 'undefined') return setTimeout(initCityLoop, 100);
     var items=Array.from(list.children);
@@ -4282,7 +4299,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 <div class="sky-bg">
   <div class="sky-bg_hero" style="translate: none; rotate: none; scale: none; transform: translate3d(0px, 0vh, 10px);">
     <div class="img-w">
-      <img alt="Earth from orbit" loading="eager" src="./assets/earth-hero.png" class="img">
+      <picture style="display:contents"><source media="(max-width: 767px)" srcset="./assets/earth-hero-phone.webp"><img alt="Earth from orbit" loading="eager" fetchpriority="high" src="./assets/earth-hero.png" class="img"></picture>
     </div>
     <div class="sky-bg_hero_clouds">
       <div id="wab-star-particles" class="wab-particles-canvas">
@@ -4427,6 +4444,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
     /* Set the current word on first paint and on each language change. */
     setText(read(idx));
     document.addEventListener('makan:lang-changed', function(){ setText(read(idx)); });
+    if (window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches) return;
     setInterval(function(){
       el.style.opacity = '0';
       el.style.filter = 'blur(8px)';
@@ -4641,6 +4659,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 <script>
 (function(){
   function initStarParticles(){
+    if (window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)").matches) return;
     if (typeof particlesJS === 'undefined' || !document.getElementById('wab-star-particles')) {
       return setTimeout(initStarParticles, 100);
     }
