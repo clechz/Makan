@@ -68,8 +68,8 @@ function initPreloader(){
  if(initPreloader.started)return;initPreloader.started=true;
  const overlay=document.querySelector('#makan-intro'),brand=overlay?.querySelector('.mk-intro-brand');
  let done=false;
- const release=()=>{if(done)return;done=true;clearTimeout(window.mkIntroFailsafe);clearTimeout(watchdog);document.documentElement.classList.remove('mk-boot');overlay?.remove();document.body.style.overflow='';document.body.removeAttribute('data-lenis-prevent');};
- const watchdog=setTimeout(release,4000);
+ const release=()=>{if(done)return;done=true;clearTimeout(window.mkIntroFailsafe);clearTimeout(watchdog);document.documentElement.classList.remove('mk-boot');document.documentElement.style.overflow='';overlay?.remove();document.body.style.overflow='';document.body.removeAttribute('data-lenis-prevent');};
+ const watchdog=setTimeout(release,1600);
  window.addEventListener('pageshow',event=>{if(event.persisted)release();});
  try{initPageTransitions();}catch(error){release();console.warn('Page animation setup failed:',error);return;}
  if(!overlay||!brand||matchMedia('(prefers-reduced-motion: reduce)').matches){release();return;}
@@ -82,7 +82,7 @@ function initPreloader(){
    try{
     await brand.animate([{opacity:0,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],{duration:250,easing:'ease-out',fill:'forwards'}).finished;
     if(done)return;
-    await overlay.animate([{opacity:1},{opacity:0}],{delay:350,duration:450,easing:'ease-in-out',fill:'forwards'}).finished;
+    await overlay.animate([{opacity:1},{opacity:0}],{delay:100,duration:300,easing:'ease-in-out',fill:'forwards'}).finished;
    }catch{}finally{release();}
   }));
  });
