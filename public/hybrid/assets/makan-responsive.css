@@ -129,3 +129,11 @@ html { overflow-x: clip; }
   transform: none !important;
   will-change: auto !important;
 }
+
+/* Start the dashboard's six cards nearer the preview center. */
+@media (min-width:1200px) {
+ #mk-tl, #mk-bl { left:8%; }
+ #mk-left { left:6%; }
+ #mk-tr, #mk-br { right:8%; }
+ #mk-right { right:6%; }
+}
