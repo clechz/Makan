@@ -50,12 +50,38 @@ document.querySelectorAll('[data-scene-select]').forEach(button => {
   });
 });
 
-// Load 3D only when a phone approaches the scene. Desktop pays no bundle cost.
+// Reuse one interactive scene across layouts, retaining its camera and controls.
+const spatialScene = document.querySelector('.mp-spatial');
+const dashboardSection = document.querySelector('.mk-dashboard-section');
+if (spatialScene && dashboardSection) {
+  const phoneSlot = document.createComment('phone spatial scene');
+  spatialScene.before(phoneSlot);
+  const desktopScene = document.createElement('section');
+  desktopScene.id = 'mk-desktop-spatial';
+  desktopScene.setAttribute('aria-labelledby', 'mk-spatial-title');
+  desktopScene.innerHTML = '<header><h2 id="mk-spatial-title">A place you can explore.</h2><p>Rotate the real survey. Explore layers, discoveries, and change examples.</p></header>';
+  dashboardSection.after(desktopScene);
+  const placeScene = () => {
+    if (phoneLayout.matches) phoneSlot.after(spatialScene);
+    else desktopScene.append(spatialScene);
+    const hint = spatialScene.querySelector('.mp-interaction-hint');
+    hint.removeAttribute('data-i18n');
+    hint.textContent = phoneLayout.matches ? 'Drag sideways to rotate. Pinch to zoom; move two fingers to pan.' : 'Drag to rotate. Scroll inside the scan to zoom.';
+  };
+  placeScene();
+  phoneLayout.addEventListener('change', placeScene);
+  const note = document.createElement('p');
+  note.className = 'mp-scene-disclosure';
+  note.textContent = 'Real scan · illustrative overlays';
+  spatialScene.append(note);
+}
+
+// Load the scene only as it approaches the viewport.
 const districtHost = document.querySelector('#mp-district');
 if (districtHost) {
   let districtLoaded = false;
   const loadDistrict = () => {
-    if (districtLoaded || !phoneLayout.matches) return;
+    if (districtLoaded) return;
     districtLoaded = true;
     import('./phone-district.js').catch(() => { districtHost.dataset.ready = 'fallback'; });
   };
@@ -125,3 +151,11 @@ if (demoProblem) {
  phoneLayout.addEventListener('change', syncProblemPrompt);
  document.addEventListener('makan:lang-changed', syncProblemPrompt);
 }
+
+// Decorative CSS loops only run while their section is visible.
+const motionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => entry.target.classList.toggle('mk-motion-offscreen', !entry.isIntersecting));
+}, { rootMargin: '120px' });
+document.querySelectorAll('.mk-dashboard-section, .mk-proof-desktop, #makan-logo-scroll-section').forEach(section => {
+ section.classList.add('mk-motion-offscreen');motionObserver.observe(section);
+});

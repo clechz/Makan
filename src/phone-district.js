@@ -8,7 +8,7 @@ const mobile=matchMedia('(max-width: 767px)'), reduced=matchMedia('(prefers-redu
 const base=new URL('./town/',import.meta.url);
 if(host){
  let started=false;
- const start=()=>{if(started||!mobile.matches)return;started=true;createScene().catch(e=>{host.dataset.ready='fallback';const label=host.querySelector('.mp-district-status');label.dataset.i18n='phone.3d.still';label.textContent=window.MakanI18n?.t('phone.3d.still')||'Still survey preview';console.warn('Scan preview unavailable:',e.message);});};
+ const start=()=>{if(started)return;started=true;createScene().catch(e=>{host.dataset.ready='fallback';const label=host.querySelector('.mp-district-status');label.dataset.i18n='phone.3d.still';label.textContent=window.MakanI18n?.t('phone.3d.still')||'Still survey preview';console.warn('Scan preview unavailable:',e.message);});};
  const near=new IntersectionObserver(entries=>{if(entries[0].isIntersecting)start();},{rootMargin:'900px'});near.observe(host);
  mobile.addEventListener('change',()=>{if(host.getBoundingClientRect().top<innerHeight+150)start();});
 }
@@ -34,11 +34,18 @@ async function createScene(){
  const focusPoint=new T.Vector3(),targetFocus=new T.Vector3();let userCamera=false;
  host.prepend(renderer.domElement);renderer.domElement.setAttribute('aria-hidden','true');
  const status=host.querySelector('.mp-district-status'),time=host.parentElement.querySelector('.mp-district-time');time.hidden=true;
- host.querySelector('.mp-district-reset')?.remove();
+  const reset=document.createElement('button');reset.type='button';reset.className='mp-district-reset';reset.textContent='↺';reset.setAttribute('aria-label','Reset 3D view');host.append(reset);
+ reset.addEventListener('click',()=>{userCamera=true;targetRotation=-.14;targetZoom=1;targetFocus.set(0,0,0);requestRender();});
  const agentChat=document.createElement('div');agentChat.className='mp-agent-chat';agentChat.hidden=true;
  agentChat.innerHTML='<div class="mp-agent-chat-label"></div><div class="mp-agent-question"></div><div class="mp-agent-answer"><strong>Makan</strong><p></p><small class="mp-agent-evidence"></small></div>';
  host.append(agentChat);
  const benefit=document.createElement('div');benefit.className='mp-scene-benefit';benefit.hidden=true;host.append(benefit);
+  const messageRail=document.createElement('div');messageRail.className='mp-scene-messages';
+ const placeMessages=()=>{
+   if(mobile.matches){host.append(agentChat,benefit);messageRail.remove();}
+   else {host.parentElement.append(messageRail);messageRail.append(agentChat,benefit);}
+ };
+ placeMessages();mobile.addEventListener('change',placeMessages);
  const benefits={
    2:[['Layers connected','Buildings, roads & greenery.'],['الصورة كاملة','مباني، طرق ومساحات خضراء.']],
    3:[['Discovery alerts','New signals, sent to you.'],['اكتشافات توصلك','الجديد في موقعك، أول بأول.']],
@@ -60,11 +67,12 @@ async function createScene(){
    const target=agentTargets[focus];
    if(!userCamera){
      targetFocus.set(0,0,0);
+     if(!mobile.matches)targetZoom=1;
      if(show&&target.children.some(child=>child.children.length)){
        // Local bounds keep framing independent of the current user rotation.
        target.updateWorldMatrix(true,true);
        const bounds=new T.Box3().setFromObject(target),center=bounds.getCenter(new T.Vector3());
-       district.worldToLocal(center);targetFocus.set(center.x*.45,0,center.z*.45);
+       district.worldToLocal(center);const framing=mobile.matches?.45:.85;targetFocus.set(center.x*framing,0,center.z*framing);if(!mobile.matches)targetZoom=focus==='cars'?1.3:1.85;
      }
    }
    transitionStart=performance.now();
@@ -81,7 +89,7 @@ async function createScene(){
      const type=()=>{at++;q.textContent=question.slice(0,at);a.textContent=answer.slice(0,Math.max(0,at-question.length-4));if(at===question.length+5)focusAgent(true);if(at<question.length+answer.length+4)agentTyping=setTimeout(type,28);else{agentChat.classList.remove('is-typing');agentTimer=setTimeout(()=>{agentExample=(agentExample+1)%agentExamples.length;runAgent();},11000);}};type();
    }else{q.textContent=example.q[lang];a.textContent=example.a[lang];}
  }
- function runAgent(){stopAgent();if(mode!==1||!visible||document.hidden||!mobile.matches)return;updateAgent(!reduced.matches);}
+ function runAgent(){stopAgent();if(mode!==1||!visible||document.hidden)return;updateAgent(!reduced.matches);}
  let zoom=1,targetZoom=1;
  let mode=0,rotation=-.14,targetRotation=-.14,frame=0,visible=false,last=0,transitionStart=0;
  const descriptions=[['A place, ready to understand','كل مكان له قصة'],['Ask the map. Follow the evidence.','اسأل مكان. وشوف الدليل.'],['Buildings · greenery · streets · utilities','المباني · الخضرة · الشوارع · المرافق'],['Discoveries follow the actual roofs','الاكتشافات تتبع الأسطح الحقيقية'],['Building extension · pool · tree cover','توسّع مبنى · مسبح · أشجار']];
@@ -95,48 +103,53 @@ async function createScene(){
  // Fit the entire rotated survey tightly inside the phone, with room for captions.
  // Use the scan's own perimeter rather than empty bounding-box corners.
  const corners=layout.corners.map(p=>new T.Vector3(...p));
+ let fitKey='',fitDistance=70;
  function fitCamera(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();
    const aim=focusPoint.clone().applyAxisAngle(new T.Vector3(0,1,0),rotation);aim.y=.12;
-   let low=5,high=70;const rotated=corners.map(p=>p.clone().applyAxisAngle(new T.Vector3(0,1,0),rotation));
-   for(let i=0;i<13;i++){const distance=(low+high)/2;camera.position.set(aim.x,distance*.52,aim.z+distance*.854);camera.lookAt(aim);camera.updateMatrixWorld();const fits=rotated.every(p=>{const v=p.clone().project(camera);return Math.abs(v.x)<.955&&Math.abs(v.y)<.72;});if(fits)high=distance;else low=distance;}
+   const key=[w,h,rotation.toFixed(4),aim.x.toFixed(4),aim.z.toFixed(4)].join('|');let high=fitDistance;if(key!==fitKey){let low=5;high=70;const rotated=corners.map(p=>p.clone().applyAxisAngle(new T.Vector3(0,1,0),rotation));
+   for(let i=0;i<13;i++){const distance=(low+high)/2;camera.position.set(aim.x,distance*.52,aim.z+distance*.854);camera.lookAt(aim);camera.updateMatrixWorld();const fits=rotated.every(p=>{const v=p.clone().project(camera);return Math.abs(v.x)<.955&&Math.abs(v.y)<.72;});if(fits)high=distance;else low=distance;}fitKey=key;fitDistance=high;}
    camera.position.set(aim.x,high*.52/zoom,aim.z+high*.854/zoom);camera.lookAt(aim);camera.updateMatrixWorld();
  }
- function draw(now){frame=0;if(!visible||document.hidden||!mobile.matches)return;const dt=Math.min((now-last)/1000||.016,.05);last=now;const ease=reduced.matches?1:1-Math.exp(-dt*9);rotation+=(targetRotation-rotation)*ease;district.rotation.y=rotation;zoom+=(targetZoom-zoom)*ease;let changing=Math.abs(targetRotation-rotation)>.001||Math.abs(targetZoom-zoom)>.001;
+ function draw(now){frame=0;if(!visible||document.hidden)return;const dt=Math.min((now-last)/1000||.016,.05);last=now;const ease=reduced.matches?1:1-Math.exp(-dt*9);rotation+=(targetRotation-rotation)*ease;district.rotation.y=rotation;zoom+=(targetZoom-zoom)*ease;let changing=Math.abs(targetRotation-rotation)>.001||Math.abs(targetZoom-zoom)>.001;
    focusPoint.lerp(targetFocus,reduced.matches?1:1-Math.exp(-dt*3.5));changing ||= focusPoint.distanceToSquared(targetFocus)>.000001;
    fades.forEach(f=>{const target=!reduced.matches&&now-transitionStart<f.delay?0:f.target;f.value+=(target-f.value)*ease;f.group.visible=f.value>.003;f.materials.forEach(({material,opacity})=>material.opacity=opacity*f.value);changing ||= Math.abs(f.target-f.value)>.003;});fitCamera();renderer.render(scene,camera);if(changing)requestRender();
  }
- function requestRender(){if(!frame&&visible&&!document.hidden&&mobile.matches)frame=requestAnimationFrame(draw);}
+ function requestRender(){if(!frame&&visible&&!document.hidden)frame=requestAnimationFrame(draw);}
  function resize(){const w=host.clientWidth,h=host.clientHeight;if(w&&h){renderer.setSize(w,h,false);fitCamera();requestRender();}}
  document.querySelectorAll('[data-scene-select]').forEach(b=>b.addEventListener('click',()=>select(Number(b.dataset.sceneSelect))));
  // Keep one-finger page scrolling; two fingers zoom the scan, not the page.
  let pointer=null,pinch=null;
- const clampZoom=value=>Math.max(1,Math.min(2.8,value));
- function setZoom(value){userCamera=true;targetFocus.copy(focusPoint);targetZoom=clampZoom(value);requestRender();}
+ const clampZoom=value=>Math.max(1,Math.min(4,value));
+ function setZoom(value){userCamera=true;targetZoom=clampZoom(value);requestRender();}
+ const touchCenter=touches=>({x:(touches[0].clientX+touches[1].clientX)/2,y:(touches[0].clientY+touches[1].clientY)/2});
  const touchDistance=touches=>Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);
  host.addEventListener('wheel',e=>{
-   // Ordinary scrolling must leave this section; zoom only with Ctrl / pinch.
-   if(!mobile.matches||!visible||!e.ctrlKey)return;
+   // Desktop wheel zooms inside the scan; outside it the page scrolls.
+   if(!visible||(mobile.matches&&!e.ctrlKey))return;
    const pixels=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?host.clientHeight:1);
    const next=clampZoom(targetZoom*Math.exp(-pixels*.0015));
-   if(next===targetZoom)return;
+   if(next===targetZoom){if(!mobile.matches)e.preventDefault();return;}
    e.preventDefault();setZoom(next);
  },{passive:false});
  host.addEventListener('touchstart',e=>{
    if(e.touches.length!==2)return;
-   pointer=null;pinch={distance:Math.max(1,touchDistance(e.touches)),zoom:targetZoom};
+   pointer=null;pinch={distance:Math.max(1,touchDistance(e.touches)),zoom:targetZoom,center:touchCenter(e.touches),focus:targetFocus.clone()};
    e.preventDefault();
  },{passive:false});
  host.addEventListener('touchmove',e=>{
    if(!pinch||e.touches.length!==2)return;
-   e.preventDefault();setZoom(pinch.zoom*touchDistance(e.touches)/pinch.distance);
+      e.preventDefault();setZoom(pinch.zoom*touchDistance(e.touches)/pinch.distance);
+   const center=touchCenter(e.touches),scale=2*camera.position.distanceTo(focusPoint)*Math.tan(T.MathUtils.degToRad(camera.fov/2))/host.clientHeight;
+   const pan=new T.Vector3(-(center.x-pinch.center.x)*scale,0,-(center.y-pinch.center.y)*scale).applyAxisAngle(new T.Vector3(0,1,0),-rotation);
+   targetFocus.copy(pinch.focus).add(pan);targetFocus.x=T.MathUtils.clamp(targetFocus.x,-6,6);targetFocus.z=T.MathUtils.clamp(targetFocus.z,-6,6);
  },{passive:false});
  ['touchend','touchcancel'].forEach(type=>host.addEventListener(type,()=>{pinch=null;pointer=null;},{passive:true}));
  host.setAttribute('tabindex','0');
- host.setAttribute('aria-label','Interactive 3D scan. Pinch or Ctrl-scroll to zoom. Drag sideways to rotate. Keyboard: plus or minus to zoom, zero to reset, arrow keys to rotate.');
- host.addEventListener('pointerdown',e=>{if(pinch||!e.isPrimary||e.target.closest('button'))return;pointer={x:e.clientX,y:e.clientY,rotation:targetRotation};});
- host.addEventListener('pointermove',e=>{if(!pointer||pinch)return;if(Math.abs(e.clientY-pointer.y)>Math.abs(e.clientX-pointer.x)+8){pointer=null;return;}userCamera=true;targetFocus.copy(focusPoint);targetRotation=Math.max(-.8,Math.min(.8,pointer.rotation+(e.clientX-pointer.x)*.005));requestRender();});
+ host.setAttribute('aria-label','Interactive 3D scan. Pinch to zoom and move two fingers to pan. Drag sideways to rotate. Keyboard: plus or minus to zoom, zero to reset, arrow keys to rotate.');
+ host.addEventListener('pointerdown',e=>{if(pinch||!e.isPrimary||e.target.closest('button'))return;pointer={x:e.clientX,y:e.clientY,rotation:targetRotation,dragging:false};});
+ host.addEventListener('pointermove',e=>{if(!pointer||pinch)return;const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;if(!pointer.dragging){if(Math.abs(dy)>Math.abs(dx)+6){pointer=null;return;}if(Math.abs(dx)<8)return;pointer.dragging=true;host.setPointerCapture(e.pointerId);}userCamera=true;targetFocus.copy(focusPoint);targetRotation=pointer.rotation+(e.clientX-pointer.x)*.006;requestRender();});
  ['pointerup','pointercancel','pointerleave'].forEach(k=>host.addEventListener(k,()=>pointer=null));
- host.addEventListener('keydown',e=>{if(['+','=','-','0'].includes(e.key)){e.preventDefault();setZoom(e.key==='0'?1:targetZoom*(e.key==='-'?1/1.2:1.2));return;}if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();targetRotation=Math.max(-.8,Math.min(.8,targetRotation+(e.key==='ArrowLeft'?-.15:.15)));requestRender();}});
+ host.addEventListener('keydown',e=>{if(['+','=','-','0'].includes(e.key)){e.preventDefault();if(e.key==='0'){targetRotation=-.14;targetFocus.set(0,0,0);}setZoom(e.key==='0'?1:targetZoom*(e.key==='-'?1/1.2:1.2));return;}if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();targetRotation=targetRotation+(e.key==='ArrowLeft'?-.15:.15);requestRender();}});
  new ResizeObserver(resize).observe(host);
  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(!visible){cancelAnimationFrame(frame);frame=0;}else requestRender();runAgent();},{threshold:.2}).observe(host);
  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else requestRender();runAgent();});mobile.addEventListener('change',()=>{requestRender();runAgent();});

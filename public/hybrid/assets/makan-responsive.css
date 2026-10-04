@@ -123,3 +123,9 @@ html { overflow-x: clip; }
   html { scroll-behavior: auto !important; }
   #makan-logo-scroll-section [style*="animation"] { animation-play-state: paused !important; }
 }
+
+/* Product previews stay flat while the surrounding cards retain their motion. */
+#mk-dashboard-window, #mk-beforeafter-window {
+  transform: none !important;
+  will-change: auto !important;
+}

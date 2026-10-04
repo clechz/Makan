@@ -736,6 +736,7 @@ body .sky-bg_about,
   function enforceSkyHeights() {
     var skyAbout = document.querySelector('.sky-bg_about');
     var skyNight = document.querySelector('.sky-bg_night');
+    var layoutChanged = (skyAbout && (skyAbout.style.height !== '5600px' || skyAbout.style.marginTop !== '-10px')) || (skyNight && skyNight.style.display !== 'none');
     if (skyAbout) {
       skyAbout.style.setProperty('height', '5600px', 'important');
       skyAbout.style.setProperty('margin-top', '-10px', 'important');
@@ -756,7 +757,7 @@ body .sky-bg_about,
     if (skyNight) {
       skyNight.style.setProperty('display', 'none', 'important');
     }
-    if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
+    if (layoutChanged && window.ScrollTrigger && window.ScrollTrigger.refresh) {
       try { window.ScrollTrigger.refresh(); } catch(e){}
     }
   }
@@ -778,48 +779,7 @@ body .sky-bg_about,
 })();
 </script>
 
-<script>
-/* 3D scroll animation for the dashboard + before/after windows.
-   Mimics the Aceternity ContainerScroll effect using GSAP ScrollTrigger:
-   - Window starts rotated 20deg on X axis (tilted back)
-   - As user scrolls, it rotates to 0deg (flat) and scales down slightly
-   - Creates a premium "floating into view" effect */
-window.addEventListener('load', function() {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-  if (window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches) return;
-  var windows = ['#mk-dashboard-window', '#mk-beforeafter-window'];
-  windows.forEach(function(selector) {
-    var el = document.querySelector(selector);
-    if (!el) return;
-
-    /* Set perspective on the parent so rotateX works */
-    el.parentElement.style.perspective = '1200px';
-
-    /* Initial state: tilted back */
-    gsap.set(el, {
-      rotateX: 15,
-      scale: selector === '#mk-dashboard-window' ? 1 : 1.05,
-      transformOrigin: 'center top',
-      willChange: 'transform'
-    });
-
-    /* Animate to flat as user scrolls the element into view */
-    gsap.to(el, {
-      rotateX: 0,
-      scale: 1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        end: 'top 20%',
-        scrub: 1,
-        invalidateOnRefresh: true
-      }
-    });
-  });
-});
-</script>
 
 <meta content="Makan indexes the physical world from orbit. Satellite imagery, vector embeddings, and operational alerts for enterprise teams." name="description" data-i18n-meta="meta.description">
 <meta content="Makan — Query the World." property="og:title">
@@ -1998,98 +1958,9 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 </div>
 
 <div id="mk-dash-scale-wrap" style="position:relative;width:100%;aspect-ratio:1600/820;overflow:hidden;background:#fff;">
-<iframe id="mk-dash-iframe" loading="lazy" src="./dashboard-screenshot.html" style="position:absolute;top:0;left:0;width:1600px;height:820px;border:none;transform-origin:top left;" frameborder="0" scrolling="no"></iframe>
+<img id="mk-dashboard-preview" src="./assets/dashboard-preview.jpg" width="1600" height="820" loading="lazy" decoding="async" alt="Makan operations dashboard preview with map, layers, and agent results" style="display:block;width:100%;height:100%;object-fit:contain;">
 </div>
-<script>
-(function(){
-  /* Dashboard's declared size from dashboard-screenshot.html. We start
-     with these and re-measure once the iframe has loaded, in case the
-     actual rendered content exceeds the declared box (which is what
-     causes content to be clipped at the right or bottom). */
-  var DASH_W = 1600;
-  var DASH_H = 820;
 
-  function measureActualSize(){
-    var iframe = document.getElementById('mk-dash-iframe');
-    if (!iframe) return;
-    try {
-      var d = iframe.contentDocument;
-      if (!d || !d.documentElement) return;
-      var w = Math.max(
-        d.documentElement.scrollWidth,
-        d.body ? d.body.scrollWidth : 0,
-        d.documentElement.offsetWidth
-      );
-      var h = Math.max(
-        d.documentElement.scrollHeight,
-        d.body ? d.body.scrollHeight : 0,
-        d.documentElement.offsetHeight
-      );
-      if (w > DASH_W) DASH_W = w;
-      if (h > DASH_H) DASH_H = h;
-      // Also update the iframe + wrap to match so scaling is exact.
-      iframe.style.width = DASH_W + 'px';
-      iframe.style.height = DASH_H + 'px';
-      var wrap = document.getElementById('mk-dash-scale-wrap');
-      if (wrap) {
-        wrap.style.aspectRatio = DASH_W + ' / ' + DASH_H;
-      }
-    } catch(e){}
-  }
-
-  function fit(){
-    var wrap = document.getElementById('mk-dash-scale-wrap');
-    var iframe = document.getElementById('mk-dash-iframe');
-    if(!wrap || !iframe) return;
-    // Layout dimensions exclude the animated perspective/scale on the parent.
-    var width = wrap.clientWidth, height = wrap.clientHeight;
-    if(!width || !height) return;
-    var scale = Math.min(width / DASH_W, height / DASH_H);
-    iframe.style.transform = 'scale(' + scale + ')';
-    iframe.style.left = ((width - DASH_W * scale) / 2) + 'px';
-    iframe.style.top = ((height - DASH_H * scale) / 2) + 'px';
-  }
-  fit();
-  window.addEventListener('resize', fit);
-  // Re-fit after images/fonts/iframes load
-  window.addEventListener('load', fit);
-  setTimeout(fit, 100); setTimeout(fit, 500); setTimeout(fit, 1500);
-
-  /* The Mac-window container is sized + transformed by the wearebrand
-     ScrollTrigger system. Initial fit() runs before ScrollTrigger has
-     settled, so the rect we measure doesn't match the final layout —
-     which is why the dashboard only "snaps in" after a manual window
-     resize (which triggers a fresh fit). Three extra hooks fix this:
-     ResizeObserver on the actual wrap element (real source of truth
-     for size changes), ScrollTrigger.refresh listener (fires after
-     ST recalculates), and the iframe's own load event. */
-  var wrapForRO = document.getElementById('mk-dash-scale-wrap');
-  if (wrapForRO && typeof ResizeObserver !== 'undefined') {
-    var ro = new ResizeObserver(function(){ fit(); });
-    ro.observe(wrapForRO);
-  }
-  function hookScrollTrigger(){
-    if (typeof ScrollTrigger !== 'undefined' && ScrollTrigger.addEventListener) {
-      ScrollTrigger.addEventListener('refresh', fit);
-    } else {
-      setTimeout(hookScrollTrigger, 200);
-    }
-  }
-  hookScrollTrigger();
-  var iframeForLoad = document.getElementById('mk-dash-iframe');
-  if (iframeForLoad) {
-    iframeForLoad.addEventListener('load', function(){
-      measureActualSize();
-      fit();
-    });
-    // Try measuring at intervals too — covers the case where the iframe
-    // has already loaded by the time we attach the listener.
-    setTimeout(function(){ measureActualSize(); fit(); }, 200);
-    setTimeout(function(){ measureActualSize(); fit(); }, 800);
-    setTimeout(function(){ measureActualSize(); fit(); }, 2000);
-  }
-})();
-</script>
 
 </div>
 
@@ -2798,6 +2669,11 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
       return ((val - min) % range + range) % range + min;
     }
 
+    // Reuse transform setters; card dimensions do not change during motion.
+    var cardMotion = slideEls.map(function(el){
+      gsap.set(el,{width:SLIDE_W,height:SLIDE_H,force3D:true});
+      return {x:gsap.quickSetter(el,'x','px'),y:gsap.quickSetter(el,'y','px'),scaleX:gsap.quickSetter(el,'scaleX'),scaleY:gsap.quickSetter(el,'scaleY'),z:null};
+    });
     var tickRunning = true;
     function tick(){
       if(window.matchMedia('(max-width: 767px)').matches){tickRunning=false;return;}
@@ -2816,7 +2692,8 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
         var scale = Math.max(1 - distance * 0.8, 0.25);
         var finalX = screenX - SLIDE_W / 2;
         var finalY = centerY + arcDropY - centerLiftY - SLIDE_H / 2;
-        gsap.set(el, { x: finalX, y: finalY, width: SLIDE_W, height: SLIDE_H, scale: scale, zIndex: Math.round((1 - distance) * 100) });
+        var motion=cardMotion[i];motion.x(finalX);motion.y(finalY);motion.scaleX(scale);motion.scaleY(scale);
+        var z=Math.round((1-distance)*100);if(motion.z!==z){el.style.zIndex=z;motion.z=z;}
         if (distance < closestDist) { closestDist = distance; closest = i; }
       });
       if (closest !== activeIdx) { activeIdx = closest; titleEl.textContent = SLIDES[activeIdx].label; }
@@ -2944,6 +2821,11 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
       return ((val - min) % range + range) % range + min;
     }
 
+    // Reuse transform setters; card dimensions do not change during motion.
+    var cardMotion = slideEls.map(function(el){
+      gsap.set(el,{width:SLIDE_W,height:SLIDE_H,force3D:true});
+      return {x:gsap.quickSetter(el,'x','px'),y:gsap.quickSetter(el,'y','px'),scaleX:gsap.quickSetter(el,'scaleX'),scaleY:gsap.quickSetter(el,'scaleY'),z:null};
+    });
     var tickRunning = true;
     function tick(){
       if(window.matchMedia('(max-width: 767px)').matches){tickRunning=false;return;}
@@ -2961,7 +2843,8 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
         var scale = Math.max(1 - distance * 0.8, 0.25);
         var finalX = screenX - SLIDE_W / 2;
         var finalY = centerY + arcDropY - centerLiftY - SLIDE_H / 2;
-        gsap.set(el, { x: finalX, y: finalY, width: SLIDE_W, height: SLIDE_H, scale: scale, zIndex: Math.round((1 - distance) * 100) });
+        var motion=cardMotion[i];motion.x(finalX);motion.y(finalY);motion.scaleX(scale);motion.scaleY(scale);
+        var z=Math.round((1-distance)*100);if(motion.z!==z){el.style.zIndex=z;motion.z=z;}
         if (distance < closestDist) { closestDist = distance; closest = i; }
       });
       if (closest !== activeIdx) {
@@ -4311,9 +4194,9 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
   </div>
   <div class="sky-bg_about">
     <div class="img-w">
-      <img alt="" role="presentation" loading="eager" src="./assets/sky-about.avif" class="img fill _75-percent">
-      <img alt="" role="presentation" loading="eager" src="./assets/sky-about.avif" class="img fill _75-percent">
-      <img alt="" role="presentation" loading="eager" src="./assets/sky-about.avif" class="img fill _75-percent">
+      <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
+      <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
+      <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
       <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
       <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
     </div>
@@ -4321,7 +4204,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
   </div>
   <div class="sky-bg_night" style="height:calc(var(--_special-units---100vh) * 4);position:relative;">
     <div class="img-w">
-      <img alt="" role="presentation" loading="eager" src="./assets/sky-about.avif" class="img fill _75-percent">
+      <img alt="" role="presentation" loading="lazy" src="./assets/sky-about.avif" class="img fill _75-percent">
     </div>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg, #2B2B2B 0%, #1a1a1a 30%, #0d0d0d 60%, #000000 100%);z-index:1;"></div>
   </div>
@@ -4509,6 +4392,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
 <script>
 (function(){
   function initCards(){
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined'){
       return setTimeout(initCards, 500);
     }
@@ -4536,13 +4420,13 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
     });
 
     // Left side cards fan AWAY from the Mac (slide off the left edge)
-    tl.to('#mk-left', { left: '-260px', duration: 1 }, 0);
-    tl.to('#mk-tl',   { left: '-260px', duration: 1 }, 0);
-    tl.to('#mk-bl',   { left: '-260px', duration: 1 }, 0);
+    tl.to('#mk-left', { x: function(i,el){return -260-parseFloat(getComputedStyle(el).left);}, duration: 1 }, 0);
+    tl.to('#mk-tl',   { x: function(i,el){return -260-parseFloat(getComputedStyle(el).left);}, duration: 1 }, 0);
+    tl.to('#mk-bl',   { x: function(i,el){return -260-parseFloat(getComputedStyle(el).left);}, duration: 1 }, 0);
     // Right side cards fan AWAY from the Mac (slide off the right edge)
-    tl.to('#mk-right', { right: '-260px', duration: 1 }, 0);
-    tl.to('#mk-tr',    { right: '-260px', duration: 1 }, 0);
-    tl.to('#mk-br',    { right: '-260px', duration: 1 }, 0);
+    tl.to('#mk-right', { x: function(i,el){return 260+parseFloat(getComputedStyle(el).right);}, duration: 1 }, 0);
+    tl.to('#mk-tr',    { x: function(i,el){return 260+parseFloat(getComputedStyle(el).right);}, duration: 1 }, 0);
+    tl.to('#mk-br',    { x: function(i,el){return 260+parseFloat(getComputedStyle(el).right);}, duration: 1 }, 0);
   }
   setTimeout(initCards, 2000);
 })();
@@ -4555,6 +4439,7 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
    is the cards wrap that contains them + the before/after window. */
 (function(){
   function initBaCards(){
+    if (window.matchMedia('(max-width: 767px)').matches) return;
     if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined'){
       return setTimeout(initBaCards, 500);
     }
@@ -4582,13 +4467,13 @@ html[lang="ar"] #hero .hero-s_bot_scroll { text-align: right !important; }
     });
 
     // Left-side cards slide off the left edge.
-    tl.to('#mk-ba-left', { left: '-260px', duration: 1 }, 0);
-    tl.to('#mk-ba-tl',   { left: '-260px', duration: 1 }, 0);
-    tl.to('#mk-ba-bl',   { left: '-260px', duration: 1 }, 0);
+    tl.to('#mk-ba-left', { x: function(i,el){return -260-parseFloat(getComputedStyle(el).left);}, duration: 1 }, 0);
+    tl.to('#mk-ba-tl',   { x: function(i,el){return -260-parseFloat(getComputedStyle(el).left);}, duration: 1 }, 0);
+    tl.to('#mk-ba-bl',   { x: function(i,el){return -260-parseFloat(getComputedStyle(el).left);}, duration: 1 }, 0);
     // Right-side cards slide off the right edge.
-    tl.to('#mk-ba-right', { right: '-260px', duration: 1 }, 0);
-    tl.to('#mk-ba-tr',    { right: '-260px', duration: 1 }, 0);
-    tl.to('#mk-ba-br',    { right: '-260px', duration: 1 }, 0);
+    tl.to('#mk-ba-right', { x: function(i,el){return 260+parseFloat(getComputedStyle(el).right);}, duration: 1 }, 0);
+    tl.to('#mk-ba-tr',    { x: function(i,el){return 260+parseFloat(getComputedStyle(el).right);}, duration: 1 }, 0);
+    tl.to('#mk-ba-br',    { x: function(i,el){return 260+parseFloat(getComputedStyle(el).right);}, duration: 1 }, 0);
   }
   setTimeout(initBaCards, 2000);
 })();

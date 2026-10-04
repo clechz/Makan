@@ -891,3 +891,97 @@
 @media(max-width:767px){
  .cta .btn-cta_c{padding:6px;border:1px solid rgba(255,255,255,.38);border-radius:999px;background:rgba(255,255,255,.12);box-shadow:0 4px 20px rgba(0,0,0,.08);}
 }
+
+/* Let the phone hero leave the viewport in normal document flow. */
+@media (max-width: 767px) {
+  #hero .hero-w, #hero .hero-s { position: relative !important; top: auto !important; }
+  #hero .hero-w_bg { position: absolute !important; }
+  .sky-bg_hero { position: absolute !important; top: 0 !important; }
+  html, body { overflow-x: clip !important; }
+}
+@media (max-width: 767px) {
+  .mp-district .mp-district-reset { position:absolute;top:12px;right:12px;z-index:8;background:white;color:#17212a;border:1px solid #d9e2e8;box-shadow:0 2px 8px #0001; }
+}
+
+#mk-desktop-spatial { display:none; }
+.mp-scene-disclosure { margin:20px 0 0;font:12px/1.6 'IBM Plex Sans',sans-serif;text-align:center;color:#62676d; }
+@media (min-width:768px) {
+ #mk-desktop-spatial { display:block;position:relative;z-index:4;max-width:1200px;margin:64px auto 80px;padding:48px;background:#fff;color:#14171b;border:1px solid #e4e7eb;border-radius:28px;box-sizing:border-box; }
+ #mk-desktop-spatial * { box-sizing:border-box; }
+ #mk-desktop-spatial header { max-width:650px;margin-bottom:28px; }
+ #mk-desktop-spatial .mp-eyebrow { font:500 12px/1.5 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em; }
+ #mk-desktop-spatial h2 { font:500 clamp(30px,3.2vw,44px)/1.15 'IBM Plex Sans',sans-serif;margin:12px 0 16px;letter-spacing:-.03em; }
+ #mk-desktop-spatial p { font:400 15px/1.6 'IBM Plex Sans',sans-serif;color:#62676d; }
+ #mk-desktop-spatial .mp-spatial { display:grid;grid-template-columns:minmax(0,1.8fr) minmax(240px,1fr);gap:20px 36px;align-items:start; }
+ #mk-desktop-spatial .mp-district { grid-column:1;grid-row:1 / 5;position:relative;height:520px;touch-action:pan-y;border-radius:20px;background:#f5f7f8;overflow:hidden;cursor:grab; }
+ #mk-desktop-spatial .mp-district:active { cursor:grabbing; }
+ #mk-desktop-spatial canvas { position:absolute;inset:0;width:100%;height:100%; }
+ #mk-desktop-spatial .mp-district-fallback { width:100%;height:100%;object-fit:contain; }
+ #mk-desktop-spatial [data-ready=true] .mp-district-fallback { display:none; }
+ #mk-desktop-spatial [data-ready=fallback] canvas { display:none; }
+ #mk-desktop-spatial .mp-district-topline { position:absolute;top:16px;left:20px;font:500 11px/1.5 'IBM Plex Mono',monospace; }
+ #mk-desktop-spatial .mp-district-caption { position:absolute;bottom:18px;left:20px;right:20px;display:grid;gap:4px;text-align:center;pointer-events:none;font:13px/1.5 'IBM Plex Sans',sans-serif; }
+ #mk-desktop-spatial .mp-district-reset { position:absolute;top:12px;right:12px;z-index:8;width:40px;height:40px;border:1px solid #e4e7eb;border-radius:12px;background:white;color:#14171b;font-size:24px;cursor:pointer; }
+ #mk-desktop-spatial .mp-interaction-hint { grid-column:2;margin:12px 0 0; }
+ #mk-desktop-spatial .mp-scene-controls { grid-column:2;display:flex;flex-wrap:wrap;gap:8px; }
+ #mk-desktop-spatial .mp-scene-controls button { min-height:40px;padding:9px 13px;border:1px solid #e4e7eb;border-radius:12px;background:#f7f8fa;color:#41464c;font:500 13px/1.5 'IBM Plex Sans',sans-serif;cursor:pointer; }
+ #mk-desktop-spatial .mp-scene-controls button[aria-pressed=true] { background:#0a0e1a;color:white;border-color:#0a0e1a; }
+ #mk-desktop-spatial .mp-scene-copy { grid-column:2;min-height:160px; }
+ #mk-desktop-spatial h3 { font:500 24px/1.25 'IBM Plex Sans',sans-serif;margin:0 0 14px;letter-spacing:-.02em; }
+ #mk-desktop-spatial .mp-scene-disclosure { grid-column:2;text-align:left;font-size:12px; }
+ #mk-desktop-spatial .mp-agent-chat { position:absolute;top:52px;right:16px;max-width:calc(100% - 32px);width:290px;z-index:3;padding:12px 16px;background:#fffffff0;border:1px solid #e4e7eb;border-radius:14px;pointer-events:none;font:12px/1.5 'IBM Plex Sans',sans-serif; }
+ #mk-desktop-spatial .mp-agent-chat-label,.mp-agent-evidence { display:none; }
+ #mk-desktop-spatial .mp-agent-question { font-weight:500;padding-bottom:8px;border-bottom:1px solid #e4e7eb; }
+ #mk-desktop-spatial .mp-agent-answer { display:flex;gap:8px;padding-top:8px; }
+ #mk-desktop-spatial .mp-agent-answer p { margin:0;font-size:12px; }
+ #mk-desktop-spatial .mp-scene-benefit { position:absolute;top:60px;left:16px;z-index:3;max-width:calc(100% - 32px);padding:12px 16px;background:white;border:1px solid #e4e7eb;border-radius:14px;pointer-events:none;font:12px/1.5 'IBM Plex Sans',sans-serif; }
+ #mk-desktop-spatial .mp-benefit-icon { display:none; }
+ #mk-desktop-spatial .mp-scene-benefit p { margin:4px 0 0;font-size:12px; }
+ #mk-desktop-spatial [hidden] { display:none!important; }
+ body:has(#mk-desktop-spatial) .mk-fgrid { display:none; }
+}
+@media (min-width:768px) and (max-width:1100px) {
+ #mk-desktop-spatial { margin-inline:24px;padding:28px; }
+ #mk-desktop-spatial .mp-spatial { grid-template-columns:minmax(0,1.4fr) minmax(220px,1fr);gap:20px; }
+ #mk-desktop-spatial .mp-district { height:440px; }
+}
+
+
+/* Keep desktop exploration focused on the scan and its controls. */
+@media (min-width:768px) {
+ #mk-desktop-spatial header > p:not(.mp-eyebrow),
+ #mk-desktop-spatial .mp-interaction-hint,
+ #mk-desktop-spatial .mp-scene-copy,
+ #mk-desktop-spatial .mp-district-caption { display:none; }
+ #mk-desktop-spatial .mp-spatial { align-items:center; }
+ #mk-desktop-spatial .mp-scene-controls { align-self:end; }
+ #mk-desktop-spatial .mp-scene-disclosure { align-self:start;margin-top:0; }
+}
+
+/* Agent responses and feature notices sit beside the desktop survey. */
+@media (min-width:768px) {
+ #mk-desktop-spatial .mp-scene-messages { grid-column:2;grid-row:1;align-self:end;min-width:0; }
+ #mk-desktop-spatial .mp-scene-messages .mp-agent-chat,
+ #mk-desktop-spatial .mp-scene-messages .mp-scene-benefit { position:relative;inset:auto;width:100%;max-width:100%;margin:0;padding:18px;background:#f7f8fa;border:1px solid #e4e7eb;border-radius:16px; }
+ #mk-desktop-spatial .mp-scene-controls { grid-row:2;align-self:start; }
+ #mk-desktop-spatial .mp-scene-disclosure { grid-row:3; }
+ #mk-desktop-spatial .mp-scene-messages .mp-agent-answer { flex-direction:column;gap:5px; }
+ #mk-desktop-spatial .mp-scene-messages .mp-agent-question { min-height:44px;font-size:14px; }
+ #mk-desktop-spatial .mp-scene-messages .mp-agent-answer p { min-height:36px;font-size:13px; }
+}
+
+/* A quieter white surface keeps attention on the scan and conversation. */
+@media (min-width:768px) {
+ #mk-desktop-spatial { background:#fff;box-shadow:none;border-color:#e9edef;padding:36px 40px; }
+ #mk-desktop-spatial header { margin-bottom:18px; }
+ #mk-desktop-spatial h2 { margin:0;font-size:28px;font-weight:500; }
+ #mk-desktop-spatial .mp-district { background:#fff; }
+ #mk-desktop-spatial .mp-scene-messages .mp-agent-chat,
+ #mk-desktop-spatial .mp-scene-messages .mp-scene-benefit { background:#fff;border-color:#e9edef;box-shadow:0 4px 16px #0a0e1a06; }
+ #mk-desktop-spatial .mp-scene-controls button { background:#fff; }
+ #mk-desktop-spatial .mp-scene-controls button[aria-pressed=true] { background:#0a0e1a; }
+ #mk-desktop-spatial .mp-district-topline { display:none; }
+ #mk-desktop-spatial .mp-scene-disclosure { font-size:10px;color:#8a9095; }
+}
+
+.mk-motion-offscreen, .mk-motion-offscreen * { animation-play-state:paused !important; }
